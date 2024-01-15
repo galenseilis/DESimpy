@@ -24,15 +24,28 @@ class ContinuousUniform(Distribution):
 		self.upper = upper
 
 	def sample(self):
-		'''Sample from the distribution.'''
+		'''Sample from the distribution.
+
+		Returns:
+			(float): Sampled result.
+		'''
 		return random.uniform(self.lower, self.upper)
 
 class Triangular(Distribution):
+	'''Triangular distribution.'''
 	
-	def __init__(self, lower: float, high: float, mode: float) -> NoReturn:
-		self.lower = lower
-		self.higher = higher
+	def __init__(self, low: float, high: float, mode: float) -> NoReturn:
+		'''Initialize with parameters for triangular distribution.
+
+		Args:
+			low (float): Lower bound of the triangular distribution.
+			high (float): Upper bound of the triangular distribution.
+			mode (float): The mode of the triangular distribution.
+		'''
+		self.low = low
+		self.high = high
 		self.mode = mode
 	
 	def sample(self):
-		return random.triangular(self.lower, self.higher, self.mode)
+		'''Sample from the triangular distribution.'''
+		return random.triangular(self.low, self.high, self.mode)
