@@ -1,4 +1,8 @@
-class StartParking(Event):
+from typing import NoReturn
+
+from desimpy import core
+
+class StartParking(core.Event):
     """Make the car park."""
 
     def execute(self) -> NoReturn:
@@ -13,7 +17,7 @@ class StartParking(Event):
         self.env.schedule_event(scheduled_driving_time, driving_event)
 
 
-class StartDriving(Event):
+class StartDriving(core.Event):
     """Make the car drive."""
 
     def execute(self) -> NoReturn:
@@ -32,9 +36,13 @@ class CarSimulation:
     """Our car simulation."""
 
     def __init__(self) -> NoReturn:
-        self.simulation = Environment()
+        self.simulation = core.Environment()
 
     def run_simulation(self) -> NoReturn:
         arrival_event = StartParking(self.simulation, 0)
         self.simulation.schedule_event(0, arrival_event)
         self.simulation.run(15)
+
+if __name__ == '__main__':
+	example = CarSimulation()
+	example.run_simulation()
