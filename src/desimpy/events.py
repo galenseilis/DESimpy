@@ -1,11 +1,15 @@
-class TimeoutEvent(Event):
+from typing import NoReturn
+
+from desimpy import core
+
+class TimeoutEvent(core.Event):
     """An event that times out another given event after a specified timeout."""
 
     def __init__(
         self,
-        env: Environment,
+        env: core.Environment,
         time: float,
-        target_event: Event,
+        target_event: core.Event,
         timeout: float,
         execute: bool = False,
     ) -> NoReturn:
@@ -32,10 +36,10 @@ class TimeoutEvent(Event):
                 self.target_event.execute()  # Execute the target event immediately
 
 
-class DelayNextEvent:
+class DelayNextEvent(core.Event):
     """Event that delays the next event in the schedule."""
 
-    def __init__(self, env: Environment, time: float, delay: float) -> NoReturn:
+    def __init__(self, env: core.Environment, time: float, delay: float) -> NoReturn:
         '''Initialize event that delays another event.'''
         super().__init__(env, time)
         self.delay = delay
@@ -48,10 +52,10 @@ class DelayNextEvent:
             next_event.time = new_time
             self.env.schedule_event(next_event, new_time)
 
-class DelayAllEvent:
+class DelayAllEvent(core.Event):
     '''Delay all events on the event schedule.'''
 
-    def __init__(self, env: Environment, time: float, delay: float) -> NoReturn:
+    def __init__(self, env: core.Environment, time: float, delay: float) -> NoReturn:
         super().__init__(env, time)
         self.delay = delay
 

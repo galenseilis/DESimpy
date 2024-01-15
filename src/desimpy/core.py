@@ -16,14 +16,14 @@ class Environment:
         self._clock = 0
         self.history = []
 
-    def schedule_event(self, time: float, event) -> NoReturn:
+    def schedule_event(self, event) -> NoReturn:
         """Schedule an event into the event queue.
 
         Args:
             time (float): Time that event will be scheduled.
             event (Event): Event to be scheduled.
         """
-        heapq.heappush(self.event_queue, (time, event))
+        heapq.heappush(self.event_queue, (event.time, event))
 
     def run(self, end_time: float) -> NoReturn:
         """Run the simulation.
