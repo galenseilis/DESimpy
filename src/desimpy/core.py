@@ -69,7 +69,7 @@ class Event(abc.ABC):
             time_delta (float): Time when this event will re-occur.
         """
         if time_delta < 0:
-            raise ValueError(f"`time_delta = {time_delta}` must be non-negative.")
+            raise ValueError(f"Variable `time_delta = {time_delta}` must be non-negative.")
 
         self.env.schedule_event(self.time + time_delta, self)
 
