@@ -14,7 +14,7 @@ class StartParking(core.Event):
 
         driving_event = StartDriving(self.env, scheduled_driving_time)
 
-        self.env.schedule_event(scheduled_driving_time, driving_event)
+        self.env.schedule_event(driving_event)
 
 
 class StartDriving(core.Event):
@@ -29,7 +29,7 @@ class StartDriving(core.Event):
 
         parking_event = StartParking(self.env, scheduled_parking_time)
 
-        self.env.schedule_event(scheduled_parking_time, parking_event)
+        self.env.schedule_event(parking_event)
 
 
 class CarSimulation:
@@ -40,7 +40,7 @@ class CarSimulation:
 
     def run_simulation(self) -> NoReturn:
         arrival_event = StartParking(self.simulation, 0)
-        self.simulation.schedule_event(0, arrival_event)
+        self.simulation.schedule_event(arrival_event)
         self.simulation.run(15)
 
 if __name__ == '__main__':
