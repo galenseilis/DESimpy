@@ -1,6 +1,7 @@
+'''Core elements of the simulation package.'''
+
 import abc
 import heapq
-import random
 from typing import Any, NoReturn
 
 
@@ -23,7 +24,7 @@ class Environment:
             time (float): Time that event will be scheduled.
             event (Event): Event to be scheduled.
         """
-        heapq.heappush(self.event_queue, (event.time, event))
+        heapq.heappush(self.event_queue, event)
 
     def run(self, end_time: float) -> NoReturn:
         """Run the simulation.
@@ -33,16 +34,17 @@ class Environment:
         """
 
         while self.event_queue:
-            current_time, current_event = heapq.heappop(self.event_queue)
+            current_event = heapq.heappop(self.event_queue)
+			current_time = current_event.time
 
             if current_time < end_time:
                 self._clock = current_time
 
                 if not current_event.elapsed:
-                    current_event.execute()
+                    current_event.execute(self)
                     current_event.elapsed = True
 
-                heapq.heappush(self.history, (current_time, current_event))
+                heapq.heappush(self.history, current_event)
 
             else:
                 self._clock = end_time
@@ -55,25 +57,17 @@ class Environment:
 
 
 class Event(abc.ABC):
-    """An event to be used in simulation."""
+    """ABC for events to be used in simulation."""
 
-    def __init__(self, env: Environment, time: float) -> NoReturn:
-        self.env = env
+    def __init__(self, time: float) -> NoReturn:
         self.time = time
         self.elapsed = False
 
-    def schedule_next(self, time_delta: float) -> NoReturn:
-        """Schedule the next time this event occurs.
-
-        Args:
-            time_delta (float): Time when this event will re-occur.
-        """
-        if time_delta < 0:
-            raise ValueError(f"Variable `time_delta = {time_delta}` must be non-negative.")
-
-        self.env.schedule_event(self.time + time_delta, self)
-
     @abc.abstractmethod
-    def execute(self) -> Any:
+    def execute(self, env: Environment) -> Any:
         """Execute the event."""
         raise NotImplementedError("Subclasses must implement the `execute` method")
+
+    def __lt__(self, other) -> bool:
+        '''Events are ordered by their schedule time.'''
+        return self.time < other.time
