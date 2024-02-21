@@ -35,7 +35,7 @@ class Environment:
 
         while self.event_queue:
             current_event = heapq.heappop(self.event_queue)
-			current_time = current_event.time
+            current_time = current_event.time
 
             if current_time < end_time:
                 self._clock = current_time
