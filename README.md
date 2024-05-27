@@ -1,7 +1,7 @@
 # DESimPy
 Event-driven [discrete event simulation](https://en.wikipedia.org/wiki/Discrete-event_simulation) in Python (DESimPy).
 
-![](docs/assets/logo.jpg)
+![](docs/assets/logo.png)
 
 ## Overview
 
