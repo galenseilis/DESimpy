@@ -3,6 +3,7 @@ import random
 
 from desimpy.core import Environment, Event
 
+
 class Customer:
     """Class representing a customer."""
 
@@ -11,12 +12,15 @@ class Customer:
         self.service_start_time = None
         self.service_time = None
 
+
 class Arrival(Event):
     """Event representing the arrival of a customer."""
 
     def execute(self, env: Environment) -> None:
         # Schedule next arrival
-        inter_arrival_time = random.expovariate(1.0)  # Exponential distribution with lambda = 1
+        inter_arrival_time = random.expovariate(
+            1.0
+        )  # Exponential distribution with lambda = 1
         next_arrival_time = env.now + inter_arrival_time
         env.schedule_event(Arrival(next_arrival_time))
 
@@ -33,16 +37,21 @@ class Arrival(Event):
 
         print(f"Arrival at time {env.now}, Queue Length: {len(env.queue)}")
 
+
 def start_service(env: Environment, customer: Customer) -> None:
     """Start service for the given customer."""
     customer.service_start_time = env.now
-    customer.service_time = random.expovariate(1.0)  # Exponential distribution with lambda = 1
+    customer.service_time = random.expovariate(
+        1.0
+    )  # Exponential distribution with lambda = 1
     departure_time = env.now + customer.service_time
     env.schedule_event(Departure(departure_time))
 
     env.num_servers_available -= 1
 
-    print(f"Service started for customer at time {env.now}, Queue Length: {len(env.queue)}")
+    print(
+        f"Service started for customer at time {env.now}, Queue Length: {len(env.queue)}"
+    )
 
 
 class Departure(Event):
@@ -62,6 +71,7 @@ class Departure(Event):
             if len(env.queue) > 0:
                 start_service(env, env.queue[0])
 
+
 if __name__ == "__main__":
     # Initialize simulation environment
     env = Environment()
@@ -72,6 +82,5 @@ if __name__ == "__main__":
     env.schedule_event(Arrival(0))
 
     # Run the simulation for a specified time
-    simulation_time = 1_000_000
+    simulation_time = 10
     env.run(simulation_time)
-
