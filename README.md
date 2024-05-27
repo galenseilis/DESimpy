@@ -1,6 +1,8 @@
 # DESimPy
 Event-driven [discrete event simulation](https://en.wikipedia.org/wiki/Discrete-event_simulation) in Python (DESimPy).
 
+![](docs/assets/logo.jpg)
+
 ## Overview
 
 DESimPy is an event-driven simulation framework based on standard Python and inspired by [SimPy](https://simpy.readthedocs.io/en/latest/).
