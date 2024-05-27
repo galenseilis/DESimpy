@@ -1,3 +1,5 @@
+'''Example.'''
+
 import random
 
 from desimpy.core import Environment, Event
