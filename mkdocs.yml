@@ -40,7 +40,6 @@ nav:
   - Overview: index.md
   - Methodology: methodology.md
   - Examples: examples.md
-  - About: about.md
 
 plugins:
   - search
