@@ -2,6 +2,8 @@
 
 DESimPy is an event-driven discrete event simulation engine.
 
+![](assets/logo.jpg)
+
 # Installation
 
 ```bash
