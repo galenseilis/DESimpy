@@ -1,18 +1,3 @@
-# Introduction
-
-DESimPy is an event-driven discrete event simulation engine.
-
-![](assets/logo.jpg)
-
-# Installation
-
-```bash
-pip install desimpy
-```
-
-# Quick Start
-
-```python
 from desimpy import core
 
 class CustomEvent(core.Event):
@@ -38,4 +23,4 @@ class Simulation:
 if __name__ == "__main__":
     sim = Simulation()
     sim.run_simulation()
-```
+
