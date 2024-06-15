@@ -189,15 +189,7 @@ if __name__ == "__main__":
         print("No customers arrived during the simulation.")
 ```
 
-### M/M/c Network
-
-### G/G/1 Restricted Network
-
-### M/G/
-
 ## SimPy's Examples
-
-### Clock Example
 
 ### First Car Example
 
@@ -267,19 +259,4 @@ Start parking at 7
 Start driving at 12
 Start parking at 14
 ```
-
-### Bank Renege
-
-### Movie Renege
-
-### Gas Station Refueling
-
-### Machine Shop
-
-### Carwash
-
-### Process Communication
-
-### Event Latency
-
 
