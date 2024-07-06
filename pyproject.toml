@@ -1,22 +1,24 @@
+[project]
+name = "DESimpy"
+version = "0.5.0"
+description = "An event-driven discrete event simulation environment."
+authors = [
+    { name = "galenseilis", email = "galen.seilis@seilis.ca" }
+]
+dependencies = []
+readme = "README.md"
+requires-python = ">= 3.10"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[project]
-name = "DESimpy"
-version = "0.0.5"
-authors = [
-  { name="Galen Seilis", email="galen.seilis@seilis.ca" },
-]
-description = "A discrete event simulation environment in Python."
-readme = "README.md"
-requires-python = ">=3.8"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-]
+[tool.rye]
+managed = true
+dev-dependencies = []
 
-[project.urls]
-Homepage = "https://github.com/pypa/DESimpy"
-Issues = "https://github.com/pypa/DESimpy/issues"
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/desimpy"]
