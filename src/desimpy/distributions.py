@@ -47,6 +47,63 @@ class Distribution(ABC):
         dist = dist_cast(other)
         return TransformDistribution((self, dist), operator.truediv)
 
+    def pdf(self, x):#pylint: disable=C0103
+        """Probability density function or
+        probability mass function."""
+        raise NotImplementedError()
+
+    def cdf(self, x):#pylint: disable=C0103
+        """Cumulative distribution function."""
+        raise NotImplementedError()
+
+    def quantile(self, p):#pylint: disable=C0103
+        """Quantile function"""
+        raise NotImplementedError()
+
+    def mean(self):
+        """Expected value."""
+        raise NotImplementedError()
+
+    def median(self):
+        """Median"""
+        raise NotImplementedError()
+
+    def mode(self):
+        """Mode"""
+        raise NotImplementedError()
+
+    def variance(self):
+        """Variance"""
+        raise NotImplementedError()
+
+    def standard_deviation(self):
+        """Standard deviation"""
+        raise NotImplementedError()
+
+    def mean_absolute_deviation(self):
+        """Mean absolute deviation (MAD)."""
+        raise NotImplementedError()
+
+    def skewness(self):
+        """Skewness."""
+        raise NotImplementedError()
+
+    def excess_kurtosis(self):
+        """Excess kurtosis"""
+        raise NotImplementedError()
+
+    def entropy(self):
+        """Entropy"""
+        raise NotImplementedError()
+
+    def moment_generating_function(self, t):#pylint: disable=C0103
+        """Moment generating function (MGF)."""
+        raise NotImplementedError()
+
+    def expected_shortfall(self, p):#pylint: disable=C0103
+        """Expected shortfall."""
+        raise NotImplementedError()
+
 
 def dist_cast(obj):
     """Cast object to a distribution."""
@@ -81,6 +138,45 @@ class Exponential(Distribution):
         """Fit distribution to data."""
         return Exponential(rate=1 / np.mean(data))
 
+    def pdf(self, x):
+        return self.rate * np.exp(-self.rate * x)
+
+    def cdf(self, x):
+        return 1 - np.exp(-self.rate * x)
+
+    def mean(self):
+        return 1 / self.rate
+
+    def median(self):
+        return np.log(2) / self.rate
+
+    def mode(self):
+        return 0
+
+    def variance(self):
+        return 1 / np.square(self.rate)
+
+    def standard_deviation(self):
+        return 1 / self.rate
+
+    def skewness(self):
+        return 2
+
+    def excess_kurtosis(self):
+        return 6
+
+    def entropy(self):
+        return 1 - np.log(self.rate)
+
+    def moment_generating_function(self, t):#pylint: disable=C0103
+        if t < self.rate:
+            return self.rate / (self.rate - t)
+
+        raise ValueError("The argument t must be less than the rate.")
+
+    def expected_shortfall(self, p):
+        return -(np.log(1 - p) + 1) / self.rate
+
 
 class ContinuousUniform(Distribution):
     """Continuous uniform distribution."""
@@ -99,10 +195,7 @@ class ContinuousUniform(Distribution):
 
     @classmethod
     def fit(cls, data):
-        """Fit distribution model.
-
-        This estimator is biased.
-        """
+        """Fit distribution model."""
         return ContinuousUniform(lower=min(data), upper=max(data))
 
 

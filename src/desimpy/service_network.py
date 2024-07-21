@@ -50,6 +50,7 @@ class WorkForce:
 
 class Waitlist:
     """Waitlist to keep track of waiters."""
+
     def __init__(
         self,
         capacity_func: Callable = None,
@@ -120,7 +121,7 @@ class Node:
         arrival_distribution: Distribution = None,
         service_distribution: Distribution = None,
         routing_func: Callable = None,
-    ):#pylint: disable=R0913
+    ):  # pylint: disable=R0913
         """Initialize node.
 
         Args:
