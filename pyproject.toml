@@ -20,6 +20,7 @@ managed = true
 dev-dependencies = [
     "pytest>=8.3.1",
     "pytest-cov>=5.0.0",
+    "quartodoc>=0.7.5",
 ]
 
 [tool.hatch.metadata]
