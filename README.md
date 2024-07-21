@@ -18,54 +18,29 @@ pip install desimpy
 ## Quickstart
 
 ```python
-from typing import NoReturn
+def stop_at_max_time(scheduler, max_time):
+    """Stop function to halt the simulation at a maximum time."""
+    return lambda: scheduler.current_time >= max_time
 
-from desimpy import core
+# Example usage:
 
+# Define a simple action function for events
+def example_action(context):
+    print(f"Event executed with context: {context}")
+    return "example_log_entry"
 
-class StartParking(core.Event):
-    """Make the car park."""
+# Create an event scheduler instance
+scheduler = EventScheduler()
 
-    def execute(self, env) -> NoReturn:
-        """Start parking and schedule next drive."""
+# Schedule some events
+scheduler.schedule(Event(time=1, action=example_action, context={"data": 1}))
+scheduler.schedule(Event(time=2, action=example_action, context={"data": 2}))
+scheduler.schedule(Event(time=3, action=example_action, context={"data": 3}))
 
-        print(f"Start parking at {env.now}")
+# Define the stop function with a max time of 2.5
+stop_function = stop_at_max_time(scheduler, max_time=2.5)
 
-        scheduled_driving_time = env.now + 5
+# Run the simulation
+scheduler.run(stop_function)
 
-        driving_event = StartDriving(scheduled_driving_time)
-
-        env.schedule_event(driving_event)
-
-
-class StartDriving(core.Event):
-    """Make the car drive."""
-
-    def execute(self, env) -> NoReturn:
-        """Start driving and schedule for next parking."""
-
-        print(f"Start driving at {env.now}")
-
-        scheduled_parking_time = env.now + 2
-
-        parking_event = StartParking(scheduled_parking_time)
-
-        env.schedule_event(parking_event)
-
-
-class CarSimulation:
-    """Our car simulation."""
-
-    def __init__(self) -> NoReturn:
-        self.simulation = core.Environment()
-
-    def run_simulation(self) -> NoReturn:
-        arrival_event = StartParking(0)
-        self.simulation.schedule_event(arrival_event)
-        self.simulation.run(15)
-
-
-if __name__ == "__main__":
-    example = CarSimulation()
-    example.run_simulation()
 ```
