@@ -261,5 +261,5 @@ def reject_negative(candidate: float, context=None) -> bool:  # pylint: disable=
     Ignores context.
     """
     if candidate < 0:
-        return False
-    return True
+        return True
+    return False
