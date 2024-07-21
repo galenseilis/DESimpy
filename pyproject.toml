@@ -5,7 +5,9 @@ description = "An event-driven discrete event simulation environment."
 authors = [
     { name = "galenseilis", email = "galen.seilis@seilis.ca" }
 ]
-dependencies = []
+dependencies = [
+    "numpy>=2.0.1",
+]
 readme = "README.md"
 requires-python = ">= 3.10"
 

@@ -4,12 +4,16 @@ from abc import ABC, abstractmethod
 import copy
 import operator
 import numbers
-import random
 from typing import Callable
+
+import numpy as np
 
 
 class Distribution(ABC):
     """Definition of simulation-compatible distributions."""
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}"
 
     @abstractmethod
     def sample(self, context=None):
@@ -61,23 +65,28 @@ def dist_cast(obj):
 class Exponential(Distribution):
     """Exponential distribution."""
 
-    def __init__(self, rate):
+    def __init__(self, rate, rng=None):
         self.rate = rate
+        self.rng = np.random.default_rng() if rng is None else rng
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(rate={self.rate})"
 
     def sample(self, context=None):
         """Sample from distribution."""
-        return random.expovariate(self.rate)
+        return self.rng.exponential(1 / self.rate)
 
     @classmethod
     def fit(cls, data):
         """Fit distribution to data."""
-        return Exponential(rate=len(data) / sum(data))
+        return Exponential(rate=1 / np.mean(data))
 
 
 class ContinuousUniform(Distribution):
     """Continuous uniform distribution."""
 
-    def __init__(self, lower, upper):
+    def __init__(self, lower: float = 0, upper: float = 1, rng=None):
+        self.rng = np.random.default_rng() if rng is None else rng
         self.lower = lower
         self.upper = upper
 
@@ -86,7 +95,7 @@ class ContinuousUniform(Distribution):
 
     def sample(self, context=None):
         """Sample from distribution."""
-        return random.uniform(self.lower, self.upper)
+        return self.rng.uniform(self.lower, self.upper)
 
     @classmethod
     def fit(cls, data):
