@@ -31,6 +31,12 @@ class Event:
             return self.time, log_entry, self.context
         return self.time, None, self.context
 
+    def __le__(self, other):
+        return self.time <= other.time
+
+    def __lt__(self, other):
+        return self.time < other.time
+
 
 class EventScheduler:
     """Run discrete event simulations."""
