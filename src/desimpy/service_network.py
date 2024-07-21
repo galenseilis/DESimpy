@@ -4,12 +4,14 @@ from .agent import Agent
 
 class Customer(Agent):
     """Customer agent that receives service."""
+
     def __init__(self, name):
         super().__init__(name)
 
 
 class Server(Agent):
     """Server agent that provides service."""
+
     def __init__(self, name: str, schedule: Callable):
         super().__init__(name)
         self.schedule = schedule
@@ -34,13 +36,17 @@ class WorkForce:
         del self.servers[server_name]
 
     def allocate_server(self, node):
-        available_servers = {server.is_on_duty(node) for server in self.servers.values()}
+        available_servers = {
+            server.is_on_duty(node) for server in self.servers.values()
+        }
 
 
 class Waitlist:
     def __init__(self, capacity_func: Callable = None, baulk_func: Callable = None):
-        self._capacity_func = lambda : float('inf') if capacity_func is None else capacity_func
-        self._baulk_func = lambda : False if baulk_func is None else baulk_func
+        self._capacity_func = (
+            lambda: float("inf") if capacity_func is None else capacity_func
+        )
+        self._baulk_func = lambda: False if baulk_func is None else baulk_func
         self.queue = []
 
     def capacity(self, node) -> int:
@@ -67,7 +73,6 @@ class Semaphore:
 
         return False
 
-
     def release(self):
         """Release event from queue."""
         if self.queue:
@@ -79,8 +84,10 @@ class Semaphore:
         self.currently_serving -= 1
         return None
 
+
 class Node:
     """Node in queueing network."""
+
     def __init__(
         self,
         name: str,
@@ -106,7 +113,9 @@ class Node:
         self.semaphore = Semaphore(self)
         self.service_distribution = service_distribution
         self.routing_function = routing_func
-        self.service_discipline = lambda queue: queue[0] if service_discipline is None else service_discipline
+        self.service_discipline = (
+            lambda queue: queue[0] if service_discipline is None else service_discipline
+        )
 
     def schedule_next_arrival(self, scheduler):
         """Schedule when the next task will arrive."""
@@ -125,7 +134,9 @@ class Node:
         print(f"{arrival_time}: Customer arrives at {self.name}.")
         self.schedule_next_arrival(scheduler)
 
-        service_start_event = Event(arrival_time, lambda: self.start_service(scheduler), {})
+        service_start_event = Event(
+            arrival_time, lambda: self.start_service(scheduler), {}
+        )
         if not self.semaphore.acquire(service_start_event):
             print(f"{arrival_time}: Customer waits for service at {self.name}.")
 
@@ -138,7 +149,9 @@ class Node:
                 f"{scheduler.current_time}: Customer starts service at {self.name} for {service_time} units."
             )
 
-            finish_event = Event(finish_time, lambda: self.finish_service(scheduler), {})
+            finish_event = Event(
+                finish_time, lambda: self.finish_service(scheduler), {}
+            )
             scheduler.schedule(finish_event)
 
     def finish_service(self, scheduler):
@@ -149,8 +162,10 @@ class Node:
         if next_node:
             next_node.customer_arrival(scheduler)
 
+
 class ServiceSystem:
     """Queueing system simulation."""
+
     def __init__(self, nodes, workforce):
         self.nodes = nodes
         for node in self.nodes:

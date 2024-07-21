@@ -7,6 +7,7 @@ import numbers
 import random
 from typing import Callable
 
+
 class Distribution(ABC):
     """Definition of simulation-compatible distributions."""
 
@@ -70,19 +71,18 @@ class Exponential(Distribution):
     @classmethod
     def fit(cls, data):
         """Fit distribution to data."""
-        return Exponential(
-            rate=len(data) / sum(data)
-            )
+        return Exponential(rate=len(data) / sum(data))
 
 
 class ContinuousUniform(Distribution):
     """Continuous uniform distribution."""
+
     def __init__(self, lower, upper):
         self.lower = lower
         self.upper = upper
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(lower={self.lower}, upper={self.upper})'
+        return f"{self.__class__.__name__}(lower={self.lower}, upper={self.upper})"
 
     def sample(self, context=None):
         """Sample from distribution."""
@@ -94,10 +94,7 @@ class ContinuousUniform(Distribution):
 
         This estimator is biased.
         """
-        return ContinuousUniform(
-                lower=min(data),
-                upper=max(data)
-            )
+        return ContinuousUniform(lower=min(data), upper=max(data))
 
 
 class DegenerateDistribution(Distribution):
@@ -107,7 +104,7 @@ class DegenerateDistribution(Distribution):
         self.func = func
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(self.func)'
+        return f"{self.__class__.__name__}(self.func)"
 
     def sample(self, context=None):
         """Sample from distribution."""
@@ -155,7 +152,8 @@ class RejectDistribution(Distribution):
             if not self.reject(candidate, context=None):
                 return candidate
 
-def reject_negative(candidate: float, context=None) -> bool: # pylint: disable=W0613
+
+def reject_negative(candidate: float, context=None) -> bool:  # pylint: disable=W0613
     """Reject negative candidates.
 
     Ignores context.

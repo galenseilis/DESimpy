@@ -50,6 +50,7 @@ class EventScheduler:
             self.current_time = time
             event.run()
 
+
 def stop_at_max_time_factory(scheduler, max_time):
     """Stop function to halt the simulation at a maximum time.
 
