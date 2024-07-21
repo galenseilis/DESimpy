@@ -1,52 +1,120 @@
-import abc
+"""Simulation-compatible probability distributions."""
+
+from abc import ABC, abstractmethod
+import operator
+import numbers
 import random
-from typing import NoReturn
 
+class Distribution(ABC):
+    """Definition of simulation-compatible distributions."""
 
-class Distribution(abc.ABC):
-    @abc.abstractmethod
-    def sample(self):
-        """Return a sampled thing."""
-        raise NotImplementedError
+    @abstractmethod
+    def sample(self, context):
+        """Sample from distribution."""
 
-
-class ContinuousUniform(Distribution):
-    """Continuous uniform distribution between a lower and upper value."""
-
-    def __init__(self, lower: float, upper: float) -> NoReturn:
-        """Initialize distribution with lower/upper bounds as parameters.
-
-        Args:
-                lower (float): Lower bound of distribution.
-                upper (float): Upper bound of distribution.
+    def __add__(self, other):
         """
+        Add two distributions such that sampling is the sum of the samples.
+        """
+        dist = dist_cast(other)
+        return TransformDistribution((self, dist), operator.add)
+
+    def __sub__(self, other):
+        """
+        Subtract two distributions such that sampling is the difference of the samples.
+        """
+        dist = dist_cast(other)
+        return TransformDistribution((self, dist), operator.sub)
+
+    def __mul__(self, other):
+        """
+        Multiply two distributions such that sampling is the product of the samples.
+        """
+        dist = dist_cast(other)
+        return TransformDistribution((self, dist), operator.mul)
+
+    def __truediv__(self, other):
+        """
+        Divide two distributions such that sampling is the ratio of the samples.
+        """
+        dist = dist_cast(other)
+        return TransformDistribution((self, dist), operator.truediv)
+
+
+def dist_cast(obj):
+    """Cast object to a distribution."""
+    if isinstance(obj, numbers.Number):
+        return DegenerateDistribution(func=lambda context: obj)
+    if isinstance(obj, Distribution):
+        return obj
+    if callable(obj):
+        return DegenerateDistribution(func=obj)
+    if isinstance(obj, str):
+        return DegenerateDistribution(func=lambda context: obj)
+
+    raise ValueError(f"Could not cast {obj} to type `Distribution`.")
+
+
+class ExponentialDistribution(Distribution):
+    def __init__(self, rate):
+        self.rate = rate
+
+    def sample(self, context):
+        return random.expovariate(self.rate)
+
+
+class UniformDistribution(Distribution):
+    def __init__(self, lower, upper):
         self.lower = lower
         self.upper = upper
 
-    def sample(self):
-        """Sample from the distribution.
-
-        Returns:
-                (float): Sampled result.
-        """
+    def sample(self, context):
         return random.uniform(self.lower, self.upper)
 
 
-class Triangular(Distribution):
-    """Triangular distribution."""
+class DegenerateDistribution(Distribution):
+    def __init__(self, func: Callable):
+        self.func = func
 
-    def __init__(self, low: float, high: float, mode: float) -> NoReturn:
-        """Initialize with parameters for triangular distribution.
+    def sample(self, context):
+        return self.func(context)
 
-        Args:
-                low (float): Lower bound of the triangular distribution.
-                high (float): Upper bound of the triangular distribution.
-                mode (float): The mode of the triangular distribution.
-        """
-        self.low = low
-        self.high = high
-        self.mode = mode
+
+class TransformDistribution(Distribution):
+    """A distribution that combines the samples of two or more other distributions via an operator.
+
+    This implicitly induces a change of variables.
+    """
+
+    def __init__(self, dists, operator: Callable):
+        self.dists = copy.deepcopy(dists)
+        self.operator = operator
+
+    def __repr__(self):
+        return f"TransformDistribution({self.dists}, {self.operator})"
+
+    def sample(self, context):
+        samples = [dist.sample(context) for dist in self.dists]
+        return self.operator(*samples)
+
+
+class RejectDistribution(Distribution):
+    """Add rejection sampling to a distribution.
+
+    For example, lower truncation of a distribution
+    to zero can restrict a real support distribution to
+    a non-negative real support distribution.
+    """
+
+    def __init__(self, dist: Distribution, reject: Callable):
+        self.dist = dist
+        self.reject = reject
+
+    def __repr__(self):
+        return f"RejectDistribution({self.dist}, {self.reject})"
 
     def sample(self):
-        """Sample from the triangular distribution."""
-        return random.triangular(self.low, self.high, self.mode)
+        while True:
+            candidate = self.dist.sample()
+            if not reject(candidate):
+                return candidate
