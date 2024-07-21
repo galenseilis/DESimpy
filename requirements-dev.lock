@@ -9,5 +9,12 @@
 #   generate-hashes: false
 
 -e file:.
+iniconfig==2.0.0
+    # via pytest
 numpy==2.0.1
     # via desimpy
+packaging==24.1
+    # via pytest
+pluggy==1.5.0
+    # via pytest
+pytest==8.3.1
