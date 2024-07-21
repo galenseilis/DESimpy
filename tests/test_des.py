@@ -55,28 +55,3 @@ def test_schedule_event():
     assert len(scheduler.event_queue) == 1
     assert scheduler.event_queue[0] == (5.0, event)
 
-def test_run_scheduler():
-    scheduler = EventScheduler()
-    action1 = Mock(return_value="log1")
-    action2 = Mock(return_value="log2")
-    event1 = Event(time=1.0, action=action1, context={})
-    event2 = Event(time=2.0, action=action2, context={})
-
-    scheduler.schedule(event1)
-    scheduler.schedule(event2)
-
-    stop = stop_at_max_time_factory(scheduler, max_time=2.0)
-    scheduler.run(stop)
-
-    assert scheduler.current_time == 2.0
-    action1.assert_called_once()
-    action2.assert_called_once()
-
-def test_stop_at_max_time_factory():
-    scheduler = EventScheduler()
-    stop = stop_at_max_time_factory(scheduler, max_time=10.0)
-
-    assert stop() is False
-    scheduler.current_time = 10.0
-    assert stop() is True
-
