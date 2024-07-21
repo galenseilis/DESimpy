@@ -1,15 +1,17 @@
 """Simulation-compatible probability distributions."""
 
 from abc import ABC, abstractmethod
+import copy
 import operator
 import numbers
 import random
+from typing import Callable
 
 class Distribution(ABC):
     """Definition of simulation-compatible distributions."""
 
     @abstractmethod
-    def sample(self, context):
+    def sample(self, context=None):
         """Sample from distribution."""
 
     def __add__(self, other):
@@ -55,28 +57,60 @@ def dist_cast(obj):
     raise ValueError(f"Could not cast {obj} to type `Distribution`.")
 
 
-class ExponentialDistribution(Distribution):
+class Exponential(Distribution):
+    """Exponential distribution."""
+
     def __init__(self, rate):
         self.rate = rate
 
-    def sample(self, context):
+    def sample(self, context=None):
+        """Sample from distribution."""
         return random.expovariate(self.rate)
 
+    @classmethod
+    def fit(cls, data):
+        """Fit distribution to data."""
+        return Exponential(
+            rate=len(data) / sum(data)
+            )
 
-class UniformDistribution(Distribution):
+
+class ContinuousUniform(Distribution):
+    """Continuous uniform distribution."""
     def __init__(self, lower, upper):
         self.lower = lower
         self.upper = upper
 
-    def sample(self, context):
+    def __repr__(self):
+        return f'{self.__class__.__name__}(lower={self.lower}, upper={self.upper})'
+
+    def sample(self, context=None):
+        """Sample from distribution."""
         return random.uniform(self.lower, self.upper)
+
+    @classmethod
+    def fit(cls, data):
+        """Fit distribution model.
+
+        This estimator is biased.
+        """
+        return ContinuousUniform(
+                lower=min(data),
+                upper=max(data)
+            )
 
 
 class DegenerateDistribution(Distribution):
+    """Degenerate distribution."""
+
     def __init__(self, func: Callable):
         self.func = func
 
-    def sample(self, context):
+    def __repr__(self):
+        return f'{self.__class__.__name__}(self.func)'
+
+    def sample(self, context=None):
+        """Sample from distribution."""
         return self.func(context)
 
 
@@ -86,16 +120,17 @@ class TransformDistribution(Distribution):
     This implicitly induces a change of variables.
     """
 
-    def __init__(self, dists, operator: Callable):
+    def __init__(self, dists, transform: Callable):
         self.dists = copy.deepcopy(dists)
-        self.operator = operator
+        self.transform = transform
 
     def __repr__(self):
-        return f"TransformDistribution({self.dists}, {self.operator})"
+        return f"{self.__class__.__name__}({self.dists}, {self.transform})"
 
-    def sample(self, context):
+    def sample(self, context=None):
+        """Sample from distribution."""
         samples = [dist.sample(context) for dist in self.dists]
-        return self.operator(*samples)
+        return self.transform(*samples)
 
 
 class RejectDistribution(Distribution):
@@ -113,8 +148,18 @@ class RejectDistribution(Distribution):
     def __repr__(self):
         return f"RejectDistribution({self.dist}, {self.reject})"
 
-    def sample(self):
+    def sample(self, context=None):
+        """Rejection sample from distribution."""
         while True:
-            candidate = self.dist.sample()
-            if not reject(candidate):
+            candidate = self.dist.sample(context)
+            if not self.reject(candidate, context=None):
                 return candidate
+
+def reject_negative(candidate: float, context=None) -> bool: # pylint: disable=W0613
+    """Reject negative candidates.
+
+    Ignores context.
+    """
+    if candidate < 0:
+        return False
+    return True
