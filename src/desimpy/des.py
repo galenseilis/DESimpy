@@ -50,6 +50,11 @@ class EventScheduler:
             self.current_time = time
             event.run()
 
-def stop_at_max_time(scheduler, max_time):
-    """Stop function to halt the simulation at a maximum time."""
+def stop_at_max_time_factory(scheduler, max_time):
+    """Stop function to halt the simulation at a maximum time.
+
+    Define the scheduler first, then call this function on it
+    with the desired max_time to get the desired function. Finally,
+    call the event scheduler's run method on the function.
+    """
     return lambda: scheduler.current_time >= max_time
