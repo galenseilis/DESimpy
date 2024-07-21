@@ -1,4 +1,4 @@
-import pytest
+import operator
 from unittest.mock import Mock
 from desimpy.des import Event, EventScheduler, stop_at_max_time_factory
 
