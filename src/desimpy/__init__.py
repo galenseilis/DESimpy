@@ -1,3 +1,3 @@
 from .agent import Agent
-import distributions as dists
-import service_network
+from . import distributions as dists
+from . import service_network

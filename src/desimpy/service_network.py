@@ -221,4 +221,3 @@ class ServiceNetworkSimulation:
         """Current simulation time."""
         return self.scheduler.current_time
 
-    def initial_waitlist
