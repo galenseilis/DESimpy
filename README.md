@@ -17,30 +17,4 @@ pip install desimpy
 
 ## Quickstart
 
-```python
-def stop_at_max_time(scheduler, max_time):
-    """Stop function to halt the simulation at a maximum time."""
-    return lambda: scheduler.current_time >= max_time
-
-# Example usage:
-
-# Define a simple action function for events
-def example_action(context):
-    print(f"Event executed with context: {context}")
-    return "example_log_entry"
-
-# Create an event scheduler instance
-scheduler = EventScheduler()
-
-# Schedule some events
-scheduler.schedule(Event(time=1, action=example_action, context={"data": 1}))
-scheduler.schedule(Event(time=2, action=example_action, context={"data": 2}))
-scheduler.schedule(Event(time=3, action=example_action, context={"data": 3}))
-
-# Define the stop function with a max time of 2.5
-stop_function = stop_at_max_time(scheduler, max_time=2.5)
-
-# Run the simulation
-scheduler.run(stop_function)
-
-```
+🔜
