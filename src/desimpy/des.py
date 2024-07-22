@@ -50,11 +50,19 @@ class Event:
         self.active = False
 
     def run(self):
-        """Apply event's state transitions."""
+        """Apply event's state transitions.
+        
+        The state transition will only occur if the
+        event is active, in which case it will return
+        whatever the event's action returns.
+
+        If the event is inactive then the event's
+        action will not occur, in which case `None`
+        is implicitly returned by `run`.
+        """
         if self.active:
             return self.action()
-        return None
-
+            
     def __le__(self, other):
         return self.time <= other.time
 
