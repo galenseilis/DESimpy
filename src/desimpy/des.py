@@ -27,7 +27,7 @@ class Event:
     def run(self):
         """Apply event's state transitions."""
         if self.active:
-            log_entry = self.action(self.context)
+            log_entry = self.action()
             return self.time, log_entry, self.context
         return self.time, None, self.context
 
@@ -51,19 +51,18 @@ class EventScheduler:
 
     def run(self, stop: Callable) -> NoReturn:
         """Run discrete event simulation."""
-        while not stop():
+        while not stop(self):
             if not self.event_queue:
                 break
             time, event = heapq.heappop(self.event_queue)
             self.current_time = time
             event.run()
 
-
-def stop_at_max_time_factory(scheduler, max_time):
+def stop_at_max_time_factory(max_time):
     """Stop function to halt the simulation at a maximum time.
 
     Define the scheduler first, then call this function on it
     with the desired max_time to get the desired function. Finally,
     call the event scheduler's run method on the function.
     """
-    return lambda: (scheduler.current_time >= max_time or not bool(scheduler.event_queue) or scheduler.event_queue[0][0] >= max_time)
+    return lambda scheduler: (scheduler.current_time >= max_time or not bool(scheduler.event_queue) or scheduler.event_queue[0][0] >= max_time)
