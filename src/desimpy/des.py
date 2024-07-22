@@ -17,7 +17,8 @@ class Event:
     flow in other parts of the simulation while also being relatively isolated.
 
     The second purpose for `context` is logging information that was true at the
-    time that the event was defined.
+    time that the event was defined. This will often, although not always, be the
+    same simulation time as when the event was scheduled.
 
     The output of `action` is also for logging purposes. It should not be used
     for control flow within the system specific details of the simulation, and 
