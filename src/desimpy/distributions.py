@@ -251,7 +251,7 @@ class RejectDistribution(Distribution):
         """Rejection sample from distribution."""
         while True:
             candidate = self.dist.sample(context)
-            if not self.reject(candidate, context=None):
+            if not self.reject(candidate, context):
                 return candidate
 
 
