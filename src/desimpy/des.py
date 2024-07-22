@@ -35,10 +35,10 @@ class Event:
     simulation.
     """
 
-    def __init__(self, time: float, action: Callable, context: dict) -> NoReturn:
+    def __init__(self, time: float, action: Callable, context: dict = None) -> NoReturn:
         self.time = time
         self.action = action
-        self.context = context
+        self.context = {} if context is None else context
         self.active = True
 
     def activate(self) -> NoReturn:
