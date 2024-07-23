@@ -1,4 +1,5 @@
-from desimpy.des import EventScheduler, Event, stop_at_max_time_factory
+from desimpy.des import EventScheduler
+
 
 def clock(env, name, tick) -> None:
     """Clock simulation process."""
@@ -6,9 +7,9 @@ def clock(env, name, tick) -> None:
     def action() -> None:
         """Schedule next tick of the clock."""
         print(name, env.current_time)
-        env.schedule(Event(env.current_time + tick, action))
+        env.timeout(tick, action)
 
-    env.schedule(Event(env.current_time, action))
+    env.timeout(0, action=action)
 
 
 # Setting up the simulation environment

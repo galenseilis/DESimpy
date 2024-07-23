@@ -35,9 +35,9 @@ class Event:
     simulation.
     """
 
-    def __init__(self, time: float, action: Callable, context: dict = None) -> NoReturn:
+    def __init__(self, time: float, action: Callable = None, context: dict = None) -> NoReturn:
         self.time = time
-        self.action = action
+        self.action = (lambda: None) if action is None else action
         self.context = {} if context is None else context
         self.active = True
 
@@ -82,10 +82,14 @@ class EventScheduler:
         """Schedule an event on the event queue."""
         heapq.heappush(self.event_queue, (event.time, event))
 
-    def schedule_timeout(self, delay: float, action=None, context=None):
-        """Schedule an event with a delay."""
-        action = lambda: None if action is None else action
-        self.schedule(Event(self.current_time + delay, action, context))
+    def timeout(self, delay, action=None, context=None):
+        """Schedule an event some delay into the future.
+
+        This event is really just a thin wrapper around
+        `self.schedule`, but assumes that some delay into
+        the future is 
+        """
+        self.schedule(Event(self.current_time + delay, action=action, context=context))
 
     def activate_all_events(self):
         """Activate all future events."""
@@ -133,9 +137,6 @@ class EventScheduler:
         event (i.e. `event_result`).
         """
 
-        if not self.event_queue:
-            return self.event_log
-
         log_filter = self._default_log_filter if log_filter is None else log_filter
         while not stop(self):
             if not self.event_queue:  # Always stop if there are no more events.
@@ -154,7 +155,7 @@ class EventScheduler:
         method so that simulating until a maximum is assumed
         as the stop condition.
         '''
-        self.run(stop_at_max_time_factory(max_time))
+        return self.run(stop_at_max_time_factory(max_time))
 
 
 def stop_at_max_time_factory(max_time: float) -> Callable:
@@ -169,5 +170,4 @@ def stop_at_max_time_factory(max_time: float) -> Callable:
         or not scheduler.event_queue
         or scheduler.event_queue[0][0] >= max_time
     )
-
 
