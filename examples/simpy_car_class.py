@@ -10,7 +10,7 @@ class Car:
     def schedule_run(self) -> None:
         """Schedule the initial run event."""
         start_time = self.env.current_time
-        self.env.schedule(Event(start_time, self.run, {}))
+        self.env.schedule(Event(start_time, self.run))
 
     def run(self) -> None:
         """Handle the parking and charging, followed by driving."""
@@ -26,10 +26,10 @@ class Car:
             end_trip_time = self.env.current_time + trip_duration
 
             # Schedule the next parking and charging event
-            self.env.schedule(Event(end_trip_time, self.run, {}))
+            self.env.schedule(Event(end_trip_time, self.run))
 
         # Schedule the charge process
-        self.env.schedule(Event(end_charge_time, charge_action, {}))
+        self.env.schedule(Event(end_charge_time, charge_action))
 
 
 # Initialize the event scheduler

@@ -2,11 +2,11 @@ from desimpy.des import EventScheduler, Event, stop_at_max_time_factory
 
 
 def clock(env, name, tick):
-    def action(context):
+    def action():
         print(name, env.current_time)
-        env.schedule(Event(env.current_time + tick, action, context))
+        env.schedule(Event(env.current_time + tick, action))
 
-    env.schedule(Event(env.current_time, action, {}))
+    env.schedule(Event(env.current_time, action))
 
 
 # Setting up the simulation environment
@@ -17,4 +17,4 @@ clock(env, "fast", 0.5)
 clock(env, "slow", 1)
 
 # Running the simulation until time 2
-env.run(stop_at_max_time_factory(env, 2))
+env.run(stop_at_max_time_factory(2))

@@ -135,8 +135,17 @@ class EventScheduler:
             self.current_time = time
             event_result = event.run()
             if log_filter(event, event_result):
-                event_log.append((event, event_result))
+                self.event_log.append((event, event_result))
         return self.event_log
+
+    def run_until_max_time(self, max_time: float):
+        '''Simulate until a maximum time is reached.
+
+        This method is a convenience wrapper around the run
+        method so that simulating until a maximum is assumed
+        as the stop condition.
+        '''
+        self.run(stop_at_max_time_factory(max_time))
 
 
 def stop_at_max_time_factory(max_time: float) -> Callable:
