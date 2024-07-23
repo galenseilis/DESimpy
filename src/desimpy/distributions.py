@@ -272,16 +272,13 @@ class Compose(Distribution):
 
     def sample(self, context=None):
         """Composite sampling."""
-        return dist_cls(*[dist.sample(context) for in self.dists]).sample(context)
+        return dist_cls(*[dist.sample(context) for dist in self.dists]).sample(context)
 
 class Min(Distribution):
     """Distribution takes the minimum of samples from multiple distributions."""
 
     def __init__(self, dists):
         self.dists = copy.deepcopy(dists)
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}({repr(dist) for dist in self.dists})"
 
     def sample(self, context=None):
         samples = [dist.sample(context) for dist in self.dists]
@@ -293,9 +290,6 @@ class Max(Distribution):
 
     def __init__(self, dists):
         self.dists = copy.deepcopy(dists)
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}({repr(dist) for dist in self.dists})"
 
     def sample(self, context=None):
         samples = [dist.sample(context) for dist in self.dists]

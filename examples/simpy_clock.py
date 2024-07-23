@@ -1,6 +1,5 @@
 from desimpy.des import EventScheduler, Event, stop_at_max_time_factory
 
-
 def clock(env, name, tick) -> None:
     """Clock simulation process."""
 

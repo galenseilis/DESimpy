@@ -82,6 +82,11 @@ class EventScheduler:
         """Schedule an event on the event queue."""
         heapq.heappush(self.event_queue, (event.time, event))
 
+    def schedule_timeout(self, delay: float, action=None, context=None):
+        """Schedule an event with a delay."""
+        action = lambda: None if action is None else action
+        self.schedule(Event(self.current_time + delay, action, context))
+
     def activate_all_events(self):
         """Activate all future events."""
         for event in self.event_queue:
@@ -127,6 +132,10 @@ class EventScheduler:
         event itself (e.g. checking what is in context) as well as the result of the
         event (i.e. `event_result`).
         """
+
+        if not self.event_queue:
+            return self.event_log
+
         log_filter = self._default_log_filter if log_filter is None else log_filter
         while not stop(self):
             if not self.event_queue:  # Always stop if there are no more events.
@@ -157,12 +166,8 @@ def stop_at_max_time_factory(max_time: float) -> Callable:
     """
     return lambda scheduler: (
         scheduler.current_time >= max_time
-        or not bool(scheduler.event_queue)
+        or not scheduler.event_queue
         or scheduler.event_queue[0][0] >= max_time
     )
 
 
-def schedule_timeout(scheduler, delay: float, action=None, context=None):
-    """Schedule an event with a delay."""
-    action = lambda: None if action is None else action
-    scheduler.schedule(Event(scheduler.current_time + delay, action, context))
