@@ -1,6 +1,4 @@
-from desimpy.des import Event, EventScheduler, stop_at_max_time_factory
-import heapq
-
+from desimpy.des import Event, EventScheduler
 
 class Car:
     def __init__(self, env: EventScheduler) -> None:
@@ -61,8 +59,5 @@ car = Car(scheduler)
 # Schedule the driver process
 scheduler.schedule(Event(0, lambda : driver(scheduler, car)))
 
-# Define the stop condition
-stop_condition = stop_at_max_time_factory(15)
-
 # Run the simulation
-scheduler.run(stop_condition)
+scheduler.run_until_max_time(15)

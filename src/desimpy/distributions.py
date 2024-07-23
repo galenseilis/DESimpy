@@ -19,54 +19,86 @@ class Distribution(ABC):
     def sample(self, context=None):
         """Sample from distribution."""
 
+    def __abs__(self):
+        return Transform((self,), operator.abs)
+
     def __add__(self, other):
         """
         Add two distributions such that sampling is the sum of the samples.
         """
         dist = dist_cast(other)
-        return TransformDistribution((self, dist), operator.add)
+        return Transform((self, dist), operator.add)
 
     def __sub__(self, other):
         """
         Subtract two distributions such that sampling is the difference of the samples.
         """
         dist = dist_cast(other)
-        return TransformDistribution((self, dist), operator.sub)
+        return Transform((self, dist), operator.sub)
 
     def __mul__(self, other):
         """
         Multiply two distributions such that sampling is the product of the samples.
         """
         dist = dist_cast(other)
-        return TransformDistribution((self, dist), operator.mul)
+        return Transform((self, dist), operator.mul)
 
     def __truediv__(self, other):
         """
         Divide two distributions such that sampling is the ratio of the samples.
         """
         dist = dist_cast(other)
-        return TransformDistribution((self, dist), operator.truediv)
+        return Transform((self, dist), operator.truediv)
+
+    def __call__(self, other):
+        """Overloaded call method.
+
+        If `other` is of type `Distribution`, or is an iterable containing
+        only elements of type `Distribution`, then it will attempt to
+        compose the distributions. Note that this may fail silently until
+        a sample is taken from the resulting distribution if the number of
+        parameters in the class of `self` does not match the number of distributions
+        representing in `other`.
+
+        If the above is not true but other is nonthesless callable,
+        then it will attempt to use it as a transform instead.
+        """
+
+        if isinstance(other, Distribution):
+            return Compose(self.__class__, (other,))
+
+        try:
+            iter(other)
+            if all(isinstance(d, Distribution) for d in other):
+                return Compose(self.__class__, other)
+        except ValueError as ve:
+            pass
+
+        if callable(other):
+            return Transform((self,), other)
+
+        raise ValueError(f'Invalid input {other=}.')
 
     def pdf(self, x):  # pylint: disable=C0103
         """Probability density function or
         probability mass function."""
-        raise NotImplementedError()
+        raise NotImplementedError('Method `pdf` not implemented.')
 
     def cdf(self, x):  # pylint: disable=C0103
         """Cumulative distribution function."""
-        raise NotImplementedError()
+        raise NotImplementedError('Method `cdf` not implemented')
 
     def quantile(self, p):  # pylint: disable=C0103
         """Quantile function"""
-        raise NotImplementedError()
+        raise NotImplementedError('Method `quantile` not implemented.')
 
     def mean(self):
         """Expected value."""
-        raise NotImplementedError()
+        raise NotImplementedError('Method `mean` not implemented')
 
     def median(self):
         """Median"""
-        raise NotImplementedError()
+        raise NotImplementedError('Method `median` not implemented.')
 
     def mode(self):
         """Mode"""
@@ -108,13 +140,13 @@ class Distribution(ABC):
 def dist_cast(obj):
     """Cast object to a distribution."""
     if isinstance(obj, numbers.Number):
-        return DegenerateDistribution(func=lambda context: obj)
+        return Degenerate(func=lambda context: obj)
     if isinstance(obj, Distribution):
         return obj
     if callable(obj):
-        return DegenerateDistribution(func=obj)
+        return Degenerate(func=obj)
     if isinstance(obj, str):
-        return DegenerateDistribution(func=lambda context: obj)
+        return Degenerate(func=lambda context: obj)
 
     raise ValueError(f"Could not cast {obj} to type `Distribution`.")
 
@@ -199,7 +231,7 @@ class ContinuousUniform(Distribution):
         return ContinuousUniform(lower=min(data), upper=max(data))
 
 
-class DegenerateDistribution(Distribution):
+class Degenerate(Distribution):
     """Degenerate distribution."""
 
     def __init__(self, func: Callable):
@@ -213,7 +245,7 @@ class DegenerateDistribution(Distribution):
         return self.func(context)
 
 
-class TransformDistribution(Distribution):
+class Transform(Distribution):
     """A distribution that combines the samples of two or more other distributions via an operator.
 
     This implicitly induces a change of variables.
@@ -231,8 +263,45 @@ class TransformDistribution(Distribution):
         samples = [dist.sample(context) for dist in self.dists]
         return self.transform(*samples)
 
+class Compose(Distribution):
+    """Composite distribution."""
 
-class RejectDistribution(Distribution):
+    def __init__(self, dist_cls, dists):
+        self.dist_cls = dist_cls
+        self.dists = dists
+
+    def sample(self, context=None):
+        """Composite sampling."""
+        return dist_cls(*[dist.sample(context) for in self.dists]).sample(context)
+
+class Min(Distribution):
+    """Distribution takes the minimum of samples from multiple distributions."""
+
+    def __init__(self, dists):
+        self.dists = copy.deepcopy(dists)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({repr(dist) for dist in self.dists})"
+
+    def sample(self, context=None):
+        samples = [dist.sample(context) for dist in self.dists]
+        return min(samples)
+
+
+class Max(Distribution):
+    """Distribution takes the maximum of samples from multiple distributions."""
+
+    def __init__(self, dists):
+        self.dists = copy.deepcopy(dists)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({repr(dist) for dist in self.dists})"
+
+    def sample(self, context=None):
+        samples = [dist.sample(context) for dist in self.dists]
+        return max(samples)
+
+class Reject(Distribution):
     """Add rejection sampling to a distribution.
 
     For example, lower truncation of a distribution
@@ -255,7 +324,7 @@ class RejectDistribution(Distribution):
                 return candidate
 
 
-def reject_negative(candidate: float, context=None) -> bool:  # pylint: disable=W0613
+def is_negative(candidate: float, context=None) -> bool:  # pylint: disable=W0613
     """Reject negative candidates.
 
     Ignores context.
@@ -263,3 +332,13 @@ def reject_negative(candidate: float, context=None) -> bool:  # pylint: disable=
     if candidate < 0:
         return True
     return False
+
+def outside_interval(candidate, lower=0, upper=float('inf'), context=None) -> bool:
+    """Truncate candidates to an interval.
+    """
+    if candidate < lower:
+        return True
+    if candidate > uppwer:
+        return True
+    return False
+

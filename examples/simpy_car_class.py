@@ -1,4 +1,4 @@
-from desimpy.des import Event, EventScheduler, stop_at_max_time_factory
+from desimpy.des import Event, EventScheduler
 
 
 class Car:
@@ -38,8 +38,5 @@ scheduler = EventScheduler()
 # Create a car instance
 Car(scheduler)
 
-# Define the stop condition
-stop_condition = stop_at_max_time_factory(15)
-
 # Run the simulation
-scheduler.run(stop_condition)
+scheduler.run_until_max_time(15)
