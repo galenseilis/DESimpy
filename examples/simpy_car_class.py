@@ -12,7 +12,7 @@ class Car:
         start_time = self.env.current_time
         self.env.schedule(Event(start_time, self.run, {}))
 
-    def run(self, ctx: dict) -> None:
+    def run(self) -> None:
         """Handle the parking and charging, followed by driving."""
         print(f"Start parking and charging at {self.env.current_time}")
 
@@ -20,7 +20,7 @@ class Car:
         end_charge_time = self.env.current_time + charge_duration
 
         # Define the action to be executed when charging ends
-        def charge_action(ctx: dict) -> None:
+        def charge_action() -> None:
             print(f"Start driving at {self.env.current_time}")
             trip_duration = 2
             end_trip_time = self.env.current_time + trip_duration
@@ -39,7 +39,7 @@ scheduler = EventScheduler()
 Car(scheduler)
 
 # Define the stop condition
-stop_condition = stop_at_max_time_factory(scheduler, 15)
+stop_condition = stop_at_max_time_factory(15)
 
 # Run the simulation
 scheduler.run(stop_condition)
