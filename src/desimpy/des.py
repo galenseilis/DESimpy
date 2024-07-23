@@ -10,8 +10,8 @@ class Event:
     Represents a state transition that can be scheduled by the event scheduler.
 
     The purpose of context is to provide information for two purposes.
-    
-    The first is provides a general way for events to store "properties" that are 
+
+    The first is provides a general way for events to store "properties" that are
     specific to the simulation without the implementation of the DES components
     being strongly coupled to them. That facilites events being part of control
     flow in other parts of the simulation while also being relatively isolated.
@@ -21,7 +21,7 @@ class Event:
     same simulation time as when the event was scheduled.
 
     The output of `action` is also for logging purposes. It should not be used
-    for control flow within the system specific details of the simulation, and 
+    for control flow within the system specific details of the simulation, and
     its role in the core discrete event simulation implemention is to provide
     additional information to the log filter and be incorporated into the log
     itself. The types of information that are useful to return are details about
@@ -51,7 +51,7 @@ class Event:
 
     def run(self):
         """Apply event's state transitions.
-        
+
         The state transition will only occur if the
         event is active, in which case it will return
         whatever the event's action returns.
@@ -62,7 +62,7 @@ class Event:
         """
         if self.active:
             return self.action()
-            
+
     def __le__(self, other):
         return self.time <= other.time
 
@@ -76,10 +76,41 @@ class EventScheduler:
     def __init__(self) -> NoReturn:
         self.current_time = 0
         self.event_queue = []
+        self.event_log = []
 
     def schedule(self, event) -> NoReturn:
         """Schedule an event on the event queue."""
         heapq.heappush(self.event_queue, (event.time, event))
+
+    def activate_all_events(self):
+        """Activate all future events."""
+        for event in self.event_queue:
+            event.activate()
+
+    def deactivate_all_events(self):
+        """Deactivate all future events."""
+        for event in self.event_queue:
+            event.deactivate()
+
+    def activate_next_event(self):
+        """Activate the next scheduled event."""
+        self.event_queue[0].activate()
+
+    def deactivate_next_event(self):
+        """Deactive next event."""
+        self.event_queue[0].deactivate()
+
+    def activate_events_by_condition(self, condition: Callable):
+        """Activate future events by condition."""
+        for event in self.event_queue:
+            if condition(self, event):
+                event.activate()
+
+    def deactivate_events_by_condition(self, condition: Callable):
+        """Deactivate future events by condition."""
+        for event in self.event_queue:
+            if condition(self, event):
+                event.deactivate()
 
     def _default_log_filter(self, event, event_result):
         """Keep all events in the event log."""
@@ -87,26 +118,26 @@ class EventScheduler:
 
     def run(self, stop: Callable, log_filter: Callable = None) -> list:
         """Run the discrete event simulation.
-        
+
         By default every event will be logged, but for some simulations that may
         become an excessive number of events. Storing a large number of events in
         memory that are not of interest can be a waste of computer memory. Thus the
         `log_filter` function provides a way of filtering which events are logged.
-        The `log_filter` expects an event, and keeps that event depending on the 
+        The `log_filter` expects an event, and keeps that event depending on the
         event itself (e.g. checking what is in context) as well as the result of the
         event (i.e. `event_result`).
         """
         log_filter = self._default_log_filter if log_filter is None else log_filter
-        event_log = []
         while not stop(self):
-            if not self.event_queue: # Always stop if there are no more events.
+            if not self.event_queue:  # Always stop if there are no more events.
                 break
             time, event = heapq.heappop(self.event_queue)
             self.current_time = time
             event_result = event.run()
             if log_filter(event, event_result):
                 event_log.append((event, event_result))
-        return event_log
+        return self.event_log
+
 
 def stop_at_max_time_factory(max_time: float) -> Callable:
     """Stop function to halt the simulation at a maximum time.
@@ -115,4 +146,14 @@ def stop_at_max_time_factory(max_time: float) -> Callable:
     with the desired max_time to get the desired function. Finally,
     call the event scheduler's run method on the function.
     """
-    return lambda scheduler: (scheduler.current_time >= max_time or not bool(scheduler.event_queue) or scheduler.event_queue[0][0] >= max_time)
+    return lambda scheduler: (
+        scheduler.current_time >= max_time
+        or not bool(scheduler.event_queue)
+        or scheduler.event_queue[0][0] >= max_time
+    )
+
+
+def schedule_timeout(scheduler, delay: float, action=None, context=None):
+    """Schedule an event with a delay."""
+    action = lambda: None if action is None else action
+    scheduler.schedule(Event(scheduler.current_time + delay, action, context))

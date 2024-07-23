@@ -47,16 +47,16 @@ class Distribution(ABC):
         dist = dist_cast(other)
         return TransformDistribution((self, dist), operator.truediv)
 
-    def pdf(self, x):#pylint: disable=C0103
+    def pdf(self, x):  # pylint: disable=C0103
         """Probability density function or
         probability mass function."""
         raise NotImplementedError()
 
-    def cdf(self, x):#pylint: disable=C0103
+    def cdf(self, x):  # pylint: disable=C0103
         """Cumulative distribution function."""
         raise NotImplementedError()
 
-    def quantile(self, p):#pylint: disable=C0103
+    def quantile(self, p):  # pylint: disable=C0103
         """Quantile function"""
         raise NotImplementedError()
 
@@ -96,11 +96,11 @@ class Distribution(ABC):
         """Entropy"""
         raise NotImplementedError()
 
-    def moment_generating_function(self, t):#pylint: disable=C0103
+    def moment_generating_function(self, t):  # pylint: disable=C0103
         """Moment generating function (MGF)."""
         raise NotImplementedError()
 
-    def expected_shortfall(self, p):#pylint: disable=C0103
+    def expected_shortfall(self, p):  # pylint: disable=C0103
         """Expected shortfall."""
         raise NotImplementedError()
 
@@ -168,7 +168,7 @@ class Exponential(Distribution):
     def entropy(self):
         return 1 - np.log(self.rate)
 
-    def moment_generating_function(self, t):#pylint: disable=C0103
+    def moment_generating_function(self, t):  # pylint: disable=C0103
         if t < self.rate:
             return self.rate / (self.rate - t)
 

@@ -220,4 +220,3 @@ class ServiceNetworkSimulation:
     def current_time(self):
         """Current simulation time."""
         return self.scheduler.current_time
-

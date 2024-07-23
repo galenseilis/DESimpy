@@ -1,5 +1,6 @@
 from desimpy.des import Event, EventScheduler, stop_at_max_time_factory
 
+
 class Car:
     def __init__(self, env: EventScheduler) -> None:
         self.env = env
@@ -13,14 +14,14 @@ class Car:
 
     def run(self, ctx: dict) -> None:
         """Handle the parking and charging, followed by driving."""
-        print(f'Start parking and charging at {self.env.current_time}')
+        print(f"Start parking and charging at {self.env.current_time}")
 
         charge_duration = 5
         end_charge_time = self.env.current_time + charge_duration
 
         # Define the action to be executed when charging ends
         def charge_action(ctx: dict) -> None:
-            print(f'Start driving at {self.env.current_time}')
+            print(f"Start driving at {self.env.current_time}")
             trip_duration = 2
             end_trip_time = self.env.current_time + trip_duration
 
@@ -29,6 +30,7 @@ class Car:
 
         # Schedule the charge process
         self.env.schedule(Event(end_charge_time, charge_action, {}))
+
 
 # Initialize the event scheduler
 scheduler = EventScheduler()
@@ -41,4 +43,3 @@ stop_condition = stop_at_max_time_factory(scheduler, 15)
 
 # Run the simulation
 scheduler.run(stop_condition)
-

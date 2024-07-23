@@ -1,6 +1,7 @@
 from desimpy.des import Event, EventScheduler, stop_at_max_time_factory
 import heapq
 
+
 class Car:
     def __init__(self, env: EventScheduler) -> None:
         self.env = env
@@ -14,21 +15,21 @@ class Car:
 
     def run(self, ctx: dict) -> None:
         """Handle the parking and charging, followed by driving."""
-        print(f'Start parking and charging at {self.env.current_time}')
-        
+        print(f"Start parking and charging at {self.env.current_time}")
+
         charge_duration = 5
         end_charge_time = self.env.current_time + charge_duration
 
         def charge_action(ctx: dict) -> None:
             if not self.interrupted:
-                print(f'Start driving at {self.env.current_time}')
+                print(f"Start driving at {self.env.current_time}")
                 trip_duration = 2
                 end_trip_time = self.env.current_time + trip_duration
 
                 # Schedule the next parking and charging event
                 self.env.schedule(Event(end_trip_time, self.run, {}))
             else:
-                print(f'Was interrupted. Hope, the battery is full enough ...')
+                print(f"Was interrupted. Hope, the battery is full enough ...")
                 self.interrupted = False
                 # Resume driving after interruption
                 self.env.schedule(Event(self.env.current_time, self.run, {}))
@@ -40,13 +41,16 @@ class Car:
         """Interrupt the current charging process."""
         self.interrupted = True
 
+
 def driver(env: EventScheduler, car: Car) -> None:
     """Driver process that interrupts the car."""
     interrupt_time = env.current_time + 3
+
     def interrupt_action(ctx: dict) -> None:
         car.interrupt()
 
     env.schedule(Event(interrupt_time, interrupt_action, {}))
+
 
 # Initialize the event scheduler
 scheduler = EventScheduler()
@@ -62,4 +66,3 @@ stop_condition = stop_at_max_time_factory(scheduler, 15)
 
 # Run the simulation
 scheduler.run(stop_condition)
-
