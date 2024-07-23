@@ -1,4 +1,4 @@
-from desimpy.des import Event, EventScheduler
+from desimpy.des import EventScheduler
 
 class Car:
     def __init__(self, env: EventScheduler) -> None:
@@ -8,32 +8,26 @@ class Car:
 
     def schedule_run(self) -> None:
         """Schedule the initial run event."""
-        start_time = self.env.current_time
-        self.env.schedule(Event(start_time, self.run))
+        self.env.timeout(0, self.run)
 
     def run(self) -> None:
         """Handle the parking and charging, followed by driving."""
         print(f"Start parking and charging at {self.env.current_time}")
 
-        charge_duration = 5
-        end_charge_time = self.env.current_time + charge_duration
-
         def charge_action() -> None:
             if not self.interrupted:
                 print(f"Start driving at {self.env.current_time}")
-                trip_duration = 2
-                end_trip_time = self.env.current_time + trip_duration
 
                 # Schedule the next parking and charging event
-                self.env.schedule(Event(end_trip_time, self.run))
+                self.env.timeout(2, self.run)
             else:
                 print(f"Was interrupted. Hope, the battery is full enough ...")
                 self.interrupted = False
                 # Resume driving after interruption
-                self.env.schedule(Event(self.env.current_time, self.run))
+                self.env.timeout(0, self.run)
 
         # Schedule the charge process
-        self.env.schedule(Event(end_charge_time, charge_action))
+        self.env.timeout(5, charge_action)
 
     def interrupt(self) -> None:
         """Interrupt the current charging process."""
@@ -42,12 +36,11 @@ class Car:
 
 def driver(env: EventScheduler, car: Car) -> None:
     """Driver process that interrupts the car."""
-    interrupt_time = env.current_time + 3
 
     def interrupt_action() -> None:
         car.interrupt()
 
-    env.schedule(Event(interrupt_time, interrupt_action))
+    env.timeout(3, interrupt_action)
 
 
 # Initialize the event scheduler
@@ -57,7 +50,7 @@ scheduler = EventScheduler()
 car = Car(scheduler)
 
 # Schedule the driver process
-scheduler.schedule(Event(0, lambda : driver(scheduler, car)))
+scheduler.timeout(0, lambda: driver(scheduler, car))
 
 # Run the simulation
 scheduler.run_until_max_time(15)
