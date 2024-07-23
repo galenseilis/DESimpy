@@ -1,5 +1,6 @@
 from desimpy.des import Event, EventScheduler
 
+
 # Define the car process
 def car(env: EventScheduler) -> None:
     """The car process."""
@@ -16,7 +17,7 @@ def car(env: EventScheduler) -> None:
 scheduler = EventScheduler()
 
 # Schedule the car process to start at time 0
-scheduler.timeout(0, action=lambda : car(scheduler))
+scheduler.timeout(0, action=lambda: car(scheduler))
 
 # Run the simulation
 scheduler.run_until_max_time(15)

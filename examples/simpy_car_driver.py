@@ -1,5 +1,6 @@
 from desimpy.des import EventScheduler
 
+
 class Car:
     def __init__(self, env: EventScheduler) -> None:
         self.env = env

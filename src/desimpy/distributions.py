@@ -77,28 +77,28 @@ class Distribution(ABC):
         if callable(other):
             return Transform((self,), other)
 
-        raise ValueError(f'Invalid input {other=}.')
+        raise ValueError(f"Invalid input {other=}.")
 
     def pdf(self, x):  # pylint: disable=C0103
         """Probability density function or
         probability mass function."""
-        raise NotImplementedError('Method `pdf` not implemented.')
+        raise NotImplementedError("Method `pdf` not implemented.")
 
     def cdf(self, x):  # pylint: disable=C0103
         """Cumulative distribution function."""
-        raise NotImplementedError('Method `cdf` not implemented')
+        raise NotImplementedError("Method `cdf` not implemented")
 
     def quantile(self, p):  # pylint: disable=C0103
         """Quantile function"""
-        raise NotImplementedError('Method `quantile` not implemented.')
+        raise NotImplementedError("Method `quantile` not implemented.")
 
     def mean(self):
         """Expected value."""
-        raise NotImplementedError('Method `mean` not implemented')
+        raise NotImplementedError("Method `mean` not implemented")
 
     def median(self):
         """Median"""
-        raise NotImplementedError('Method `median` not implemented.')
+        raise NotImplementedError("Method `median` not implemented.")
 
     def mode(self):
         """Mode"""
@@ -263,6 +263,7 @@ class Transform(Distribution):
         samples = [dist.sample(context) for dist in self.dists]
         return self.transform(*samples)
 
+
 class Compose(Distribution):
     """Composite distribution."""
 
@@ -273,6 +274,7 @@ class Compose(Distribution):
     def sample(self, context=None):
         """Composite sampling."""
         return dist_cls(*[dist.sample(context) for dist in self.dists]).sample(context)
+
 
 class Min(Distribution):
     """Distribution takes the minimum of samples from multiple distributions."""
@@ -294,6 +296,7 @@ class Max(Distribution):
     def sample(self, context=None):
         samples = [dist.sample(context) for dist in self.dists]
         return max(samples)
+
 
 class Reject(Distribution):
     """Add rejection sampling to a distribution.
@@ -327,12 +330,11 @@ def is_negative(candidate: float, context=None) -> bool:  # pylint: disable=W061
         return True
     return False
 
-def outside_interval(candidate, lower=0, upper=float('inf'), context=None) -> bool:
-    """Truncate candidates to an interval.
-    """
+
+def outside_interval(candidate, lower=0, upper=float("inf"), context=None) -> bool:
+    """Truncate candidates to an interval."""
     if candidate < lower:
         return True
     if candidate > uppwer:
         return True
     return False
-

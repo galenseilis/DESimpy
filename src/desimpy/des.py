@@ -35,7 +35,9 @@ class Event:
     simulation.
     """
 
-    def __init__(self, time: float, action: Callable = None, context: dict = None) -> NoReturn:
+    def __init__(
+        self, time: float, action: Callable = None, context: dict = None
+    ) -> NoReturn:
         self.time = time
         self.action = (lambda: None) if action is None else action
         self.context = {} if context is None else context
@@ -87,7 +89,7 @@ class EventScheduler:
 
         This event is really just a thin wrapper around
         `self.schedule`, but assumes that some delay into
-        the future is 
+        the future is
         """
         self.schedule(Event(self.current_time + delay, action=action, context=context))
 
@@ -149,12 +151,12 @@ class EventScheduler:
         return self.event_log
 
     def run_until_max_time(self, max_time: float):
-        '''Simulate until a maximum time is reached.
+        """Simulate until a maximum time is reached.
 
         This method is a convenience wrapper around the run
         method so that simulating until a maximum is assumed
         as the stop condition.
-        '''
+        """
         return self.run(stop_at_max_time_factory(max_time))
 
 
@@ -170,4 +172,3 @@ def stop_at_max_time_factory(max_time: float) -> Callable:
         or not scheduler.event_queue
         or scheduler.event_queue[0][0] >= max_time
     )
-
