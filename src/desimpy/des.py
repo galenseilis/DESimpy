@@ -157,10 +157,10 @@ class EventScheduler:
         method so that simulating until a maximum is assumed
         as the stop condition.
         """
-        return self.run(stop_at_max_time_factory(max_time))
+        return self.run(_stop_at_max_time_factory(max_time))
 
 
-def stop_at_max_time_factory(max_time: float) -> Callable:
+def _stop_at_max_time_factory(max_time: float) -> Callable:
     """Stop function to halt the simulation at a maximum time.
 
     Define the scheduler first, then call this function on it
