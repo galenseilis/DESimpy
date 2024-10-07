@@ -2,6 +2,7 @@
 
 from abc import ABC
 
+
 class Agent(ABC):  # pylint: disable=R0903
     """Base class for all simulation-compatible agents."""
 
