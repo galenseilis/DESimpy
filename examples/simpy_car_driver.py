@@ -1,5 +1,7 @@
+# TODO: Fix, and use built-in event deactivation rather than bool flag.
 from desimpy.des import EventScheduler
 
+raise NotImplementedError(f"The example {__file__} is not ready.")
 
 class Car:
     def __init__(self, env: EventScheduler) -> None:
