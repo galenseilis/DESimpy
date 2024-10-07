@@ -1,19 +1,20 @@
 [project]
 name = "DESimpy"
-version = "0.45.0"
-description = "An event-driven discrete event simulation environment."
+version = "0.1.0"
+description = "Default template for PDM package"
 authors = [
-    { name = "galenseilis", email = "galen.seilis@seilis.ca" }
+    { name = "galenseilis", email = "galen.seilis@seilis.ca" },
 ]
 dependencies = [
     "numpy>=2.0.1",
 ]
 readme = "README.md"
-requires-python = ">= 3.10"
+requires-python = ">=3.10"
+license = {text = "Apache 2.0"}
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [tool.rye]
 managed = true
@@ -28,3 +29,6 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/desimpy"]
+
+[tool.pdm]
+distribution = true
