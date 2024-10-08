@@ -94,9 +94,9 @@ class EventScheduler:
     def timeout(self, delay, action=None, context=None):
         """Schedule an event some delay into the future.
 
-        This event is really just a thin wrapper around
-        `self.schedule`, but assumes that some delay into
-        the future is
+        This event is a convenience function around
+        `self.schedule` that assumes the scheduled event
+        occurs at some delay from the moment it is scheduled.
         """
         self.schedule(Event(self.current_time + delay, action=action, context=context))
 
@@ -139,8 +139,19 @@ class EventScheduler:
         self.event_queue = []
 
     def interrupt_next_event(self, method="deactivate", next_event=None):
+        """Interrupt the next event in the schedule.
+
+        Events can be interrupted via two distinct methods which pertain to how the
+        interrupted event is handled. The first, and default, method is to deactivate 
+        the interrupted event. This means that its `run` method will not run. The second
+        method is to cancel the event, which is to remove the event from the event schedule
+        altogether.
+
+        Events can either be interrupted with or without another event being placed on the event
+        schedule.
+        """
         next_time = next_event.time if next_event is not None else self.current_time
-        next_event = next_event or heapq.nsmallest(2, self.event_queue)[1][1]
+        next_event = next_event or heapq.nsmallest(2, self.event_queue)[-1][1]
         if method == "deactivate":
             self.deactivate_next_event()
         elif method == "cancel":
@@ -153,7 +164,41 @@ class EventScheduler:
         next_event.time = next_time
         self.schedule(next_event)
 
-    def _default_log_filter(self, event, event_result):
+    def interrupt_next_event_by_condition(self, condition: Callable, method='deactivate', next_event=None):
+        """Interrupt the next event that satisfies a given condition."""
+        next_time = next_event.time if next_event is not None else self.current_time
+        queue_snapshot = heapq.nsmallest(len(self.event_queue), self.event_queue)
+      
+        # Search for an event to interrupt.
+        interrupted_event = None
+        for idx, event in enumerate(queue_snapshot):
+            if condition(self, event):
+                interrupted_event = event
+                next_event = next_event or heapq.nsmallest(idx + 2, self.event_queue)[-1][1]
+                break
+
+        # If an event could not be interrupted, then go no further.
+        if interrupted_event is None:
+            return
+
+        # Handle the interrupted event.
+        if method == 'deactivate':
+            interrupted_event.deactivate()
+        elif method == 'cancel':
+            queue_snapshot.pop(idx)
+            self.cancel_all_events()
+            for event in queue_snapshot:
+                self.schedule(event)
+        else:
+            raise NotImplementedError(
+                f"{method=} is not implemented for interrupt_next_event_by_condition."
+            )
+
+        # Schedule the next event
+        next_event.time = next_time
+        self.schedule(next_event)
+
+    def _always_log_filter(self, event, event_result):
         """Keep all events in the event log."""
         return True
 
@@ -169,7 +214,7 @@ class EventScheduler:
         event (i.e. `event_result`).
         """
 
-        log_filter = self._default_log_filter if log_filter is None else log_filter
+        log_filter = (lambda event, event_result: True) if log_filter is None else log_filter
         while not stop(self):
             if not self.event_queue:  # Always stop if there are no more events.
                 break
@@ -200,5 +245,5 @@ def _stop_at_max_time_factory(max_time: float) -> Callable:
     return lambda scheduler: (
         scheduler.current_time >= max_time
         or not scheduler.event_queue
-        or heapq.nsmallest(1, scheduler.event_queue)[0] >= max_time
+        or heapq.nsmallest(1, scheduler.event_queue)[0][0] >= max_time
     )
