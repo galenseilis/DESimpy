@@ -80,6 +80,13 @@ class EventScheduler:
         self.event_queue = []
         self.event_log = []
 
+    def next_event(self):
+        """Refer to next event without changing it.
+
+        This is sometimes called "peeking".
+        """
+        return heapq.nsmallest(1, self.event_queue)[0][1]
+
     def schedule(self, event) -> NoReturn:
         """Schedule an event on the event queue."""
         heapq.heappush(self.event_queue, (event.time, event))
@@ -105,11 +112,11 @@ class EventScheduler:
 
     def activate_next_event(self):
         """Activate the next scheduled event."""
-        self.event_queue[0].activate()
+        self.next_event().activate()
 
     def deactivate_next_event(self):
         """Deactive next event."""
-        self.event_queue[0].deactivate()
+        self.next_event().deactivate()
 
     def activate_events_by_condition(self, condition: Callable):
         """Activate future events by condition."""
@@ -122,6 +129,25 @@ class EventScheduler:
         for event in self.event_queue:
             if condition(self, event):
                 event.deactivate()
+
+    def cancel_next_event(self) -> Event:
+        """Removes next event from the event schedule."""
+        return heapq.heappop(self.event_queue)
+
+    def interrupt_next_event(self, method="deactivate", next_event=None):
+        next_time = next_event.time if next_event is not None else self.current_time
+        next_event = next_event or heapq.nsmallest(2, self.event_queue)[1][1]
+        if method == "deactivate":
+            self.deactivate_next_event()
+        elif method == "cancel":
+            self.cancel_next_event()
+        else:
+            raise NotImplementedError(
+                f"{method=} is not implemented for interrupt_next_event."
+            )
+
+        next_event.time = next_time
+        self.schedule(next_event)
 
     def _default_log_filter(self, event, event_result):
         """Keep all events in the event log."""
