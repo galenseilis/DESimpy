@@ -69,7 +69,7 @@ class MMcQueueSimulation:
                 "type": "handle_departure",
                 "schedule_time": self.scheduler.current_time,
                 "server": server_id,
-                "customer_id": customer.customer_id
+                "customer_id": customer.customer_id,
             },
         )
 
