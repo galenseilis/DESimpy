@@ -100,39 +100,43 @@ class EventScheduler:
         """
         self.schedule(Event(self.current_time + delay, action=action, context=context))
 
+    def activate_next_event(self):
+        """Activate the next scheduled event."""
+        self.next_event().activate()
+
     def activate_all_events(self):
         """Activate all future events."""
         for event in self.event_queue:
             event.activate()
+
+    def activate_all_events_by_condition(self, condition: Callable):
+        """Activate future events by condition."""
+        for event in self.event_queue:
+            if condition(self, event):
+                event.activate()
+
+    def deactivate_next_event(self):
+        """Deactive next event."""
+        self.next_event().deactivate()
 
     def deactivate_all_events(self):
         """Deactivate all future events."""
         for event in self.event_queue:
             event.deactivate()
 
-    def activate_next_event(self):
-        """Activate the next scheduled event."""
-        self.next_event().activate()
-
-    def deactivate_next_event(self):
-        """Deactive next event."""
-        self.next_event().deactivate()
-
-    def activate_events_by_condition(self, condition: Callable):
-        """Activate future events by condition."""
-        for event in self.event_queue:
-            if condition(self, event):
-                event.activate()
-
-    def deactivate_events_by_condition(self, condition: Callable):
+    def deactivate_all_events_by_condition(self, condition: Callable):
         """Deactivate future events by condition."""
         for event in self.event_queue:
             if condition(self, event):
                 event.deactivate()
 
-    def cancel_next_event(self) -> Event:
+    def cancel_next_event(self) -> None:
         """Removes next event from the event schedule."""
-        return heapq.heappop(self.event_queue)
+        heapq.heappop(self.event_queue)
+
+    def cancel_all_events(self) -> None:
+        """Removes all events from the event schedule."""
+        self.event_queue = []
 
     def interrupt_next_event(self, method="deactivate", next_event=None):
         next_time = next_event.time if next_event is not None else self.current_time
@@ -196,5 +200,5 @@ def _stop_at_max_time_factory(max_time: float) -> Callable:
     return lambda scheduler: (
         scheduler.current_time >= max_time
         or not scheduler.event_queue
-        or scheduler.event_queue[0][0] >= max_time
+        or heapq.nsmallest(1, scheduler.event_queue)[0] >= max_time
     )
