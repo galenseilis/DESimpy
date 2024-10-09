@@ -19,6 +19,7 @@ from desimpy.des import Event, EventScheduler
 # $1 DEFINE CAR PROCESS #
 #########################
 
+
 def car(env: EventScheduler) -> None:
     """The car process."""
     print(f"Start parking at {env.current_time}")
@@ -28,6 +29,7 @@ def car(env: EventScheduler) -> None:
         env.timeout(2, action=lambda: car(env))
 
     env.timeout(5, end_parking_action)
+
 
 #################################
 # $2 INITIALIZE EVENT SCHEDULER #

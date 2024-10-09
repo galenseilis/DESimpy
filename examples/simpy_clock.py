@@ -19,6 +19,7 @@ from desimpy.des import EventScheduler
 # $1 DEFINE CLOCK PROCESS #
 ###########################
 
+
 def clock(env, name, tick) -> None:
     """Clock simulation process."""
 
@@ -28,6 +29,7 @@ def clock(env, name, tick) -> None:
         env.timeout(tick, action)
 
     env.timeout(0, action=action)
+
 
 #################################
 # $2 INITIALIZE EVENT SCHEDULER #
