@@ -1,7 +1,13 @@
+##############
+# $0 IMPORTS #
+##############
+
 from desimpy.des import Event, EventScheduler
 
+#########################
+# $1 DEFINE CAR PROCESS #
+#########################
 
-# Define the car process
 def car(env: EventScheduler) -> None:
     """The car process."""
     print(f"Start parking at {env.current_time}")
@@ -12,12 +18,20 @@ def car(env: EventScheduler) -> None:
 
     env.timeout(5, end_parking_action)
 
+#################################
+# $2 INITIALIZE EVENT SCHEDULER #
+#################################
 
-# Initialize the event scheduler
 scheduler = EventScheduler()
 
-# Schedule the car process to start at time 0
+###########################
+# $3 SCHEDULE CAR PROCESS #
+###########################
+
 scheduler.timeout(0, action=lambda: car(scheduler))
 
-# Run the simulation
+#####################
+# $4 RUN SIMULATION #
+#####################
+
 scheduler.run_until_max_time(15)

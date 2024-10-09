@@ -1,5 +1,23 @@
+"""
+```yaml
+contents:
+    - 0. Imports
+    - 1. Define Clock Process
+    - 2. Initialize Event Scheduler
+    - 3. Schedule Initial Events
+    - 4. Run Simulation
+```
+"""
+
+##############
+# $0 IMPORTS #
+##############
+
 from desimpy.des import EventScheduler
 
+###########################
+# $1 DEFINE CLOCK PROCESS #
+###########################
 
 def clock(env, name, tick) -> None:
     """Clock simulation process."""
@@ -11,13 +29,21 @@ def clock(env, name, tick) -> None:
 
     env.timeout(0, action=action)
 
+#################################
+# $2 INITIALIZE EVENT SCHEDULER #
+#################################
 
-# Setting up the simulation environment
 env = EventScheduler()
 
-# Scheduling the 'fast' and 'slow' clocks
+###########################
+# $3 SCHEDULE INITIAL EVENTS #
+###########################
+
 clock(env, "fast", 0.5)
 clock(env, "slow", 1)
 
-# Running the simulation until time 2
+#####################
+# $4 RUN SIMULATION #
+#####################
+
 env.run_until_max_time(2)
