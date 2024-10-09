@@ -37,9 +37,9 @@ def clock(env, name, tick) -> None:
 
 env = EventScheduler()
 
-###########################
+##############################
 # $3 SCHEDULE INITIAL EVENTS #
-###########################
+##############################
 
 clock(env, "fast", 0.5)
 clock(env, "slow", 1)
