@@ -142,7 +142,7 @@ class EventScheduler:
         """Interrupt the next event in the schedule.
 
         Events can be interrupted via two distinct methods which pertain to how the
-        interrupted event is handled. The first, and default, method is to deactivate 
+        interrupted event is handled. The first, and default, method is to deactivate
         the interrupted event. This means that its `run` method will not run. The second
         method is to cancel the event, which is to remove the event from the event schedule
         altogether.
@@ -164,17 +164,21 @@ class EventScheduler:
         next_event.time = next_time
         self.schedule(next_event)
 
-    def interrupt_next_event_by_condition(self, condition: Callable, method='deactivate', next_event=None):
+    def interrupt_next_event_by_condition(
+        self, condition: Callable, method="deactivate", next_event=None
+    ):
         """Interrupt the next event that satisfies a given condition."""
         next_time = next_event.time if next_event is not None else self.current_time
         queue_snapshot = heapq.nsmallest(len(self.event_queue), self.event_queue)
-      
+
         # Search for an event to interrupt.
         interrupted_event = None
         for idx, event in enumerate(queue_snapshot):
             if condition(self, event):
                 interrupted_event = event
-                next_event = next_event or heapq.nsmallest(idx + 2, self.event_queue)[-1][1]
+                next_event = (
+                    next_event or heapq.nsmallest(idx + 2, self.event_queue)[-1][1]
+                )
                 break
 
         # If an event could not be interrupted, then go no further.
@@ -182,9 +186,9 @@ class EventScheduler:
             return
 
         # Handle the interrupted event.
-        if method == 'deactivate':
+        if method == "deactivate":
             interrupted_event.deactivate()
-        elif method == 'cancel':
+        elif method == "cancel":
             queue_snapshot.pop(idx)
             self.cancel_all_events()
             for event in queue_snapshot:
@@ -249,7 +253,9 @@ class EventScheduler:
                 self.event_log.append((event, event_result))
         return self.event_log
 
-    def run_until_max_time(self, max_time: float, log_filter: Callable = None, logging=True):
+    def run_until_max_time(
+        self, max_time: float, log_filter: Callable = None, logging=True
+    ):
         """Simulate until a maximum time is reached.
 
         This method is a convenience wrapper around the run
