@@ -1,3 +1,9 @@
+"""
+```yaml
+source: https://simpy.readthedocs.io/en/stable/examples/carwash.html
+```
+"""
+
 import itertools
 import random
 
