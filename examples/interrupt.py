@@ -2,12 +2,16 @@
 ```yaml
 contents:
     - 0. Imports
+    - 1. Interrupt by Deactivation
+    - 2. Interrupt by Cancellation
+    - 3. Interrupt by Deactivation and Custom Event
 ```
 """
 
 ##############
 # $0 IMPORTS #
 ##############
+
 from desimpy.des import Event, EventScheduler
 
 ################################
