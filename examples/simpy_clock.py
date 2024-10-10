@@ -1,4 +1,5 @@
-"""
+"""SimPy Clock Example
+
 ```yaml
 contents:
     - 0. Imports
@@ -6,6 +7,7 @@ contents:
     - 2. Initialize Event Scheduler
     - 3. Schedule Initial Events
     - 4. Run Simulation
+source: https://simpy.readthedocs.io/en/stable/index.html#overview
 ```
 """
 
