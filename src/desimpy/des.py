@@ -202,7 +202,7 @@ class EventScheduler:
         """Keep all events in the event log."""
         return True
 
-    def run(self, stop: Callable, log_filter: Callable = None) -> list:
+    def run(self, stop: Callable, log_filter: Callable = None, logging=True) -> list:
         """Run the discrete event simulation.
 
         By default every event will be logged, but for some simulations that may
@@ -213,8 +213,32 @@ class EventScheduler:
         event itself (e.g. checking what is in context) as well as the result of the
         event (i.e. `event_result`).
         """
+        if not logging:
+            return self._run_without_logging(stop)
+        elif log_filter is None:
+            return self._run_always_logging(stop)
+        else:
+            return self._run_filtered_logging(stop, log_filter)
 
-        log_filter = (lambda event, event_result: True) if log_filter is None else log_filter
+    def _run_without_logging(self, stop: Callable) -> list:
+        while not stop(self):
+            if not self.event_queue:
+                break
+            time, event = heapq.heappop(self.event_queue)
+            self.current_time = time
+            event_result = event.run()
+
+    def _run_always_logging(self, stop: Callable) -> list:
+        while not stop(self):
+            if not self.event_queue:  # Always stop if there are no more events.
+                break
+            time, event = heapq.heappop(self.event_queue)
+            self.current_time = time
+            event_result = event.run()
+            self.event_log.append((event, event_result))
+        return self.event_log
+
+    def _run_filtered_logging(self, stop: Callable, log_filter: Callable):
         while not stop(self):
             if not self.event_queue:  # Always stop if there are no more events.
                 break
@@ -225,14 +249,14 @@ class EventScheduler:
                 self.event_log.append((event, event_result))
         return self.event_log
 
-    def run_until_max_time(self, max_time: float, log_filter: Callable = None):
+    def run_until_max_time(self, max_time: float, log_filter: Callable = None, logging=True):
         """Simulate until a maximum time is reached.
 
         This method is a convenience wrapper around the run
         method so that simulating until a maximum is assumed
         as the stop condition.
         """
-        return self.run(_stop_at_max_time_factory(max_time), log_filter)
+        return self.run(_stop_at_max_time_factory(max_time), log_filter, logging)
 
 
 def _stop_at_max_time_factory(max_time: float) -> Callable:
