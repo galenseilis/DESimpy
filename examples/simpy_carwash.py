@@ -113,4 +113,4 @@ scheduler = EventScheduler()
 setup(scheduler, NUM_MACHINES, WASHTIME, T_INTER)
 
 # Run simulation
-scheduler.run_until_max_time(SIM_TIME)
+scheduler.run_until_max_time(SIM_TIME, logging=False)
