@@ -50,4 +50,4 @@ clock(env, "slow", 1)
 # $4 RUN SIMULATION #
 #####################
 
-env.run_until_max_time(2)
+env.run_until_max_time(2, logging=False)

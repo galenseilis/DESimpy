@@ -100,4 +100,4 @@ Car(scheduler)
 # $4 RUN SIMULATION #
 #####################
 
-scheduler.run_until_max_time(15)
+scheduler.run_until_max_time(15, logging=False)

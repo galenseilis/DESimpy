@@ -194,4 +194,4 @@ for i in range(4):
 # $6 RUN SIMULATION #
 #####################
 
-scheduler.run_until_max_time(20)
+scheduler.run_until_max_time(20, logging=False)
