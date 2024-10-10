@@ -1,3 +1,19 @@
+"""
+```yaml
+contents:
+    - 0. Imports
+    - 1. Configuration
+    - 2. Define Counter Resource
+    - 3. Define Customer Class
+    - 4. Define Bank Class
+    - 5. Initialize Event Scheduler
+    - 6. Initialize Counter
+    - 7. Register Processes
+    - 8. Run Simulation
+source: https://simpy.readthedocs.io/en/stable/examples/bank_renege.html
+```
+"""
+
 ##############
 # $0 IMPORTS #
 ##############
