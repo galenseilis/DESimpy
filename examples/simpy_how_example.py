@@ -22,12 +22,13 @@ from desimpy.des import Event, EventScheduler
 # $1 DEFINE EXAMPLE PROCESS #
 #############################
 
+
 def example(env: EventScheduler) -> None:
     """
     Example function that schedules an action in a simulation environment.
 
-    This function defines an action that prints the current time in the environment 
-    along with a hardcoded value of 42. It schedules this action to occur after a 
+    This function defines an action that prints the current time in the environment
+    along with a hardcoded value of 42. It schedules this action to occur after a
     timeout of 1 unit of time.
 
     Args:
@@ -40,6 +41,7 @@ def example(env: EventScheduler) -> None:
     value = 42
     action: Callable[[], None] = lambda: print(f"now={env.current_time}, {value=}")
     env.timeout(delay, action)
+
 
 #################################
 # $2 INITIALIZE EVENT SCHEDULER #
@@ -57,5 +59,4 @@ example(env)
 # $4 RUN SIMULATION #
 #####################
 
-env.run_until_max_time(float('inf'), logging=False)
-
+env.run_until_max_time(float("inf"), logging=False)
