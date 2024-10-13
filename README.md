@@ -17,20 +17,26 @@ pip install desimpy
 
 ## Quickstart
 
-Here is a small example to show the basic logic. This example is the simple car process presented in the SimPy documentation.
+Here is a small example to show the basic logic. This example is the simple clock process presented in the [SimPy documentation](https://simpy.readthedocs.io/en/stable/index.html).
 
 ```python
-from desimpy.des import Event, EventScheduler
+from desimpy.des import EventScheduler
 
-def car(env: EventScheduler) -> None:
-    """The car process."""
-    print(f"Start parking at {env.current_time}")
-    def end_parking_action() -> None:
-        print(f"Start driving at {env.current_time}")
-        env.timeout(2, action=lambda: car(env))
-    env.timeout(5, end_parking_action)
+def clock(env, name, tick) -> None:
+    """Clock simulation process."""
 
-scheduler = EventScheduler()
-scheduler.timeout(0, action=lambda: car(scheduler))
-scheduler.run_until_max_time(15, logging=False)
+    def action() -> None:
+        """Schedule next tick of the clock."""
+        print(name, env.current_time)
+        env.timeout(tick, action)
+
+    env.timeout(0, action=action)
+
+env = EventScheduler()
+
+clock(env, "fast", 0.5)
+clock(env, "slow", 1)
+
+env.run_until_max_time(2, logging=False)
 ```
+
