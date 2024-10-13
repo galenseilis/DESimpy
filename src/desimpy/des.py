@@ -88,8 +88,20 @@ class EventScheduler:
         return heapq.nsmallest(1, self.event_queue)[0][1]
 
     def schedule(self, event) -> NoReturn:
-        """Schedule an event on the event queue."""
-        heapq.heappush(self.event_queue, (event.time, event))
+        """Schedule an event on the event queue.
+
+        It is possible to schedule events with negative times
+        provided that the current time is zero. In other words,
+        before any time has elapsed it is permitted to schedule
+        events that occur 'before' t=0. This may be referred to
+        as "prescheduling". Sufficient care must be taken by the
+        user to ensure that the desired behaviour is achieved with
+        prescheduling.
+        """
+        if event.time >= 0 or self.current_time == 0:
+            heapq.heappush(self.event_queue, (event.time, event))
+        else:
+            raise ValueError(f"{event.time=} must be non-negative.")
 
     def timeout(self, delay, action=None, context=None):
         """Schedule an event some delay into the future.
@@ -104,20 +116,40 @@ class EventScheduler:
         """Activate the next scheduled event."""
         self.next_event().activate()
 
+    def activate_next_event_by_condition(self, condition: Callable):
+        for event in self.even_queue:
+            if condition(self, event):
+                event.activate()
+                break
+
     def activate_all_events(self):
-        """Activate all future events."""
+        """Activate all future events.
+
+        Every event on the event queue will be activated.
+        """
         for event in self.event_queue:
             event.activate()
 
     def activate_all_events_by_condition(self, condition: Callable):
-        """Activate future events by condition."""
+        """Activate future events by condition.
+
+        Every event that satisfies the given condition
+        will be activated.
+        """
         for event in self.event_queue:
             if condition(self, event):
                 event.activate()
 
     def deactivate_next_event(self):
-        """Deactive next event."""
+        """Deactive the next event in the event queue."""
         self.next_event().deactivate()
+
+    def deactivate_next_event_by_condition(self, condition: Callable):
+        """Deactivate the next event that satisfies the given condition."""
+        for event in self.even_queue:
+            if condition(self, event):
+                event.deactivate()
+                break
 
     def deactivate_all_events(self):
         """Deactivate all future events."""
@@ -134,73 +166,27 @@ class EventScheduler:
         """Removes next event from the event schedule."""
         heapq.heappop(self.event_queue)
 
+    def cancel_next_event_by_condition(self, condition: Callable):
+        """Cancel the next event that satisfies a given condition."""
+        for event in self.event_queue:
+            if condition(self, event):
+                target = event
+                break
+        if target is not None:
+            self.event_queue.remove(event)
+
     def cancel_all_events(self) -> None:
         """Removes all events from the event schedule."""
         self.event_queue = []
 
-    def interrupt_next_event(self, method="deactivate", next_event=None):
-        """Interrupt the next event in the schedule.
-
-        Events can be interrupted via two distinct methods which pertain to how the
-        interrupted event is handled. The first, and default, method is to deactivate
-        the interrupted event. This means that its `run` method will not run. The second
-        method is to cancel the event, which is to remove the event from the event schedule
-        altogether.
-
-        Events can either be interrupted with or without another event being placed on the event
-        schedule.
-        """
-        next_time = next_event.time if next_event is not None else self.current_time
-        next_event = next_event or heapq.nsmallest(2, self.event_queue)[-1][1]
-        if method == "deactivate":
-            self.deactivate_next_event()
-        elif method == "cancel":
-            self.cancel_next_event()
-        else:
-            raise NotImplementedError(
-                f"{method=} is not implemented for interrupt_next_event."
-            )
-
-        next_event.time = next_time
-        self.schedule(next_event)
-
-    def interrupt_next_event_by_condition(
-        self, condition: Callable, method="deactivate", next_event=None
-    ):
-        """Interrupt the next event that satisfies a given condition."""
-        next_time = next_event.time if next_event is not None else self.current_time
-        queue_snapshot = heapq.nsmallest(len(self.event_queue), self.event_queue)
-
-        # Search for an event to interrupt.
-        interrupted_event = None
-        for idx, event in enumerate(queue_snapshot):
+    def cancel_all_events_by_condition(self, condition: Callable):
+        """Remove all events by a given condtion."""
+        targets = []
+        for event in self.event_queue:
             if condition(self, event):
-                interrupted_event = event
-                next_event = (
-                    next_event or heapq.nsmallest(idx + 2, self.event_queue)[-1][1]
-                )
-                break
-
-        # If an event could not be interrupted, then go no further.
-        if interrupted_event is None:
-            return
-
-        # Handle the interrupted event.
-        if method == "deactivate":
-            interrupted_event.deactivate()
-        elif method == "cancel":
-            queue_snapshot.pop(idx)
-            self.cancel_all_events()
-            for event in queue_snapshot:
-                self.schedule(event)
-        else:
-            raise NotImplementedError(
-                f"{method=} is not implemented for interrupt_next_event_by_condition."
-            )
-
-        # Schedule the next event
-        next_event.time = next_time
-        self.schedule(next_event)
+                targets.append(event)
+        for event in targets:
+            self.event_queue.remove(event)
 
     def _always_log_filter(self, event, event_result):
         """Keep all events in the event log."""
