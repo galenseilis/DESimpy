@@ -132,7 +132,6 @@ class Repairman:
                 self.interrupt_job()
                 self.schedule_job(requestor, request_priority)
             else:
-                print(self.env.current_time)
                 self.schedule_request(requestor, request_priority)
 
     def schedule_job(self, requestor, priority):
@@ -206,7 +205,7 @@ print("Machine shop")
 env = EventScheduler()
 repairman = Repairman(env)
 machines = [Machine(env, i, repairman) for i in range(NUM_MACHINES)]
-results = env.run_until_max_time(SIM_TIME)
+results = env.run_until_max_time(SIM_TIME, logging=False)
 
 ################
 # SHOW RESULTS #
