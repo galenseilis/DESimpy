@@ -22,7 +22,7 @@ from desimpy.des import EventScheduler
 ###########################
 
 
-def clock(env, name, tick) -> None:
+def clock(env: EventScheduler, name: str, tick: float) -> None:
     """Clock simulation process."""
 
     def action() -> None:
