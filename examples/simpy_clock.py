@@ -49,22 +49,22 @@ def clock(env: EventScheduler, name: str, tick: float) -> None:
 
     env.timeout(0, action=action)
 
+if __name__ == "__name__":
+    #################################
+    # $2 INITIALIZE EVENT SCHEDULER #
+    #################################
 
-#################################
-# $2 INITIALIZE EVENT SCHEDULER #
-#################################
+    env = EventScheduler()
 
-env = EventScheduler()
+    ##############################
+    # $3 SCHEDULE INITIAL EVENTS #
+    ##############################
 
-##############################
-# $3 SCHEDULE INITIAL EVENTS #
-##############################
+    clock(env, "fast", 0.5)
+    clock(env, "slow", 1)
 
-clock(env, "fast", 0.5)
-clock(env, "slow", 1)
+    #####################
+    # $4 RUN SIMULATION #
+    #####################
 
-#####################
-# $4 RUN SIMULATION #
-#####################
-
-env.run_until_max_time(2, logging=False)
+    env.run_until_max_time(2, logging=False)

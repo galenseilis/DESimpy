@@ -378,32 +378,32 @@ def other_jobs(repairman: Repairman):
     """
     repairman.request(other_jobs, 2)
 
+if __name__ == "__main__":
+    #################################
+    # $6 INITIALIZE EVENT SCHEDULER #
+    #################################
 
-#################################
-# $6 INITIALIZE EVENT SCHEDULER #
-#################################
+    env = EventScheduler()
 
-env = EventScheduler()
+    #########################
+    # $7 REGISTER PROCESSES #
+    #########################
 
-#########################
-# $7 REGISTER PROCESSES #
-#########################
+    repairman = Repairman(env)
+    machines = [Machine(env, i, repairman) for i in range(NUM_MACHINES)]
+    env.timeout(0, lambda: other_jobs(repairman))
 
-repairman = Repairman(env)
-machines = [Machine(env, i, repairman) for i in range(NUM_MACHINES)]
-env.timeout(0, lambda: other_jobs(repairman))
+    #####################
+    # $8 RUN SIMULATION #
+    #####################
 
-#####################
-# $8 RUN SIMULATION #
-#####################
+    env.run_until_max_time(SIM_TIME, logging=False)
 
-env.run_until_max_time(SIM_TIME, logging=False)
+    ###################
+    # $9 SHOW RESULTS #
+    ###################
 
-###################
-# $9 SHOW RESULTS #
-###################
-
-print("Machine shop")
-print(f"Machine shop results after {WEEKS} weeks")
-for machine in machines:
-    print(f"{machine.name} made {machine.parts_made} parts.")
+    print("Machine shop")
+    print(f"Machine shop results after {WEEKS} weeks")
+    for machine in machines:
+        print(f"{machine.name} made {machine.parts_made} parts.")
