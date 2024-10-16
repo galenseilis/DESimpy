@@ -26,7 +26,7 @@ env = EventScheduler()
 # $2 DEFINE EVENT #
 ###################
 
-my_proc = Event(1, lambda: 'Monty Python’s Flying Circus')
+my_proc = Event(1, lambda: "Monty Python’s Flying Circus")
 
 #####################
 # $3 REGISTER EVENT #

@@ -6,7 +6,7 @@ def run_simpy():
     def example(env):
         event = simpy.events.Timeout(env, delay=1, value=42)
         value = yield event
-        results.append('now=%d, value=%d' % (env.now, value))
+        results.append("now=%d, value=%d" % (env.now, value))
 
     env = simpy.Environment()
     example_gen = example(env)
@@ -14,6 +14,7 @@ def run_simpy():
     env.run()
 
     return results
+
 
 def run_desimpy():
     from typing import Callable
@@ -24,7 +25,9 @@ def run_desimpy():
     def example(env: EventScheduler) -> None:
         delay = 1
         value = 42
-        action: Callable[[], None] = lambda: results.append(f"now={env.current_time}, {value=}")
+        action: Callable[[], None] = lambda: results.append(
+            f"now={env.current_time}, {value=}"
+        )
         env.timeout(delay, action)
 
     env = EventScheduler()
@@ -32,6 +35,7 @@ def run_desimpy():
     env.run_until_max_time(float("inf"), logging=False)
 
     return results
+
 
 if __name__ == "__main__":
     assert run_simpy() == run_desimpy()

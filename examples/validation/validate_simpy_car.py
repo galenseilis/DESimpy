@@ -5,10 +5,10 @@ def run_simpy():
 
     def car(env):
         while True:
-            results.append('Start parking at %d' % env.now)
+            results.append("Start parking at %d" % env.now)
             parking_duration = 5
             yield env.timeout(parking_duration)
-            results.append('Start driving at %d' % env.now)
+            results.append("Start driving at %d" % env.now)
             trip_duration = 2
             yield env.timeout(trip_duration)
 
@@ -38,6 +38,7 @@ def run_desimpy():
     scheduler.run_until_max_time(15, logging=False)
 
     return results
+
 
 if __name__ == "__main__":
     assert run_simpy() == run_desimpy()

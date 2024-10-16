@@ -42,6 +42,7 @@ def example(env: EventScheduler) -> None:
     action: Callable[[], None] = lambda: print(f"now={env.current_time}, {value=}")
     env.timeout(delay, action)
 
+
 if __name__ == "__main__":
     #################################
     # $2 INITIALIZE EVENT SCHEDULER #

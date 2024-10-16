@@ -378,6 +378,7 @@ def other_jobs(repairman: Repairman):
     """
     repairman.request(other_jobs, 2)
 
+
 if __name__ == "__main__":
     #################################
     # $6 INITIALIZE EVENT SCHEDULER #

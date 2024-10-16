@@ -5,21 +5,22 @@ def run_simpy():
 
     def car(env, name, bcs, driving_time, charge_duration):
         yield env.timeout(driving_time)
-        results.append('%s arriving at %d' % (name, env.now))
+        results.append("%s arriving at %d" % (name, env.now))
         with bcs.request() as req:
             yield req
-            results.append('%s starting to charge at %s' % (name, env.now))
+            results.append("%s starting to charge at %s" % (name, env.now))
             yield env.timeout(charge_duration)
-            results.append('%s leaving the bcs at %s' % (name, env.now))
+            results.append("%s leaving the bcs at %s" % (name, env.now))
 
     env = simpy.Environment()
     bcs = simpy.Resource(env, capacity=2)
     for i in range(4):
-        env.process(car(env, 'Car %d' % i, bcs, i*2, 5))
+        env.process(car(env, "Car %d" % i, bcs, i * 2, 5))
 
     env.run()
 
     return results
+
 
 def run_desimpy():
     from desimpy.des import Event, EventScheduler
@@ -27,7 +28,6 @@ def run_desimpy():
     results = []
 
     class BatteryChargingStation:
-
         def __init__(self, env: EventScheduler, capacity: int) -> None:
             self.env = env
             self.capacity = capacity
@@ -63,7 +63,9 @@ def run_desimpy():
             self.driving_time = driving_time
             self.charge_duration = charge_duration
             # Schedule the car to arrive after driving_time
-            self.env.schedule(Event(self.env.current_time + self.driving_time, self.arrive))
+            self.env.schedule(
+                Event(self.env.current_time + self.driving_time, self.arrive)
+            )
 
         def arrive(self) -> None:
             results.append(f"{self.name} arriving at {self.env.current_time}")
@@ -80,7 +82,6 @@ def run_desimpy():
             results.append(f"{self.name} leaving the BCS at {self.env.current_time}")
             self.bcs.release()
 
-
     scheduler = EventScheduler()
     bcs = BatteryChargingStation(scheduler, capacity=2)
     for i in range(4):
@@ -88,7 +89,6 @@ def run_desimpy():
     scheduler.run_until_max_time(20, logging=False)
 
     return results
-
 
 
 if __name__ == "__main__":

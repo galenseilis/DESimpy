@@ -14,14 +14,16 @@ def run_simpy():
 
         def run(self):
             while True:
-                results.append('Start parking and charging at %d' % self.env.now)
+                results.append("Start parking and charging at %d" % self.env.now)
                 charge_duration = 5
                 try:
                     yield self.env.process(self.charge(charge_duration))
                 except simpy.Interrupt:
-                    results.append('Was interrupted. Hope, the battery is full enough ...')
+                    results.append(
+                        "Was interrupted. Hope, the battery is full enough ..."
+                    )
 
-                results.append('Start driving at %d' % self.env.now)
+                results.append("Start driving at %d" % self.env.now)
                 trip_duration = 2
                 yield self.env.timeout(trip_duration)
 
@@ -33,6 +35,7 @@ def run_simpy():
     env.process(driver(env, car))
     env.run(until=15)
     return results
+
 
 def run_desimpy():
     from desimpy.des import Event, EventScheduler
@@ -64,12 +67,12 @@ def run_desimpy():
 
         env.timeout(3, interrupt_action)
 
-
     scheduler = EventScheduler()
     car = Car(scheduler)
     driver(scheduler, car)
     scheduler.run_until_max_time(15, logging=False)
     return results
+
 
 if __name__ == "__main__":
     assert run_simpy() == run_desimpy()

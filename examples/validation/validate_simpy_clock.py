@@ -10,12 +10,13 @@ def run_simpy():
 
     env = simpy.Environment()
 
-    env.process(clock(env, 'fast', 0.5))
-    env.process(clock(env, 'slow', 1))
+    env.process(clock(env, "fast", 0.5))
+    env.process(clock(env, "slow", 1))
 
     env.run(until=2)
 
     return results
+
 
 def run_desimpy():
     from desimpy.des import Event, EventScheduler
@@ -23,7 +24,6 @@ def run_desimpy():
     results = []
 
     def clock(env: EventScheduler, name: str, tick: float) -> None:
-
         def action() -> None:
             results.append((name, env.current_time))
             env.timeout(tick, action)

@@ -49,6 +49,7 @@ def clock(env: EventScheduler, name: str, tick: float) -> None:
 
     env.timeout(0, action=action)
 
+
 if __name__ == "__name__":
     #################################
     # $2 INITIALIZE EVENT SCHEDULER #

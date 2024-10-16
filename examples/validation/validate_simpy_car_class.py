@@ -10,10 +10,10 @@ def run_simpy():
 
         def run(self):
             while True:
-                results.append('Start parking and charging at %d' % self.env.now)
+                results.append("Start parking and charging at %d" % self.env.now)
                 charge_duration = 5
                 yield self.env.process(self.charge(charge_duration))
-                results.append('Start driving at %d' % self.env.now)
+                results.append("Start driving at %d" % self.env.now)
                 trip_duration = 2
                 yield self.env.timeout(trip_duration)
 
@@ -55,6 +55,6 @@ def run_desimpy():
 
     return results
 
-if __name__ == '__main__':
-    assert run_simpy() == run_desimpy()
 
+if __name__ == "__main__":
+    assert run_simpy() == run_desimpy()
