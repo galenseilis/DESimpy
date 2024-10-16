@@ -30,11 +30,11 @@ def car(env: EventScheduler) -> None:
     """
     Simulates the car process that alternates between parking and driving.
 
-    The car parks for 5 time units and then drives for 2 time units, after 
+    The car parks for 5 time units and then drives for 2 time units, after
     which it returns to parking. This process repeats until the simulation ends.
 
     Args:
-        env (EventScheduler): The simulation environment responsible for 
+        env (EventScheduler): The simulation environment responsible for
             scheduling and managing events.
 
     """
@@ -42,7 +42,7 @@ def car(env: EventScheduler) -> None:
 
     def end_parking_action() -> None:
         """
-        Action to transition the car from parking to driving. After driving for 2 
+        Action to transition the car from parking to driving. After driving for 2
         time units, the car will park again.
 
         """
