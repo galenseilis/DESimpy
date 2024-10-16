@@ -52,20 +52,21 @@ def car(env: EventScheduler) -> None:
     env.timeout(5, end_parking_action)
 
 
-#################################
-# $2 INITIALIZE EVENT SCHEDULER #
-#################################
+if __name__ == "__main__":
+    #################################
+    # $2 INITIALIZE EVENT SCHEDULER #
+    #################################
 
-scheduler = EventScheduler()
+    scheduler = EventScheduler()
 
-###########################
-# $3 SCHEDULE CAR PROCESS #
-###########################
+    ###########################
+    # $3 SCHEDULE CAR PROCESS #
+    ###########################
 
-scheduler.timeout(0, action=lambda: car(scheduler))
+    scheduler.timeout(0, action=lambda: car(scheduler))
 
-#####################
-# $4 RUN SIMULATION #
-#####################
+    #####################
+    # $4 RUN SIMULATION #
+    #####################
 
-scheduler.run_until_max_time(15, logging=False)
+    scheduler.run_until_max_time(15, logging=False)

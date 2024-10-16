@@ -171,27 +171,28 @@ class Car:
         self.bcs.release()
 
 
-#################################
-# $3 INITIALIZE EVENT SCHEDULER #
-#################################
+if __name__ == "__main__":
+    #################################
+    # $3 INITIALIZE EVENT SCHEDULER #
+    #################################
 
-scheduler = EventScheduler()
+    scheduler = EventScheduler()
 
-##########################################
-# $4 INITIALIZE BATTERY CHARGING STATION #
-##########################################
+    ##########################################
+    # $4 INITIALIZE BATTERY CHARGING STATION #
+    ##########################################
 
-bcs = BatteryChargingStation(scheduler, capacity=2)
+    bcs = BatteryChargingStation(scheduler, capacity=2)
 
-###################################
-# $5 REGISTER CARS WITH SCHEDULER #
-###################################
+    ###################################
+    # $5 REGISTER CARS WITH SCHEDULER #
+    ###################################
 
-for i in range(4):
-    Car(scheduler, name=f"Car {i}", bcs=bcs, driving_time=i * 2, charge_duration=5)
+    for i in range(4):
+        Car(scheduler, name=f"Car {i}", bcs=bcs, driving_time=i * 2, charge_duration=5)
 
-#####################
-# $6 RUN SIMULATION #
-#####################
+    #####################
+    # $6 RUN SIMULATION #
+    #####################
 
-scheduler.run_until_max_time(20, logging=False)
+    scheduler.run_until_max_time(20, logging=False)

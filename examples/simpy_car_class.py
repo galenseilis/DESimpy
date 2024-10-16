@@ -85,20 +85,21 @@ class Car:
         self.env.timeout(5, charge_action)
 
 
-#################################
-# $2 INITIALIZE EVENT SCHEDULER #
-#################################
+if __name__ == "__main__":
+    #################################
+    # $2 INITIALIZE EVENT SCHEDULER #
+    #################################
 
-scheduler = EventScheduler()
+    scheduler = EventScheduler()
 
-##############################
-# $3 INITIALIZE CAR INSTANCE #
-##############################
+    ##############################
+    # $3 INITIALIZE CAR INSTANCE #
+    ##############################
 
-Car(scheduler)
+    Car(scheduler)
 
-#####################
-# $4 RUN SIMULATION #
-#####################
+    #####################
+    # $4 RUN SIMULATION #
+    #####################
 
-scheduler.run_until_max_time(15, logging=False)
+    scheduler.run_until_max_time(15, logging=False)

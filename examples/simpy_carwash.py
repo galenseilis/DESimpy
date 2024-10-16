@@ -114,9 +114,10 @@ def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
     generate_car()
 
 
-# Simulation setup
-scheduler = EventScheduler()
-setup(scheduler, NUM_MACHINES, WASHTIME, T_INTER)
+if __name__ == "__main__":
+    # Simulation setup
+    scheduler = EventScheduler()
+    setup(scheduler, NUM_MACHINES, WASHTIME, T_INTER)
 
-# Run simulation
-scheduler.run_until_max_time(SIM_TIME, logging=False)
+    # Run simulation
+    scheduler.run_until_max_time(SIM_TIME, logging=False)

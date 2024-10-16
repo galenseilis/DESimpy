@@ -13,44 +13,43 @@ contents:
 
 from desimpy.des import Event, EventScheduler
 
-################################
-# $1 INTERRUPT BY DEACTIVATION #
-################################
+if __name__ == "__main__":
+    ################################
+    # $1 INTERRUPT BY DEACTIVATION #
+    ################################
 
-print("INTERRUPT BY DEACTIVATION")
-env = EventScheduler()
+    print("INTERRUPT BY DEACTIVATION")
+    env = EventScheduler()
 
-env.timeout(5, lambda: "foo", context={"meow": 0})
-env.timeout(0, lambda: env.deactivate_next_event(), context={"hi": "bye"})
-env.timeout(10, lambda: "bar", context={"woof": 1})
+    env.timeout(5, lambda: "foo", context={"meow": 0})
+    env.timeout(0, lambda: env.deactivate_next_event(), context={"hi": "bye"})
+    env.timeout(10, lambda: "bar", context={"woof": 1})
 
-results = env.run_until_max_time(6)
+    results = env.run_until_max_time(6)
 
-for result in results:
-    event, outcome = result
-    print(event.time, outcome, event.context, event.active)
+    for result in results:
+        event, outcome = result
+        print(event.time, outcome, event.context, event.active)
 
-################################
-# $2 INTERRUPT BY CANCELLATION #
-################################
+    ################################
+    # $2 INTERRUPT BY CANCELLATION #
+    ################################
 
-print("\nINTERRUPT BY CANCELLATION")
+    print("\nINTERRUPT BY CANCELLATION")
 
-env = EventScheduler()
+    env = EventScheduler()
 
-env.timeout(5, lambda: "foo", context={"meow": 0})
+    env.timeout(5, lambda: "foo", context={"meow": 0})
 
+    def interrupt_action():
+        env.cancel_next_event()
+        return "destroyer of worlds"
 
-def interrupt_action():
-    env.cancel_next_event()
-    return "destroyer of worlds"
+    env.timeout(0, interrupt_action, context={"hi": "bye"})
+    env.timeout(10, lambda: "bar", context={"woof": 1})
 
+    results = env.run_until_max_time(11)
 
-env.timeout(0, interrupt_action, context={"hi": "bye"})
-env.timeout(10, lambda: "bar", context={"woof": 1})
-
-results = env.run_until_max_time(11)
-
-for result in results:
-    event, outcome = result
-    print(event.time, outcome, event.context, event.active)
+    for result in results:
+        event, outcome = result
+        print(event.time, outcome, event.context, event.active)

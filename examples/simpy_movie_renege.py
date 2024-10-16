@@ -133,43 +133,45 @@ class TicketAgent:
         heapq.heappush(queue, (time, movie, num_tickets))
 
 
-##############################
-# INITIALIZE EVENT SCHEDULER #
-##############################
+if __name__ == "__main__":
+    ##############################
+    # INITIALIZE EVENT SCHEDULER #
+    ##############################
 
-env = EventScheduler()
+    env = EventScheduler()
 
-###########################
-# CREATE MOVIE THEATER #
-###########################
+    ###########################
+    # CREATE MOVIE THEATER #
+    ###########################
 
-theater = Theater(env, TICKETS, MOVIES)
+    theater = Theater(env, TICKETS, MOVIES)
 
-######################
-# REGISTER PROCESSES #
-######################
+    ######################
+    # REGISTER PROCESSES #
+    ######################
 
-env.timeout(0, customer_arrivals(env, theater))
+    env.timeout(0, customer_arrivals(env, theater))
 
-##################
-# RUN SIMULATION #
-##################
+    ##################
+    # RUN SIMULATION #
+    ##################
 
-env.run_until_max_time(SIM_TIME, logging=False)
+    env.run_until_max_time(SIM_TIME, logging=False)
 
-####################
-# ANALYSIS/RESULTS #
-####################
+    ####################
+    # ANALYSIS/RESULTS #
+    ####################
 
-for movie in MOVIES:
-    if theater.sold_out[movie]:
-        sellout_time = theater.when_sold_out[movie]
-        num_renegers = theater.num_renegers[movie]
-        print(
-            f'Movie "{movie}" sold out {sellout_time:.1f} minutes '
-            f"after ticket counter opening."
-        )
-        print(f"  Number of people leaving queue when film sold out: {num_renegers}")
-    else:
-        print(theater.available[movie])
-
+    for movie in MOVIES:
+        if theater.sold_out[movie]:
+            sellout_time = theater.when_sold_out[movie]
+            num_renegers = theater.num_renegers[movie]
+            print(
+                f'Movie "{movie}" sold out {sellout_time:.1f} minutes '
+                f"after ticket counter opening."
+            )
+            print(
+                f"  Number of people leaving queue when film sold out: {num_renegers}"
+            )
+        else:
+            print(theater.available[movie])

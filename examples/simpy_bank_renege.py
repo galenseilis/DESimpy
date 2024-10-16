@@ -179,27 +179,30 @@ class Bank:
             )
 
 
-#################################
-# $5 INITIALIZE EVENT SCHEDULER #
-#################################
+if __name__ == "__main__":
+    #################################
+    # $5 INITIALIZE EVENT SCHEDULER #
+    #################################
 
-scheduler = EventScheduler()
+    scheduler = EventScheduler()
 
-#########################
-# $6 INITIALIZE COUNTER #
-#########################
+    #########################
+    # $6 INITIALIZE COUNTER #
+    #########################
 
-counter = Counter(scheduler, capacity=COUNTER_CAPACITY)
+    counter = Counter(scheduler, capacity=COUNTER_CAPACITY)
 
-#########################
-# $7 REGISTER PROCESSES #
-#########################
+    #########################
+    # $7 REGISTER PROCESSES #
+    #########################
 
-bank = Bank(scheduler, counter)
-bank.generate_customers(NEW_CUSTOMERS, INTERVAL_CUSTOMERS, time_in_bank=TIME_IN_BANK)
+    bank = Bank(scheduler, counter)
+    bank.generate_customers(
+        NEW_CUSTOMERS, INTERVAL_CUSTOMERS, time_in_bank=TIME_IN_BANK
+    )
 
-#####################
-# $8 RUN SIMULATION #
-#####################
+    #####################
+    # $8 RUN SIMULATION #
+    #####################
 
-scheduler.run_until_max_time(float("inf"), logging=False)
+    scheduler.run_until_max_time(float("inf"), logging=False)

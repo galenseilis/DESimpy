@@ -56,26 +56,29 @@ class Car:
 def driver(env, car):
     def interrupt_action():
         print("Was interrupted. Hope, the battery is full enough ...")
-        env.interrupt_next_event(next_event=Event(env.current_time, car.schedule_drive))
+        env.deactivate_next_event()
+        event = Event(env.current_time, car.schedule_drive)
+        env.schedule(event)
 
     env.timeout(3, interrupt_action)
 
 
-#################################
-# $3 INITIALIZE EVENT SCHEDULER #
-#################################
+if __name__ == "__main__":
+    #################################
+    # $3 INITIALIZE EVENT SCHEDULER #
+    #################################
 
-scheduler = EventScheduler()
+    scheduler = EventScheduler()
 
-#########################
-# $4 REGISTER PROCESSES #
-#########################
+    #########################
+    # $4 REGISTER PROCESSES #
+    #########################
 
-car = Car(scheduler)
-driver(scheduler, car)
+    car = Car(scheduler)
+    driver(scheduler, car)
 
-#####################
-# $5 RUN SIMULATION #
-#####################
+    #####################
+    # $5 RUN SIMULATION #
+    #####################
 
-scheduler.run_until_max_time(15, logging=False)
+    scheduler.run_until_max_time(15, logging=False)
