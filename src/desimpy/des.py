@@ -80,12 +80,24 @@ class EventScheduler:
         self.event_queue = []
         self.event_log = []
 
+
     def next_event(self):
         """Refer to next event without changing it.
 
         This is sometimes called "peeking".
         """
         return heapq.nsmallest(1, self.event_queue)[0][1]
+
+    def peek(self):
+        """Get the time of the next event.
+
+        Returns infinity if there is no next event.
+        """
+        next_event = self.next_event()
+        if next_event:
+            return next_event.time
+
+        return float('inf')
 
     def schedule(self, event) -> NoReturn:
         """Schedule an event on the event queue.
@@ -210,21 +222,23 @@ class EventScheduler:
         else:
             return self._run_filtered_logging(stop, log_filter)
 
+    def step(self):
+        time, event = heapq.heappop(self.event_queue)
+        self.current_time = time
+        event_result = event.run()
+        return event, event_result
+
     def _run_without_logging(self, stop: Callable) -> list:
         while not stop(self):
             if not self.event_queue:
                 break
-            time, event = heapq.heappop(self.event_queue)
-            self.current_time = time
-            event_result = event.run()
+            self.step()
 
     def _run_always_logging(self, stop: Callable) -> list:
         while not stop(self):
             if not self.event_queue:  # Always stop if there are no more events.
                 break
-            time, event = heapq.heappop(self.event_queue)
-            self.current_time = time
-            event_result = event.run()
+            event, event_result = self.step()
             self.event_log.append((event, event_result))
         return self.event_log
 
@@ -232,9 +246,7 @@ class EventScheduler:
         while not stop(self):
             if not self.event_queue:  # Always stop if there are no more events.
                 break
-            time, event = heapq.heappop(self.event_queue)
-            self.current_time = time
-            event_result = event.run()
+            event, event_result = self.step()
             if log_filter(event, event_result):
                 self.event_log.append((event, event_result))
         return self.event_log
@@ -248,18 +260,22 @@ class EventScheduler:
         method so that simulating until a maximum is assumed
         as the stop condition.
         """
-        return self.run(_stop_at_max_time_factory(max_time), log_filter, logging)
+        stop = lambda scheduler: (
+                scheduler.current_time >= max_time
+                or not scheduler.event_queue
+                or heapq.nsmallest(1, scheduler.event_queue)[0][0] >= max_time
+            )
+        return self.run(stop, log_filter, logging)
 
+    def run_until_event(self, event: Event, log_filter: Callable = None, logging=True):
+        """Simulate until a given event has elapsed.
 
-def _stop_at_max_time_factory(max_time: float) -> Callable:
-    """Stop function to halt the simulation at a maximum time.
+        This function is a convenience wrapper around the run
+        method so that simulating until an event is elapsed is
+        assumed as the stop condition."""
+        stop = lambda scheduler: (
+                event in scheduler.event_log
+            )
 
-    Define the scheduler first, then call this function on it
-    with the desired max_time to get the desired function. Finally,
-    call the event scheduler's run method on the function.
-    """
-    return lambda scheduler: (
-        scheduler.current_time >= max_time
-        or not scheduler.event_queue
-        or heapq.nsmallest(1, scheduler.event_queue)[0][0] >= max_time
-    )
+        return self.run(stop, log_filter, logging)
+
