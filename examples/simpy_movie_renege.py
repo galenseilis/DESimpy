@@ -5,11 +5,15 @@
 import random
 import heapq
 from typing import Dict, List, NamedTuple, Optional
+import warnings
+
 from desimpy.des import Event, EventScheduler
 
 ####################
 # $1 CONFIGURATION #
 ####################
+
+warnings.warn("This example has not been validated. Results may be incorrect.")
 
 RANDOM_SEED = 42
 TICKETS = 50  # Number of tickets per movie
@@ -114,7 +118,6 @@ class TicketAgent:
             self.delay_before_next_job(0.5)
             return
 
-        print(num_tickets)
         theater.available[movie] -= num_tickets
         if self.theater.available[movie] < SELLOUT_THRESHOLD:
             self.theater.sold_out[movie] = True
