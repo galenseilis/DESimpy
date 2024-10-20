@@ -45,18 +45,24 @@ class Car:
         print(f"Start parking and charging at {self.env.current_time}")
 
         # Schedule the charge process
-        self.env.timeout(5, self.schedule_drive)
+        self.env.timeout(5, self.schedule_drive, context={"event_type": "charge"})
 
 
 ############################
 # $2 DEFINE DRIVER PROCESS #
 ############################
 
+def deactivate_next_charge_condition(env: EventScheduler, event_pair: tuple[Event]):
+    """Deactivate the charging event."""
+    if event_pair[1].context.get("event_type", None) == 'charge':
+        return True
+    return False
+
 
 def driver(env, car):
     def interrupt_action():
         print("Was interrupted. Hope, the battery is full enough ...")
-        env.deactivate_next_event() # TODO: Generalize to type of event using context.
+        env.deactivate_next_event_by_condition(condition=deactivate_next_charge_condition)
         event = Event(env.current_time, car.schedule_drive)
         env.schedule(event)
 
