@@ -40,3 +40,7 @@ clock(env, "slow", 1)
 env.run_until_max_time(2, logging=False)
 ```
 
+# Design
+
+- Avoid performance overhead of coroutines.
+- Do not change the past (i.e. event log should not be changed during simulation).
