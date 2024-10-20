@@ -1,3 +1,4 @@
+import pytest
 from desimpy import Event
 
 def test_no_action():
@@ -10,4 +11,3 @@ def test_lambda_none():
     result = event.run()
     assert result is None
 
-# TODO: Still more cases to test!

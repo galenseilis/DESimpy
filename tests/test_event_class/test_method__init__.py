@@ -1,3 +1,5 @@
+import re
+
 import pytest
 
 from desimpy import Event
@@ -41,22 +43,22 @@ def test_event_initialization_custom():
 
 def test_event_initialization_invalid_time():
     """Test that event initialization raises error with invalid time."""
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError, match="time='invalid' must be a number."):
         Event(time="invalid")  # Time must be a numeric value
 
 def test_event_initialization_invalid_context():
     """Test event initialization with non-dict context."""
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         Event(time=10.0, context=["not", "a", "dict"])  # Context must be a dictionary
 
 def test_event_run_without_activation():
     """Test running an event that has been deactivated."""
     custom_action = lambda: "executed"
     event = Event(time=10.0, action=custom_action)
-    
+
     event.active = False  # Manually deactivate the event
     result = event.run()
-    
+
     assert result is None  # Event action should not be executed when inactive
 
 def test_event_comparison_invalid():
@@ -64,3 +66,32 @@ def test_event_comparison_invalid():
     event1 = Event(time=10.0)
     with pytest.raises(AttributeError):
         assert event1 < "invalid"  # Comparing Event with non-Event should raise an error
+
+def test_int_action():
+    non_re_str = "action=2018 must be a callable or None."
+    re_pattern = re.escape(non_re_str)
+    with pytest.raises(TypeError, match=re_pattern):
+        event = Event(2018, action=2018)
+
+def test_float_action():
+    with pytest.raises(TypeError, match="action=2018.0 must be a callable or None."):
+        event = Event(2018, action=2018.0)
+
+def test_tuple_action():
+    non_re_str = "action=() must be a callable or None."
+    re_pattern = re.escape(non_re_str)
+    with pytest.raises(TypeError, match=re_pattern):
+        event = Event(2018, action=())
+
+def test_list_action():
+    non_re_str = "action=[] must be a callable or None."
+    re_pattern = re.escape(non_re_str)
+    with pytest.raises(TypeError, match=re_pattern):
+        event = Event(2018, action=[])
+
+def test_dict_action():
+    non_re_str = "action={} must be a callable or None."
+    re_pattern = re.escape(non_re_str)
+    with pytest.raises(TypeError, match=re_pattern):
+        event = Event(2018, action={})
+
