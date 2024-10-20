@@ -41,9 +41,11 @@ class Event:
         # OPTIMIZE: Validation checks that are removed when run in optimized mode.
         if __debug__:
             if not isinstance(time, (int, float)):
-                raise ValueError(f"{time=} must be a number.")
+                raise TypeError(f"{time=} must be a number.")
             if not (isinstance(context, dict) or context is None):
-                raise ValueError(f"{context=} must be a dictionary or None.")
+                raise TypeError(f"{context=} must be a dictionary or None.")
+            if not (callable(action) or action is None):
+                raise TypeError(f"{action=} must be a callable or None.")
 
         # NOTE: `self.action` and `self.context` have non-none defaults assigned.
         self.time = time
