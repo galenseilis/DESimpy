@@ -158,9 +158,9 @@ class EventScheduler:
 
     def deactivate_next_event_by_condition(self, condition: Callable):
         """Deactivate the next event that satisfies the given condition."""
-        for event in self.event_queue:
-            if condition(self, event):
-                event.deactivate()
+        for event_pair in self.event_queue:
+            if condition(self, event_pair):
+                event_pair[1].deactivate()
                 break
 
     def deactivate_all_events(self):
