@@ -4,7 +4,7 @@ source:https://simpy.readthedocs.io/en/stable/topical_guides/environments.html#s
 ```
 """
 
-from desimpy.des import EventScheduler
+from desimpy import EventScheduler
 
 if __name__ == "__main__":
     env = EventScheduler()

@@ -20,7 +20,7 @@ pip install desimpy
 Here is a small example to show the basic logic. This example is the simple clock process presented in the [SimPy documentation](https://simpy.readthedocs.io/en/stable/index.html).
 
 ```python
-from desimpy.des import EventScheduler
+from desimpy import EventScheduler
 
 def clock(env, name, tick) -> None:
     """Clock simulation process."""

@@ -16,7 +16,7 @@ contents:
 # $0 IMPORTS #
 ##############
 
-from desimpy.des import Event, EventScheduler
+from desimpy import Event, EventScheduler
 
 #######################
 # $1 DEFINE CAR CLASS #
@@ -52,9 +52,9 @@ class Car:
 # $2 DEFINE DRIVER PROCESS #
 ############################
 
-def deactivate_next_charge_condition(env: EventScheduler, event_pair: tuple[Event]):
+def deactivate_next_charge_condition(env: EventScheduler, event: Event) -> bool:
     """Deactivate the charging event."""
-    if event_pair[1].context.get("event_type", None) == 'charge':
+    if event.context.get("event_type", None) == 'charge':
         return True
     return False
 

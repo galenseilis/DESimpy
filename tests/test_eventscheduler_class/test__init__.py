@@ -1,4 +1,4 @@
-from desimpy.des import EventScheduler
+from desimpy import EventScheduler
 import pytest
 
 def test_event_scheduler_initialization():

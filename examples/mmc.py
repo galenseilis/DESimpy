@@ -1,6 +1,6 @@
 import random
 
-from desimpy.des import EventScheduler  # Import your EventScheduler
+from desimpy import EventScheduler
 
 
 class Customer:

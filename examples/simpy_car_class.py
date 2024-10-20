@@ -13,7 +13,7 @@ contents:
 # $0 IMPORTS #
 ##############
 
-from desimpy.des import EventScheduler
+from desimpy import EventScheduler
 
 #######################
 # $1 DEFINE CAR CLASS #

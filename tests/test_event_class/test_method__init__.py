@@ -1,6 +1,6 @@
 import pytest
 
-from desimpy.des import Event
+from desimpy import Event
 
 def test_event_initialization_default():
     """Test event initialization with default action and context."""

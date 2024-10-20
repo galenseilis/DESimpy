@@ -1,4 +1,4 @@
-from desimpy.des import Event, EventScheduler
+from desimpy import Event, EventScheduler
 
 def test_empty_event_queue():
     """Should return None if event queue is empty."""

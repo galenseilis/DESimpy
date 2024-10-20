@@ -6,7 +6,7 @@ source: https://gitlab.com/team-simpy/simpy/-/issues/168
 
 raise NotImplementedError()
 
-from desimpy.des import Event, EventScheduler
+from desimpy import Event, EventScheduler
 
 
 class School:

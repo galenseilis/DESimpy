@@ -19,7 +19,7 @@ source: https://simpy.readthedocs.io/en/stable/simpy_intro/basic_concepts.html
 # $0 IMPORTS #
 ##############
 
-from desimpy.des import Event, EventScheduler
+from desimpy import Event, EventScheduler
 
 #########################
 # $1 DEFINE CAR PROCESS #

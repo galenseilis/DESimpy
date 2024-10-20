@@ -28,7 +28,7 @@ def run_simpy():
 
 
 def run_desimpy():
-    from desimpy.des import EventScheduler
+    from desimpy import EventScheduler
 
     results = []
 

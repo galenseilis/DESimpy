@@ -15,7 +15,7 @@ contents:
 # $0 IMPORTS #
 ##############
 
-from desimpy.des import Event, EventScheduler
+from desimpy import Event, EventScheduler
 
 ######################################
 # $1 DEFINE BATTERY CHARGING STATION #

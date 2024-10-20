@@ -20,7 +20,7 @@ source: https://simpy.readthedocs.io/en/stable/examples/bank_renege.html
 
 import random
 
-from desimpy.des import Event, EventScheduler
+from desimpy import Event, EventScheduler
 
 ####################
 # $1 CONFIGURATION #

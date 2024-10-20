@@ -16,7 +16,7 @@ source: https://simpy.readthedocs.io/en/stable/topical_guides/simpy_basics.html#
 
 from typing import Callable
 
-from desimpy.des import Event, EventScheduler
+from desimpy import Event, EventScheduler
 
 #############################
 # $1 DEFINE EXAMPLE PROCESS #
@@ -32,7 +32,7 @@ def example(env: EventScheduler) -> None:
     timeout of 1 unit of time.
 
     Args:
-        env (desimpy.des.EventScheduler): The simulation environment in which the action is scheduled.
+        env (desimpy.EventScheduler): The simulation environment in which the action is scheduled.
 
     Returns:
         None: This function does not return a value, it schedules an event.

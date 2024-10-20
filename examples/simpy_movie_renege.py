@@ -7,7 +7,7 @@ import heapq
 from typing import Dict, List, NamedTuple, Optional
 import warnings
 
-from desimpy.des import Event, EventScheduler
+from desimpy import Event, EventScheduler
 
 ####################
 # $1 CONFIGURATION #

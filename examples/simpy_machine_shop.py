@@ -23,7 +23,7 @@ import heapq
 import random
 from typing import Any
 
-from desimpy.des import Event, EventScheduler
+from desimpy import Event, EventScheduler
 
 ####################
 # $1 CONFIGURATION #

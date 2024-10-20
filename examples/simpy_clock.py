@@ -15,7 +15,7 @@ source: https://simpy.readthedocs.io/en/stable/index.html#overview
 # $0 IMPORTS #
 ##############
 
-from desimpy.des import EventScheduler
+from desimpy import EventScheduler
 
 ###########################
 # $1 DEFINE CLOCK PROCESS #

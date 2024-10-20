@@ -11,7 +11,7 @@ source: https://simpy.readthedocs.io/en/stable/examples/carwash.html
 import itertools
 import random
 
-from desimpy.des import Event, EventScheduler
+from desimpy import Event, EventScheduler
 
 ####################
 # $1 CONFIGURATION #
