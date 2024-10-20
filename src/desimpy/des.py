@@ -129,7 +129,7 @@ class EventScheduler:
         self.next_event().activate()
 
     def activate_next_event_by_condition(self, condition: Callable):
-        for event in self.even_queue:
+        for event in self.event_queue:
             if condition(self, event):
                 event.activate()
                 break
@@ -158,7 +158,7 @@ class EventScheduler:
 
     def deactivate_next_event_by_condition(self, condition: Callable):
         """Deactivate the next event that satisfies the given condition."""
-        for event in self.even_queue:
+        for event in self.event_queue:
             if condition(self, event):
                 event.deactivate()
                 break
