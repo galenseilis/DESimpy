@@ -4,10 +4,18 @@ source: https://simpy.readthedocs.io/en/stable/examples/carwash.html
 ```
 """
 
+##############
+# $0 IMPORTS #
+##############
+
 import itertools
 import random
 
 from desimpy.des import Event, EventScheduler
+
+####################
+# $1 CONFIGURATION #
+####################
 
 # Constants
 RANDOM_SEED = 42
@@ -16,8 +24,15 @@ WASHTIME = 5  # Minutes it takes to clean a car
 T_INTER = 7  # Create a car every ~7 minutes
 SIM_TIME = 20  # Simulation time in minutes
 
+###################
+# SET RANDOM SEED #
+###################
+
 random.seed(RANDOM_SEED)
 
+#####################
+# $2 DEFINE CARWASH #
+#####################
 
 class Carwash:
     """
@@ -66,6 +81,9 @@ class Carwash:
             next_car = self.queue.pop(0)
             self.request(next_car)
 
+#################
+# $3 DEFINE CAR #
+#################
 
 class Car:
     """
@@ -85,6 +103,9 @@ class Car:
         """
         self.carwash.request(self.name)
 
+############################
+# $4 DEFINE SETUP FUNCTION #
+############################
 
 def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
     """
@@ -115,9 +136,20 @@ def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
 
 
 if __name__ == "__main__":
-    # Simulation setup
+    #################################
+    # $5 INITIALIZE EVENT SCHEDULER #
+    #################################
+
     scheduler = EventScheduler()
+
+    #########################
+    # $6 SCHEDULE PROCESSES #
+    #########################
+
     setup(scheduler, NUM_MACHINES, WASHTIME, T_INTER)
 
-    # Run simulation
+    #####################
+    # $7 RUN SIMULATION #
+    #####################
+
     scheduler.run_until_max_time(SIM_TIME, logging=False)
