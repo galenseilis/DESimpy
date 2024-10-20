@@ -56,7 +56,7 @@ class Car:
 def driver(env, car):
     def interrupt_action():
         print("Was interrupted. Hope, the battery is full enough ...")
-        env.deactivate_next_event()
+        env.deactivate_next_event() # TODO: Generalize to type of event using context.
         event = Event(env.current_time, car.schedule_drive)
         env.schedule(event)
 
