@@ -44,3 +44,7 @@ env.run_until_max_time(2, logging=False)
 
 - Avoid performance overhead of coroutines.
 - Do not change the past (i.e. event log should not be changed during simulation).
+- [WET](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself#WET) when performant.
+    - While tongue-and-cheek, some repetition in this project is intentional to improve performance.
+    - Core components are small, so repetition is not as difficult to maintain.
+    - Projects based on DESimpy are not at all required to follow this pattern.
