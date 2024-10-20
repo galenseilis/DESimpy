@@ -47,4 +47,5 @@ env.run_until_max_time(2, logging=False)
 - [WET](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself#WET) when performant.
     - While tongue-and-cheek, some repetition in this project is intentional to improve performance.
     - Core components are small, so repetition is not as difficult to maintain.
-    - Projects based on DESimpy are not at all required to follow this pattern.
+    - Projects based on DESimpy are not at all required to follow this pattern (and probably shouldn't if they are sufficiently complicated or need to be indefinitely extended).
+    - For some amusement, see [The Wet Codebase](https://www.deconstructconf.com/2019/dan-abramov-the-wet-codebase).
