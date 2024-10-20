@@ -1,7 +1,7 @@
 """Core components of a discrete event simulation (DES)."""
 
 import heapq
-from typing import Callable, NoReturn
+from typing import Any, Callable, NoReturn, Optional
 
 
 class Event:
@@ -38,10 +38,19 @@ class Event:
     def __init__(
         self, time: float, action: Callable = None, context: dict = None
     ) -> NoReturn:
+        # OPTIMIZE: Validation checks that are removed when run in optimized mode.
+        if __debug__:
+            if not isinstance(time, (int, float)):
+                raise ValueError(f"{time=} must be a number.")
+            if not (isinstance(context, dict) or context is None):
+                raise ValueError(f"{context=} must be a dictionary or None.")
+
+        # NOTE: `self.action` and `self.context` have non-none defaults assigned.
         self.time = time
         self.action = (lambda: None) if action is None else action
         self.context = {} if context is None else context
         self.active = True
+
 
     def activate(self) -> NoReturn:
         """Activate event."""
@@ -65,6 +74,8 @@ class Event:
         if self.active:
             return self.action()
 
+        return None
+
     def __le__(self, other):
         return self.time <= other.time
 
@@ -80,25 +91,6 @@ class EventScheduler:
         self.event_queue = []
         self.event_log = []
 
-
-    def next_event(self):
-        """Refer to next event without changing it.
-
-        This is sometimes called "peeking".
-        """
-        return heapq.nsmallest(1, self.event_queue)[0][1]
-
-    def peek(self):
-        """Get the time of the next event.
-
-        Returns infinity if there is no next event.
-        """
-        next_event = self.next_event()
-        if next_event:
-            return next_event.time
-
-        return float('inf')
-
     def schedule(self, event) -> NoReturn:
         """Schedule an event on the event queue.
 
@@ -113,7 +105,7 @@ class EventScheduler:
         if event.time >= 0 or self.current_time == 0:
             heapq.heappush(self.event_queue, (event.time, event))
         else:
-            raise ValueError(f"{event.time=} must be non-negative.")
+            raise ValueError(f"{event.time=} past `time=0` must be non-negative.")
 
     def timeout(self, delay, action=None, context=None):
         """Schedule an event some delay into the future.
@@ -122,25 +114,71 @@ class EventScheduler:
         `self.schedule` that assumes the scheduled event
         occurs at some delay from the moment it is scheduled.
         """
-        self.schedule(Event(self.current_time + delay, action=action, context=context))
+        event = Event(self.current_time + delay, action=action, context=context)
+        self.schedule(event)
 
-    def activate_next_event(self):
+    def next_event(self) -> Optional[Event]:
+        """Refer to next event without changing it.
+        """
+        next_pair = heapq.nsmallest(1, self.event_queue) 
+        if next_pair:
+            return next_pair[0][1]
+        return None
+
+    def next_event_by_condition(self, condition: Callable) -> Optional[Event]:
+        """Return a reference to the next event that satisfies a given condition."""
+        for _, event in self.event_queue:
+            if condition(self, event):
+                return event
+        return None
+
+    def peek(self) -> Optional[float]:
+        """Get the time of the next event.
+
+        Returns infinity if there is no next event.
+        """
+        next_event = self.next_event()
+        if next_event:
+            return next_event.time
+
+        return float("inf")
+
+    def apply_to_all_events(self, func: Callable) -> NoReturn:
+        """Apply a function to all events in schedule."""
+        for _, event in self.event_queue:
+            func(event)
+
+    def apply_to_events_by_condition(self, func: Callable, condition: Callable) -> NoReturn:
+        """Apply a function to any events in queue that satisfy condition."""
+        for _, event in self.event_queue:
+            if condition(self, event):
+                func(event)
+
+
+    def activate_next_event(self) -> NoReturn:
         """Activate the next scheduled event."""
         self.next_event().activate()
 
     def activate_next_event_by_condition(self, condition: Callable):
-        for event in self.event_queue:
-            if condition(self, event):
-                event.activate()
-                break
+        """The next event satisfying a condition becomes activated.
 
-    def activate_all_events(self):
+        This function has no effect on schedule state if no events
+        meet the condition.
+
+        This function has no effect on schedule state if the next event
+        meeting the condition is already active.
+        """
+        option_event = self.next_event_by_condition(condition)
+        if option_event is not None:
+            option_event.activate()
+
+    def activate_all_events(self) -> NoReturn:
         """Activate all future events.
 
         Every event on the event queue will be activated.
         """
-        for event in self.event_queue:
-            event.activate()
+        func = lambda event: event.activate()
+        self.apply_to_all_events(func)
 
     def activate_all_events_by_condition(self, condition: Callable):
         """Activate future events by condition.
@@ -148,57 +186,50 @@ class EventScheduler:
         Every event that satisfies the given condition
         will be activated.
         """
-        for event in self.event_queue:
-            if condition(self, event):
-                event.activate()
+        func = lambda event: event.activate()
+        self.apply_to_event_by_condition(func, condition)
 
-    def deactivate_next_event(self):
+    def deactivate_next_event(self) -> NoReturn:
         """Deactive the next event in the event queue."""
         self.next_event().deactivate()
 
-    def deactivate_next_event_by_condition(self, condition: Callable):
+    def deactivate_next_event_by_condition(self, condition: Callable) -> NoReturn:
         """Deactivate the next event that satisfies the given condition."""
-        for event_pair in self.event_queue:
-            if condition(self, event_pair):
-                event_pair[1].deactivate()
-                break
+        option_event = self.next_event_by_condition(condition)
+        if option_event is not None:
+            option_event.deactivate()
 
-    def deactivate_all_events(self):
+    def deactivate_all_events(self) -> NoReturn:
         """Deactivate all future events."""
-        for event in self.event_queue:
-            event.deactivate()
+        self.apply_all_events(lambda event: event.deactivate())
 
-    def deactivate_all_events_by_condition(self, condition: Callable):
+    def deactivate_all_events_by_condition(self, condition: Callable) -> NoReturn:
         """Deactivate future events by condition."""
-        for event in self.event_queue:
-            if condition(self, event):
-                event.deactivate()
+        func = lambda event: event.deactivate()
+        self.apply_to_all_events(func, condition)
 
-    def cancel_next_event(self) -> None:
+    def cancel_next_event(self) -> NoReturn:
         """Removes next event from the event schedule."""
         heapq.heappop(self.event_queue)
 
-    def cancel_next_event_by_condition(self, condition: Callable):
+    def cancel_next_event_by_condition(self, condition: Callable) -> NoReturn:
         """Cancel the next event that satisfies a given condition."""
-        for event in self.event_queue:
-            if condition(self, event):
-                target = event
-                break
-        if target is not None:
-            self.event_queue.remove(event)
+        option_event = self.next_event_by_condition(condition)
+        if option_event is not None:
+            self.event_queue.remove((option_event.time, option_event)) #TODO: Check that this works.
 
-    def cancel_all_events(self) -> None:
+    def cancel_all_events(self) -> NoReturn:
         """Removes all events from the event schedule."""
         self.event_queue = []
 
     def cancel_all_events_by_condition(self, condition: Callable):
         """Remove all events by a given condtion."""
         targets = []
-        for event in self.event_queue:
+        for time, event in self.event_queue:
             if condition(self, event):
                 targets.append(event)
         for event in targets:
-            self.event_queue.remove(event)
+            self.event_queue.remove((time, event))
 
     def _always_log_filter(self, event, event_result):
         """Keep all events in the event log."""
@@ -222,7 +253,8 @@ class EventScheduler:
         else:
             return self._run_filtered_logging(stop, log_filter)
 
-    def step(self):
+    def step(self) -> tuple[Event, Any]:
+        """Step the simulation forward one event."""
         time, event = heapq.heappop(self.event_queue)
         self.current_time = time
         event_result = event.run()
@@ -261,10 +293,10 @@ class EventScheduler:
         as the stop condition.
         """
         stop = lambda scheduler: (
-                scheduler.current_time >= max_time
-                or not scheduler.event_queue
-                or heapq.nsmallest(1, scheduler.event_queue)[0][0] >= max_time
-            )
+            scheduler.current_time >= max_time
+            or not scheduler.event_queue
+            or heapq.nsmallest(1, scheduler.event_queue)[0][0] >= max_time
+        )
         return self.run(stop, log_filter, logging)
 
     def run_until_event(self, event: Event, log_filter: Callable = None, logging=True):
@@ -273,9 +305,6 @@ class EventScheduler:
         This function is a convenience wrapper around the run
         method so that simulating until an event is elapsed is
         assumed as the stop condition."""
-        stop = lambda scheduler: (
-                event in scheduler.event_log
-            )
+        stop = lambda scheduler: (event in scheduler.event_log)
 
         return self.run(stop, log_filter, logging)
-
