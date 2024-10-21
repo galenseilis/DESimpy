@@ -18,7 +18,7 @@ def test_action_returns_literal():
     result = event.run()
     assert result == value
 
-def test_event_that_times_out_event():
+def test_event_timeout_event():
     env = EventScheduler()
 
     time1 = 2
@@ -26,17 +26,10 @@ def test_event_that_times_out_event():
     event1 = Event(time1, action1)
 
     env.schedule(event1)
-    event1.run()
+    event_log = env.run_until_max_time(100)
+    assert len(event_log) == 2
+    assert event_log[0][0] == event1
+    assert event_log[0][1] == None
+    assert event_log[1][0].time == 32
+    assert event_log[1][1] == None
     
-    assert len(env.event_queue) == 2
-    assert env.next_event() == event1
-    step1 = env.step()
-    assert step1[0].time == 2
-    step2 = env.step()
-    assert step2[0].time == 30
-    assert step2[1] == None
-
-    # WARN: Not sure if this last event should exist.
-    step3 = env.step()
-    assert step3[0].time == 32
-    assert step3[1] == None
