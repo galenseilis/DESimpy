@@ -124,7 +124,7 @@ class EventScheduler:
 
         heapq.heappush(self.event_queue, (event.time, event))
 
-    def timeout(self, delay: float, action=None, context=None):
+    def timeout(self, delay: float, action: Optional[Callable] = None, context: Optional[dict] = None) -> NoReturn:
         """Schedule an event some delay into the future.
 
         This event is a convenience function around
