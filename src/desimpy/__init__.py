@@ -93,7 +93,16 @@ class EventScheduler:
         self.event_log = []
         self.active = False
 
-    def schedule(self, event) -> NoReturn:
+    @property
+    def now(self) -> float:
+        """Return current time.
+
+        This property method concisely provides the
+        current time in the simulation to the user.
+        """
+        return self.current_time
+
+    def schedule(self, event: Event) -> NoReturn:
         """Schedule an event on the event queue.
 
         It is possible to schedule events with negative times
@@ -108,7 +117,7 @@ class EventScheduler:
         if __debug__:
             if not isinstance(event, Event):
                 raise TypeError(f"{event=} must be of type Event.")
-            if not (event.time >= 0 or self.active):
+            if not (event.time >= 0 or not self.active):
                 raise ValueError(
                     f"{event.time=} past `time=0` must be non-negative once simulation has become active."
                 )
@@ -255,13 +264,20 @@ class EventScheduler:
         The `log_filter` expects an event, and keeps that event depending on the
         event itself (e.g. checking what is in context) as well as the result of the
         event (i.e. `event_result`).
+
+        Running this function will activate, and subsequently deactivate, a the simulation
+        according to a binary variable, `EventScheduler.active`. This attribute will ensure consistent
+        scheduling of variables in temporal order during simulations provided that Python's
+        `__debug__ == True`.
         """
+        self._activate()
         if not logging:
             return self._run_without_logging(stop)
         elif log_filter is None:
             return self._run_always_logging(stop)
         else:
             return self._run_filtered_logging(stop, log_filter)
+        self._deactivate()
 
     def step(self) -> tuple[Event, Any]:
         """Step the simulation forward one event."""
@@ -272,7 +288,7 @@ class EventScheduler:
 
     def _run_without_logging(self, stop: Callable) -> list:
         while not stop(self):
-            if not self.event_queue:
+            if not self.event_queue: # Always stop if there are no more events.
                 break
             self.step()
 
@@ -318,3 +334,9 @@ class EventScheduler:
         stop = lambda scheduler: (event in scheduler.event_log)
 
         return self.run(stop, log_filter, logging)
+
+    def _activate(self):
+        self.active = True
+
+    def _deactivate(self):
+        self.active = False
