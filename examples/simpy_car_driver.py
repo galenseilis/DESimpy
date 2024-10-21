@@ -52,9 +52,10 @@ class Car:
 # $2 DEFINE DRIVER PROCESS #
 ############################
 
+
 def deactivate_next_charge_condition(env: EventScheduler, event: Event) -> bool:
     """Deactivate the charging event."""
-    if event.context.get("event_type", None) == 'charge':
+    if event.context.get("event_type", None) == "charge":
         return True
     return False
 
@@ -62,7 +63,9 @@ def deactivate_next_charge_condition(env: EventScheduler, event: Event) -> bool:
 def driver(env, car):
     def interrupt_action():
         print("Was interrupted. Hope, the battery is full enough ...")
-        env.deactivate_next_event_by_condition(condition=deactivate_next_charge_condition)
+        env.deactivate_next_event_by_condition(
+            condition=deactivate_next_charge_condition
+        )
         event = Event(env.current_time, car.schedule_drive)
         env.schedule(event)
 

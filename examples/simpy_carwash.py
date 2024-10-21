@@ -34,6 +34,7 @@ random.seed(RANDOM_SEED)
 # $2 DEFINE CARWASH #
 #####################
 
+
 class Carwash:
     """
     A carwash that has a limited number of washing machines (NUM_MACHINES).
@@ -81,9 +82,11 @@ class Carwash:
             next_car = self.queue.pop(0)
             self.request(next_car)
 
+
 #################
 # $3 DEFINE CAR #
 #################
+
 
 class Car:
     """
@@ -103,9 +106,11 @@ class Car:
         """
         self.carwash.request(self.name)
 
+
 ############################
 # $4 DEFINE SETUP FUNCTION #
 ############################
+
 
 def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
     """

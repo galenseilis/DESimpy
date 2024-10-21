@@ -1,7 +1,7 @@
 """
-This script demonstrates a simple car parking and driving process simulation using a custom discrete-event 
-simulation (DES) framework. It closely follows the basic SimPy example where a car alternates between parking 
-and driving. The script schedules and executes events, showing how the car switches states after specific 
+This script demonstrates a simple car parking and driving process simulation using a custom discrete-event
+simulation (DES) framework. It closely follows the basic SimPy example where a car alternates between parking
+and driving. The script schedules and executes events, showing how the car switches states after specific
 time intervals.
 
 ```yaml
