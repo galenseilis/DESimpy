@@ -1,4 +1,5 @@
 # DESimpy
+
 A synchronous [discrete event simulation](https://en.wikipedia.org/wiki/Discrete-event_simulation) (DES) framework in Python (DESimpy).
 
 ## Overview
