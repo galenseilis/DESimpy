@@ -2,7 +2,7 @@ from desimpy import EventScheduler
 import pytest
 
 
-def test_event_scheduler_initialization():
+def test_default():
     """Test that an EventScheduler is correctly initialized."""
     scheduler = EventScheduler()
 
@@ -14,3 +14,4 @@ def test_event_scheduler_initialization():
 
     # Test if event_log is an empty list
     assert scheduler.event_log == []
+

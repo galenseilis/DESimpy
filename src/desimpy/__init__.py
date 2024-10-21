@@ -91,6 +91,7 @@ class EventScheduler:
         self.current_time = 0
         self.event_queue = []
         self.event_log = []
+        self.active = False
 
     def schedule(self, event) -> NoReturn:
         """Schedule an event on the event queue.
@@ -103,10 +104,13 @@ class EventScheduler:
         user to ensure that the desired behaviour is achieved with
         prescheduling.
         """
-        if event.time >= 0 or self.current_time == 0:
-            heapq.heappush(self.event_queue, (event.time, event))
-        else:
-            raise ValueError(f"{event.time=} past `time=0` must be non-negative.")
+        if __debug__:
+            if not isinstance(event, Event):
+                raise TypeError(f"{event=} must be of type Event.")
+            if not (event.time >= 0 or self.active):
+                raise ValueError(f"{event.time=} past `time=0` must be non-negative once simulation has become active.")
+
+        heapq.heappush(self.event_queue, (event.time, event))
 
     def timeout(self, delay, action=None, context=None):
         """Schedule an event some delay into the future.
