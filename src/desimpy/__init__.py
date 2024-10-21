@@ -104,6 +104,7 @@ class EventScheduler:
         user to ensure that the desired behaviour is achieved with
         prescheduling.
         """
+        # OPTIMIZE: Validation checks that are removed when run in optimized mode.
         if __debug__:
             if not isinstance(event, Event):
                 raise TypeError(f"{event=} must be of type Event.")
@@ -114,7 +115,7 @@ class EventScheduler:
 
         heapq.heappush(self.event_queue, (event.time, event))
 
-    def timeout(self, delay, action=None, context=None):
+    def timeout(self, delay: float, action=None, context=None):
         """Schedule an event some delay into the future.
 
         This event is a convenience function around
