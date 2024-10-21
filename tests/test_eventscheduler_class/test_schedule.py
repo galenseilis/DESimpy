@@ -51,3 +51,14 @@ def test_schedule_negative_time_when_inactive():
     event = Event(-10)
     env.schedule(event)
     assert env.run_until_max_time(10)[0][0] == event
+
+def test_event_with_context():
+    time = 10
+    action = lambda: 2018
+    context = {'foo':'bar', 1:'baz'}
+    event = Event(time, action, context)
+    env = EventScheduler()
+    env.schedule(event)
+    (event_out, event_result) = env.step()
+    assert event_out == event
+    assert event_result == 2018
