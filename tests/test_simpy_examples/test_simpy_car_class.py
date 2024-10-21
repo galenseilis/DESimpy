@@ -55,5 +55,6 @@ def run_desimpy():
 
     return results
 
+
 def test_equal_histories():
     assert run_simpy() == run_desimpy()

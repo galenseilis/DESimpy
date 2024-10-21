@@ -2,21 +2,25 @@ import heapq
 import pytest
 from desimpy import Event, EventScheduler
 
+
 def test_no_action():
     event = Event(2018)
     result = event.run()
     assert result is None
+
 
 def test_lambda_none():
     event = Event(2018, action=lambda: None)
     result = event.run()
     assert result is None
 
+
 def test_action_returns_literal():
-    value = 'foo'
+    value = "foo"
     event = Event(2018, action=lambda: value)
     result = event.run()
     assert result == value
+
 
 def test_event_timeout_event():
     env = EventScheduler()
@@ -32,4 +36,3 @@ def test_event_timeout_event():
     assert event_log[0][1] == None
     assert event_log[1][0].time == 32
     assert event_log[1][1] == None
-    

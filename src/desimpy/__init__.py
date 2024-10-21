@@ -53,7 +53,6 @@ class Event:
         self.context = {} if context is None else context
         self.active = True
 
-
     def activate(self) -> NoReturn:
         """Activate event."""
         self.active = True
@@ -120,9 +119,8 @@ class EventScheduler:
         self.schedule(event)
 
     def next_event(self) -> Optional[Event]:
-        """Refer to next event without changing it.
-        """
-        next_pair = heapq.nsmallest(1, self.event_queue) 
+        """Refer to next event without changing it."""
+        next_pair = heapq.nsmallest(1, self.event_queue)
         if next_pair:
             return next_pair[0][1]
         return None
@@ -150,12 +148,13 @@ class EventScheduler:
         for _, event in self.event_queue:
             func(event)
 
-    def apply_to_events_by_condition(self, func: Callable, condition: Callable) -> NoReturn:
+    def apply_to_events_by_condition(
+        self, func: Callable, condition: Callable
+    ) -> NoReturn:
         """Apply a function to any events in queue that satisfy condition."""
         for _, event in self.event_queue:
             if condition(self, event):
                 func(event)
-
 
     def activate_next_event(self) -> NoReturn:
         """Activate the next scheduled event."""
@@ -218,7 +217,9 @@ class EventScheduler:
         """Cancel the next event that satisfies a given condition."""
         option_event = self.next_event_by_condition(condition)
         if option_event is not None:
-            self.event_queue.remove((option_event.time, option_event)) #TODO: Check that this works.
+            self.event_queue.remove(
+                (option_event.time, option_event)
+            )  # TODO: Check that this works.
 
     def cancel_all_events(self) -> NoReturn:
         """Removes all events from the event schedule."""

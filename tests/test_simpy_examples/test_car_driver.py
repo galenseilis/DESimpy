@@ -73,5 +73,6 @@ def run_desimpy():
     scheduler.run_until_max_time(15, logging=False)
     return results
 
+
 def test_equal_histories():
     assert run_simpy() == run_desimpy()

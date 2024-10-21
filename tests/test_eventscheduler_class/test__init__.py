@@ -1,6 +1,7 @@
 from desimpy import EventScheduler
 import pytest
 
+
 def test_event_scheduler_initialization():
     """Test that an EventScheduler is correctly initialized."""
     scheduler = EventScheduler()

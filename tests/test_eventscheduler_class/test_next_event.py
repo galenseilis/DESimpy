@@ -1,10 +1,12 @@
 from desimpy import Event, EventScheduler
 
+
 def test_empty_event_queue():
     """Should return None if event queue is empty."""
     env = EventScheduler()
     result = env.next_event()
     assert result is None
+
 
 def test_preserves_event_identity():
     """Should not change the event."""
@@ -13,6 +15,7 @@ def test_preserves_event_identity():
     env.schedule(event)
     result = env.next_event()
     assert result == event
+
 
 def test_is_next_among_other_events():
     """Should actually be the next event even among other events."""
@@ -33,6 +36,7 @@ def test_is_next_among_other_events():
 
     # Check if next event is the earliest in time.
     assert result == first_event
+
 
 def test_is_next_after_elapsed_time():
     """Next event evolves with simulation."""
