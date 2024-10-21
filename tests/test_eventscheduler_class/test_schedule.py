@@ -1,6 +1,7 @@
 import pytest
 from desimpy import Event, EventScheduler
 
+
 def test_schedule_nonevent():
     class Foo:
         def __init__(self):
@@ -16,10 +17,12 @@ def test_schedule_int():
     with pytest.raises(TypeError):
         env.schedule(int)
 
+
 def test_schedule_str():
     env = EventScheduler()
     with pytest.raises(TypeError):
         env.schedule(str)
+
 
 def test_schedule_negative_after_zero():
     env = EventScheduler()

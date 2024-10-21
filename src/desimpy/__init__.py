@@ -108,7 +108,9 @@ class EventScheduler:
             if not isinstance(event, Event):
                 raise TypeError(f"{event=} must be of type Event.")
             if not (event.time >= 0 or self.active):
-                raise ValueError(f"{event.time=} past `time=0` must be non-negative once simulation has become active.")
+                raise ValueError(
+                    f"{event.time=} past `time=0` must be non-negative once simulation has become active."
+                )
 
         heapq.heappush(self.event_queue, (event.time, event))
 

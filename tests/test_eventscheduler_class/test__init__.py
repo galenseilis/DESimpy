@@ -14,4 +14,3 @@ def test_default():
 
     # Test if event_log is an empty list
     assert scheduler.event_log == []
-
