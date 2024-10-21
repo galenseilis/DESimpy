@@ -17,10 +17,12 @@ def test_schedule_int():
     with pytest.raises(TypeError):
         env.schedule(2018)
 
+
 def test_schedule_float():
     env = EventScheduler()
     with pytest.raises(TypeError):
         env.schedule(2018.0)
+
 
 def test_schedule_str():
     env = EventScheduler()
@@ -37,12 +39,14 @@ def test_schedule_negative_after_zero():
     with pytest.raises(ValueError):
         env.schedule(event2)
 
+
 def test_schedule_negative_time_when_active():
     env = EventScheduler()
     event = Event(-10)
     env._activate()
     with pytest.raises(ValueError):
         env.schedule(event)
+
 
 # NOTE: Negative schedule times are allowed when simulation is inactive.
 # NOTE: Allowing this case allows for state preparation before t=0.
@@ -52,10 +56,11 @@ def test_schedule_negative_time_when_inactive():
     env.schedule(event)
     assert env.run_until_max_time(10)[0][0] == event
 
+
 def test_event_with_context():
     time = 10
     action = lambda: 2018
-    context = {'foo':'bar', 1:'baz'}
+    context = {"foo": "bar", 1: "baz"}
     event = Event(time, action, context)
     env = EventScheduler()
     env.schedule(event)

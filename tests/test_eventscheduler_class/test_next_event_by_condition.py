@@ -1,5 +1,6 @@
 from desimpy import Event, EventScheduler
 
+
 def test_next_by_time():
     event0 = Event(-1)
     event1 = Event(0)
@@ -32,6 +33,7 @@ def test_next_by_time():
     assert env.next_event_by_condition(lambda env, event: event.time >= 1) == event2
     assert env.next_event_by_condition(lambda env, event: event.time > 1) is None
 
+
 def test_next_by_if_action():
     event0 = Event(0, action=None)
     event1 = Event(0, action=lambda: None)
@@ -55,11 +57,11 @@ def test_next_by_if_action():
     assert condition1(env, event2) == True
     assert env.next_event_by_condition(condition1) == event2
 
-
     condition2 = lambda env, event: event.action == 2018
     assert condition2(env, event0) == False
     assert condition2(env, event1) == False
     assert condition2(env, event2) == False
     assert env.next_event_by_condition(condition2) is None
+
 
 # TODO: Add more test cases...

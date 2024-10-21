@@ -124,7 +124,12 @@ class EventScheduler:
 
         heapq.heappush(self.event_queue, (event.time, event))
 
-    def timeout(self, delay: float, action: Optional[Callable] = None, context: Optional[dict] = None) -> NoReturn:
+    def timeout(
+        self,
+        delay: float,
+        action: Optional[Callable] = None,
+        context: Optional[dict] = None,
+    ) -> NoReturn:
         """Schedule an event some delay into the future.
 
         This event is a convenience function around
@@ -288,7 +293,7 @@ class EventScheduler:
 
     def _run_without_logging(self, stop: Callable) -> list:
         while not stop(self):
-            if not self.event_queue: # Always stop if there are no more events.
+            if not self.event_queue:  # Always stop if there are no more events.
                 break
             self.step()
 
