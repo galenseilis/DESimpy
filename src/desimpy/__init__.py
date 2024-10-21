@@ -255,10 +255,6 @@ class EventScheduler:
         for event in targets:
             self.event_queue.remove((time, event))
 
-    def _always_log_filter(self, event, event_result):
-        """Keep all events in the event log."""
-        return True
-
     def run(self, stop: Callable, log_filter: Callable = None, logging=True) -> list:
         """Run the discrete event simulation.
 
