@@ -1,4 +1,5 @@
 import random
+from typing import Callable, Optional
 from desimpy import EventScheduler
 
 
@@ -14,7 +15,7 @@ class Gamma:
 class Customer:
     """Class representing a customer in the queueing system."""
 
-    def __init__(self, customer_id, arrival_time):
+    def __init__(self, customer_id, arrival_time: float) -> None:
         self.customer_id = customer_id
         self.arrival_time = arrival_time
         self.service_start_time = None
@@ -25,13 +26,13 @@ class Customer:
 class Node:
     def __init__(
         self,
-        queue_id,
-        arrival_dist,
-        service_dist,
-        num_servers,
-        routing_func,
-        depart_dist,
-        scheduler,
+        queue_id: int,
+        arrival_dist: Callable,
+        service_dist: Callable,
+        num_servers: int,
+        routing_func: Callable,
+        depart_dist: Callable,
+        scheduler: EventScheduler, # FIX: Provide instance of Network instead, which will have access to scheduler.
     ):
         self.queue_id = queue_id
         self.arrival_dist = arrival_dist
@@ -40,7 +41,7 @@ class Node:
         self.scheduler = scheduler  # Shared event scheduler for the network
         self.queue = []  # Queue for customers
         self.servers = [None] * self.num_servers  # Track server status
-        self.total_customers = 0  # Total customers processed
+        self.total_customers = 0  `:# FIX: Total number of customers should be tracked by Network.
         self.routing_func = routing_func  # Function to route customers to other queues
         self.depart_dist = depart_dist
 
