@@ -22,7 +22,7 @@ class Customer:
         self.current_node = None  # Track the current node (queue) for the customer
 
 
-class GGcQueue:
+class Node:
     def __init__(
         self,
         queue_id,
@@ -41,7 +41,6 @@ class GGcQueue:
         self.queue = []  # Queue for customers
         self.servers = [None] * self.num_servers  # Track server status
         self.total_customers = 0  # Total customers processed
-        self.total_wait_time = 0.0  # Accumulated wait time
         self.routing_func = routing_func  # Function to route customers to other queues
         self.depart_dist = depart_dist
 
@@ -59,9 +58,11 @@ class GGcQueue:
             },
         )
 
-    def handle_arrival(self):
+    def handle_arrival(self):  # FIX: Pass optional customer
         """Handle a customer arrival."""
-        customer = Customer(self.total_customers, self.scheduler.current_time)
+        customer = Customer(
+            self.total_customers, self.scheduler.current_time
+        )  # FIX: Create customer only if not provided.
         self.total_customers += 1
         customer.current_node = self.queue_id  # Track the customer's current queue
 
@@ -73,7 +74,7 @@ class GGcQueue:
             self.queue.append(customer)
 
         # Schedule the next arrival for the same queue
-        self.schedule_arrival()
+        self.schedule_arrival()  # FIX: Pass customer
 
     def find_free_server(self):
         """Find an available server."""
@@ -108,7 +109,6 @@ class GGcQueue:
         self.servers[server_id] = None  # Free the server
 
         wait_time = customer.service_start_time - customer.arrival_time
-        self.total_wait_time += wait_time
 
         if self.queue:
             next_customer = self.queue.pop(0)
@@ -118,29 +118,28 @@ class GGcQueue:
         next_node = self.routing_func(self)
         if next_node is not None:
             # Route the customer to the next node in the network
-            next_node.schedule_arrival(
-                inter_arrival_time=self.depart_dist.sample()
+            next_node.schedule_arrival(  # FIX: Pass customer to be reused.
+                inter_arrival_time=self.depart_dist.sample()  # FIX: Pass customer and self to sample
             )
 
 
-class QueueNetwork:
+class Network:
     """Class representing the entire network of queues."""
 
-    def __init__(self, max_time):
+    def __init__(self):
         self.scheduler = EventScheduler()  # Global scheduler for the network
         self.queues = []  # List of all queues in the network
-        self.max_time = max_time
 
     def add_queue(self, queue):
         """Add a queue to the network."""
         self.queues.append(queue)
 
-    def run(self):
+    def run(self, max_time):
         """Run the network simulation."""
         # Schedule initial arrivals for each queue
         for queue in self.queues:
             queue.schedule_arrival()
-        return self.scheduler.run_until_max_time(self.max_time)
+        return self.scheduler.run_until_max_time(max_time)
 
 
 # Routing function example: round-robin routing between two queues
@@ -155,15 +154,14 @@ def round_robin_routing(queue):
 
 # Example usage of the network simulation
 if __name__ == "__main__":
-    network = QueueNetwork(max_time=10.0)  # Maximum simulation time
-
+    network = Network()  # Maximum simulation time
     # Create two queues with different service distributions and add to the network
     arrival_dist = Gamma(1, 2)  # Shared arrival distribution for both queues
     service_dist1 = Gamma(2, 1)  # Service time for the first queue
     service_dist2 = Gamma(3, 1)  # Service time for the second queue
     depart_dist = Gamma(4, 2)  # departure delay distribution for both queues.
 
-    queue1 = GGcQueue(
+    queue1 = Node(
         queue_id=0,
         arrival_dist=arrival_dist,
         service_dist=service_dist1,
@@ -172,7 +170,7 @@ if __name__ == "__main__":
         depart_dist=depart_dist,
         scheduler=network.scheduler,
     )
-    queue2 = GGcQueue(
+    queue2 = Node(
         queue_id=1,
         arrival_dist=arrival_dist,
         service_dist=service_dist2,
@@ -186,7 +184,7 @@ if __name__ == "__main__":
     network.add_queue(queue2)
 
     # Run the simulation
-    results = network.run()
+    results = network.run(10)
 
     # Print results
     for result in results:
