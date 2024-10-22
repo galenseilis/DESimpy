@@ -255,7 +255,9 @@ class EventScheduler:
         for event in targets:
             self.event_queue.remove((time, event))
 
-    def run(self, stop: Callable, log_filter: Callable = None, logging: bool = True) -> list:
+    def run(
+        self, stop: Callable, log_filter: Callable = None, logging: bool = True
+    ) -> list:
         """Run the discrete event simulation.
 
         By default every event will be logged, but for some simulations that may

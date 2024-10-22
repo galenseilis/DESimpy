@@ -2,6 +2,7 @@ import random
 
 from desimpy import EventScheduler
 
+
 class Gamma:
     def __init__(self, alpha, beta):
         self.alpha = alpha
@@ -9,6 +10,7 @@ class Gamma:
 
     def sample(self):
         return random.gammavariate(self.alpha, self.beta)
+
 
 class Customer:
     """Class representing a customer in the queueing system."""
@@ -102,8 +104,8 @@ class GGcQueue:
 
 # Example usage of the simulation
 if __name__ == "__main__":
-    arrival_dist = Gamma(1,2)
-    service_dist = Gamma(2,1)
+    arrival_dist = Gamma(1, 2)
+    service_dist = Gamma(2, 1)
     num_servers = 2  # Number of servers
     max_time = 100.0  # Maximum simulation time
 
