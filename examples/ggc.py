@@ -24,8 +24,8 @@ class Customer:
 
 class GGcQueue:
     def __init__(self, arrival_dist, service_dist, num_servers, max_time):
-        self.arrival_dist = arrival_dist  # λ (arrival rate)
-        self.service_dist = service_dist  # μ (service rate)
+        self.arrival_dist = arrival_dist
+        self.service_dist = service_dist
         self.num_servers = num_servers  # c (number of servers)
         self.max_time = max_time  # Max simulation time
         self.scheduler = EventScheduler()  # Event scheduler
@@ -97,7 +97,7 @@ class GGcQueue:
             self.start_service(next_customer, server_id)
 
     def run(self):
-        """Run the M/M/c queue simulation."""
+        """Run the G/G/c queue simulation."""
         self.schedule_arrival()  # Schedule the first arrival
         return self.scheduler.run_until_max_time(self.max_time)  # Run until max_time
 
