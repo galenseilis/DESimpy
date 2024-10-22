@@ -120,7 +120,7 @@ class GGcQueue:
             # Route the customer to the next node in the network
             next_node.schedule_arrival(
                 inter_arrival_time=self.depart_dist.sample()
-            )  # Immediate arrival at the next node
+            )
 
 
 class QueueNetwork:
