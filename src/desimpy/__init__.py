@@ -3,6 +3,7 @@
 import heapq
 from typing import Any, Callable, NoReturn, Optional
 
+__all__ = ['Event', 'EventScheduler']
 
 class Event:
     """DES event.
