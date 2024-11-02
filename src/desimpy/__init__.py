@@ -52,6 +52,7 @@ class Event:
         self.action = (lambda: None) if action is None else action
         self.context = {} if context is None else context
         self.active = True
+        self.result = None
 
     def activate(self) -> NoReturn:
         """Activate event."""
@@ -73,10 +74,8 @@ class Event:
         is implicitly returned by `run`.
         """
         if self.active:
-            return self.action() #TODO: Assign result to self; need to also change logging.
-
-        return None
-
+            self.result = self.action()
+            
     def __le__(self, other):
         return self.time <= other.time
 
@@ -98,7 +97,7 @@ class EventScheduler:
         """Return current time.
 
         This property method concisely provides the
-        current time in the simulation to the user.
+        current time in the simulation.
         """
         return self.current_time
 
@@ -274,7 +273,7 @@ class EventScheduler:
         `__debug__ == True`.
         """
         self._activate()
-        # OPTIMIZE: Choose efficient implementation.
+        # OPTIMIZE: Chooses efficient implementation.
         if not logging:
             return self._run_without_logging(stop)
         elif callable(logging):
@@ -285,12 +284,14 @@ class EventScheduler:
 
     def step(self) -> tuple[Event, Any]:
         """Step the simulation forward one event."""
-        time, event = heapq.heappop(self.event_queue)
-        self.current_time = time
-        event_result = event.run()
-        return event, event_result
+        event_time, event = heapq.heappop(self.event_queue)
+        self.current_time = event_time
+        event.run()
+        return event
 
+    # TODO: Evaluate if this is needed at all.
     def _stop_no_events(self):
+        """Break out of simulation loop if there are no events to process."""
         if not self.event_queue: # Always stop if there are no more events.
             break
 
@@ -303,15 +304,15 @@ class EventScheduler:
         while not stop(self):
             self._stop_no_events()
             event, event_result = self.step()
-            self.event_log.append((event, event_result))
+            self.event_log.append(event)
         return self.event_log
 
     def _run_filtered_logging(self, stop: Callable, log_filter: Callable):
         while not stop(self):
             self._stop_no_events()
-            event, event_result = self.step()
-            if log_filter(event, event_result):
-                self.event_log.append((event, event_result))
+            event = self.step()
+            if log_filter(event):
+                self.event_log.append(event)
         return self.event_log
 
     def run_until_max_time(
@@ -323,6 +324,7 @@ class EventScheduler:
         method so that simulating until a maximum is assumed
         as the stop condition.
         """
+        # TODO: Evaluate if stop should be defined elsewhere for testability.
         stop = lambda scheduler: (
             scheduler.current_time >= max_time
             or not scheduler.event_queue
