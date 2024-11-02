@@ -1,9 +1,14 @@
 """Core components of a discrete event simulation (DES)."""
 
+from enum import Enum
 import heapq
 from typing import Any, Callable, NoReturn, Optional
 
 __all__ = ['Event', 'EventScheduler']
+
+class EventStatus(Enum):
+    INACTIVE = 0
+    ACTIVE = 1
 
 class Event:
     """DES event.
@@ -85,6 +90,9 @@ class Event:
     def __lt__(self, other):
         return self.time < other.time
 
+class EventSchedulerStatus(Enum):
+    INACTIVE = 0
+    ACTIVE = 1
 
 class EventScheduler:
     """Run discrete event simulations."""
