@@ -47,8 +47,8 @@ class Event:
             if not (callable(action) or action is None):
                 raise TypeError(f"{action=} must be a callable or None.")
 
-        # NOTE: `self.action` and `self.context` have non-none defaults assigned.
         self.time = time
+        # NOTE: `self.action` has a non-none default assigned.
         self.action = (lambda: None) if action is None else action
         self.context = {} if context is None else context
         self.active = True
