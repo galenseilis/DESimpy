@@ -51,13 +51,15 @@ class Event:
         # NOTE: `self.action` has a non-none default assigned.
         self.action = (lambda: None) if action is None else action
         self.context = {} if context is None else context
-        self.active = True
+        self.active = True # TODO: Consider whether ENUMS would be better here.
         self.result = None
-
+        
+    # TODO: Consider whether ENUMS would be better here.
     def activate(self) -> NoReturn:
         """Activate event."""
         self.active = True
-
+        
+    # TODO: Consider whether ENUMS would be better here.
     def deactivate(self) -> NoReturn:
         """Deactivate event."""
         self.active = False
@@ -90,7 +92,7 @@ class EventScheduler:
         self.current_time = 0
         self.event_queue = []
         self.event_log = []
-        self.active = False
+        self.active = False # TODO: Consider whether ENUMS would be better here.
 
     @property
     def now(self) -> float:
@@ -316,8 +318,7 @@ class EventScheduler:
         return self.event_log
 
     def run_until_max_time(
-        self, max_time: float, log_filter: Callable = None, logging=True
-    ):
+        self, max_time: float, logging: Callable | bool = True):
         """Simulate until a maximum time is reached.
 
         This method is a convenience wrapper around the run
@@ -330,9 +331,9 @@ class EventScheduler:
             or not scheduler.event_queue
             or heapq.nsmallest(1, scheduler.event_queue)[0][0] >= max_time
         )
-        return self.run(stop, log_filter, logging)
+        return self.run(stop, logging)
 
-    def run_until_event(self, event: Event, log_filter: Callable = None, logging=True):
+    def run_until_given_event(self, event: Event, logging: Callable | bool = True):
         """Simulate until a given event has elapsed.
 
         This function is a convenience wrapper around the run
@@ -340,10 +341,14 @@ class EventScheduler:
         assumed as the stop condition."""
         stop = lambda scheduler: (event in scheduler.event_log)
 
-        return self.run(stop, log_filter, logging)
+        return self.run(stop, logging)
 
+    # TODO: Consider whether ENUMS would be better here.
     def _activate(self):
+        """Set the simulation status to "active"."""
         self.active = True
 
+    # TODO: Consider whether ENUMS would be better here.
     def _deactivate(self):
+        """Set the simulation status to "inactive"."""
         self.active = False
