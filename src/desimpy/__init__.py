@@ -73,7 +73,7 @@ class Event:
         is implicitly returned by `run`.
         """
         if self.active:
-            return self.action()
+            return self.action() #TODO: Assign result to self; need to also change logging.
 
         return None
 
@@ -256,7 +256,7 @@ class EventScheduler:
             self.event_queue.remove((time, event))
 
     def run(
-        self, stop: Callable, log_filter: Callable = None, logging: bool = True
+        self, stop: Callable, logging: Callable | bool = True
     ) -> list:
         """Run the discrete event simulation.
 
@@ -274,12 +274,13 @@ class EventScheduler:
         `__debug__ == True`.
         """
         self._activate()
+        # OPTIMIZE: Choose efficient implementation.
         if not logging:
             return self._run_without_logging(stop)
-        elif log_filter is None:
-            return self._run_always_logging(stop)
+        elif callable(logging):
+            return self._run_filtered_logging(stop, logging)
         else:
-            return self._run_filtered_logging(stop, log_filter)
+            return self._run_always_logging(stop)
         self._deactivate()
 
     def step(self) -> tuple[Event, Any]:
@@ -289,24 +290,25 @@ class EventScheduler:
         event_result = event.run()
         return event, event_result
 
+    def _stop_no_events(self):
+        if not self.event_queue: # Always stop if there are no more events.
+            break
+
     def _run_without_logging(self, stop: Callable) -> list:
         while not stop(self):
-            if not self.event_queue:  # Always stop if there are no more events.
-                break
+            self._stop_no_events()
             self.step()
 
     def _run_always_logging(self, stop: Callable) -> list:
         while not stop(self):
-            if not self.event_queue:  # Always stop if there are no more events.
-                break
+            self._stop_no_events()
             event, event_result = self.step()
             self.event_log.append((event, event_result))
         return self.event_log
 
     def _run_filtered_logging(self, stop: Callable, log_filter: Callable):
         while not stop(self):
-            if not self.event_queue:  # Always stop if there are no more events.
-                break
+            self._stop_no_events()
             event, event_result = self.step()
             if log_filter(event, event_result):
                 self.event_log.append((event, event_result))
