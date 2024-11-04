@@ -23,7 +23,7 @@ Here is a small example to show the basic logic. This example is the simple cloc
 ```python
 from desimpy import EventScheduler
 
-def clock(env, name, tick) -> None:
+def clock(env: EventScheduler, name: str, tick: int | float) -> None:
     """Clock simulation process."""
 
     def action() -> None:
@@ -38,7 +38,7 @@ env = EventScheduler()
 clock(env, "fast", 0.5)
 clock(env, "slow", 1)
 
-env.run_until_max_time(2, logging=False)
+event_log = env.run_until_max_time(2, logging=False)
 ```
 
 # Design
