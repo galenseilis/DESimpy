@@ -19,7 +19,7 @@ source: https://simpy.readthedocs.io/en/stable/simpy_intro/basic_concepts.html
 # $0 IMPORTS #
 ##############
 
-from desimpy import Event, EventScheduler
+from desimpy import EventScheduler
 
 #########################
 # $1 DEFINE CAR PROCESS #
@@ -69,4 +69,4 @@ if __name__ == "__main__":
     # $4 RUN SIMULATION #
     #####################
 
-    scheduler.run_until_max_time(15, logging=False)
+    _ = scheduler.run_until_max_time(15, logging=False)

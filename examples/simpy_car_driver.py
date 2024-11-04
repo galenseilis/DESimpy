@@ -25,7 +25,7 @@ from desimpy import Event, EventScheduler
 
 class Car:
     def __init__(self, env: EventScheduler) -> None:
-        self.env = env
+        self.env: EventScheduler = env
         # Start the run process when an instance is created
         self.schedule_run()
 
@@ -33,7 +33,7 @@ class Car:
         """Schedule the initial run event."""
         self.env.timeout(0, self.schedule_charge)
 
-    def schedule_drive(self):
+    def schedule_drive(self) -> None:
         # Define the action to be executed when charging ends
         print(f"Start driving at {self.env.current_time}")
 
@@ -55,12 +55,13 @@ class Car:
 
 def deactivate_next_charge_condition(env: EventScheduler, event: Event) -> bool:
     """Deactivate the charging event."""
+    _ = env
     if event.context.get("event_type", None) == "charge":
         return True
     return False
 
 
-def driver(env, car):
+def driver(env: EventScheduler, car: Car) -> None:
     def interrupt_action():
         print("Was interrupted. Hope, the battery is full enough ...")
         env.deactivate_next_event_by_condition(
@@ -90,4 +91,4 @@ if __name__ == "__main__":
     # $5 RUN SIMULATION #
     #####################
 
-    scheduler.run_until_max_time(15, logging=False)
+    _ = scheduler.run_until_max_time(15, logging=False)

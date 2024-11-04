@@ -1,12 +1,15 @@
 import random
-from typing import Callable, Optional
+from typing import Callable, Self
+
 from desimpy import EventScheduler
+
+# TODO: Pull in simdist package for distributions.
 
 
 class Gamma:
-    def __init__(self, alpha, beta):
-        self.alpha = alpha
-        self.beta = beta
+    def __init__(self, alpha: float, beta: float):
+        self.alpha: float = alpha
+        self.beta: float = beta
 
     def sample(self):
         return random.gammavariate(self.alpha, self.beta)
@@ -15,37 +18,47 @@ class Gamma:
 class Customer:
     """Class representing a customer in the queueing system."""
 
-    def __init__(self, customer_id, arrival_time: float) -> None:
-        self.customer_id = customer_id
-        self.arrival_time = arrival_time
-        self.service_start_time = None
-        self.departure_time = None
-        self.current_node = None  # Track the current node (queue) for the customer
+    def __init__(self, customer_id: int, arrival_time: float) -> None:
+        self.customer_id: int = customer_id
+        self.arrival_time: float = arrival_time
+        self.service_start_time: float | None = None
+        self.departure_time: float | None = None
+        self.current_node: Node | None = (
+            None  # Track the current node (queue) for the customer
+        )
 
 
 class Node:
     def __init__(
         self,
         queue_id: int,
-        arrival_dist: Callable,
-        service_dist: Callable,
+        arrival_dist: Callable[[], float],
+        service_dist: Callable[[], float],
         num_servers: int,
-        routing_func: Callable,
-        depart_dist: Callable,
-        scheduler: EventScheduler, # FIX: Provide instance of Network instead, which will have access to scheduler.
+        routing_func: Callable[[], Self],
+        depart_dist: Callable[[], float],
+        scheduler: EventScheduler,  # FIX: Provide instance of Network instead, which will have access to scheduler.
     ):
-        self.queue_id = queue_id
-        self.arrival_dist = arrival_dist
-        self.service_dist = service_dist
-        self.num_servers = num_servers
-        self.scheduler = scheduler  # Shared event scheduler for the network
-        self.queue = []  # Queue for customers
-        self.servers = [None] * self.num_servers  # Track server status
-        self.total_customers = 0  `:# FIX: Total number of customers should be tracked by Network.
-        self.routing_func = routing_func  # Function to route customers to other queues
-        self.depart_dist = depart_dist
+        self.queue_id: int = queue_id
+        self.arrival_dist: Callable[[], float] = arrival_dist
+        self.service_dist: Callable[[], float] = service_dist
+        self.num_servers: int = num_servers
+        self.scheduler: EventScheduler = (
+            scheduler  # Shared event scheduler for the network
+        )
+        self.queue: list[Customer] = []  # Queue for customers
+        self.servers: list[Customer | None] = [
+            None
+        ] * self.num_servers  # Track server status
+        self.total_customers: int = (
+            0  # FIX: Total number of customers should be tracked by Network.
+        )
+        self.routing_func: Callable[[], Self] = (
+            routing_func  # Function to route customers to other queues
+        )
+        self.depart_dist: Callable[[], float] = depart_dist
 
-    def schedule_arrival(self, inter_arrival_time=None):
+    def schedule_arrival(self, inter_arrival_time: float | None = None) -> None:
         """Schedule the next customer arrival."""
         if inter_arrival_time is None:
             inter_arrival_time = self.arrival_dist.sample()

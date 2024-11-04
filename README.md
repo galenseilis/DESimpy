@@ -46,7 +46,8 @@ event_log = env.run_until_max_time(2)
 - Avoid performance overhead of coroutines.
 - Do not change the past (i.e. event log should not be changed during simulation).
 - Event schedule ordering is purely temporal order of events elapsing.
-- Built-in logging.
+- Built-in event logging.
+    - Can be turned off for better performance.
 - Future schedule is mutable to simulate interruptions.
     - Activating events.
     - Deactivating events.

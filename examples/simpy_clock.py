@@ -68,4 +68,4 @@ if __name__ == "__name__":
     # $4 RUN SIMULATION #
     #####################
 
-    env.run_until_max_time(2, logging=False)
+    _ = env.run_until_max_time(2, logging=False)

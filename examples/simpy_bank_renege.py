@@ -1,4 +1,6 @@
-"""
+"""source: https://simpy.readthedocs.io/en/stable/examples/bank_renege.html"""
+
+COMMENT_SECTIONS = """
 ```yaml
 contents:
     - 0. Imports
@@ -10,7 +12,6 @@ contents:
     - 6. Initialize Counter
     - 7. Register Processes
     - 8. Run Simulation
-source: https://simpy.readthedocs.io/en/stable/examples/bank_renege.html
 ```
 """
 
@@ -52,9 +53,9 @@ class Counter:
     """
 
     def __init__(self, env: EventScheduler, capacity: int) -> None:
-        self.env = env
-        self.capacity = capacity
-        self.available = capacity
+        self.env: EventScheduler = env
+        self.capacity: int = capacity
+        self.available: int = capacity
         self.queue = []
 
     def request(self, customer):
@@ -141,7 +142,7 @@ class Customer:
         """
         if self in self.counter.queue:
             self.counter.queue.remove(self)
-            wait_time = self.env.current_time - self.arrive_time
+            wait_time: float = self.env.current_time - self.arrive_time
             print(
                 f"{self.env.current_time:.4f} {self.name}: RENEGED after {wait_time:.3f}"
             )
@@ -157,9 +158,10 @@ class Bank:
     Simulate the bank, generating customers at random intervals and handling their service.
     """
 
+    # WARN: Not to be confused with `collections.Counter`.
     def __init__(self, env: EventScheduler, counter: Counter):
-        self.env = env
-        self.counter = counter
+        self.env: EventScheduler = env
+        self.counter: Counter = counter
 
     def generate_customers(
         self, num_customers: int, interval: float, time_in_bank: float
@@ -205,4 +207,4 @@ if __name__ == "__main__":
     # $8 RUN SIMULATION #
     #####################
 
-    scheduler.run_until_max_time(float("inf"), logging=False)
+    _ = scheduler.run_until_max_time(float("inf"), logging=False)

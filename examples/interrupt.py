@@ -11,7 +11,7 @@ contents:
 # $0 IMPORTS #
 ##############
 
-from desimpy import Event, EventScheduler
+from desimpy import EventScheduler
 
 if __name__ == "__main__":
     ################################
@@ -27,9 +27,8 @@ if __name__ == "__main__":
 
     results = env.run_until_max_time(6)
 
-    for result in results:
-        event, outcome = result
-        print(event.time, outcome, event.context, event.active)
+    for event in results:
+        print(event.time, event.result, event.context, event.active)
 
     ################################
     # $2 INTERRUPT BY CANCELLATION #
@@ -50,6 +49,5 @@ if __name__ == "__main__":
 
     results = env.run_until_max_time(11)
 
-    for result in results:
-        event, outcome = result
-        print(event.time, outcome, event.context, event.active)
+    for event in results:
+        print(event.time, event.result, event.context, event.active)

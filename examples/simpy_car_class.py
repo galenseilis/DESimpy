@@ -38,7 +38,7 @@ class Car:
         Args:
             env (EventScheduler): The simulation's event scheduler.
         """
-        self.env = env
+        self.env: EventScheduler = env
         # Start the run process when an instance is created
         self.schedule_run()
 
@@ -96,10 +96,10 @@ if __name__ == "__main__":
     # $3 INITIALIZE CAR INSTANCE #
     ##############################
 
-    Car(scheduler)
+    _ = Car(scheduler)
 
     #####################
     # $4 RUN SIMULATION #
     #####################
 
-    scheduler.run_until_max_time(15, logging=False)
+    _ = scheduler.run_until_max_time(15, logging=False)

@@ -8,6 +8,8 @@ source: https://simpy.readthedocs.io/en/stable/examples/carwash.html
 # $0 IMPORTS #
 ##############
 
+from __future__ import annotations
+
 import itertools
 import random
 
@@ -42,10 +44,10 @@ class Carwash:
     """
 
     def __init__(self, env: EventScheduler, num_machines: int, washtime: int):
-        self.env = env
-        self.num_machines = num_machines
-        self.available_machines = num_machines
-        self.washtime = washtime
+        self.env: EventScheduler = env
+        self.num_machines: int = num_machines
+        self.available_machines: int = num_machines
+        self.washtime: float = washtime
         self.queue = []
 
     def request(self, car):
@@ -94,9 +96,9 @@ class Car:
     """
 
     def __init__(self, env: EventScheduler, name: str, carwash: Carwash):
-        self.env = env
-        self.name = name
-        self.carwash = carwash
+        self.env: EventScheduler = env
+        self.name: str = name
+        self.carwash: Carwash = carwash
         print(f"{self.env.current_time:.2f} {self.name} arrives at the carwash.")
         self.env.schedule(Event(self.env.current_time, lambda: self.enter_carwash()))
 
@@ -122,7 +124,7 @@ def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
 
     # Create 4 initial cars
     for _ in range(4):
-        Car(env, f"Car {next(car_count)}", carwash)
+        _ = Car(env, f"Car {next(car_count)}", carwash)
 
     # Function to generate cars continuously
     def generate_car():
@@ -133,7 +135,7 @@ def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
 
     # Create new car and schedule next one
     def create_new_car():
-        Car(env, f"Car {next(car_count)}", carwash)
+        _ = Car(env, f"Car {next(car_count)}", carwash)
         generate_car()
 
     # Start the initial car generation
@@ -157,4 +159,4 @@ if __name__ == "__main__":
     # $7 RUN SIMULATION #
     #####################
 
-    scheduler.run_until_max_time(SIM_TIME, logging=False)
+    _ = scheduler.run_until_max_time(SIM_TIME, logging=False)
