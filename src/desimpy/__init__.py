@@ -53,7 +53,8 @@ class Event:
     ) -> None:
         # OPTIMIZE: Validation checks that are removed when run in optimized mode.
         if __debug__:
-            # INFO: Some of the checks below are considered unreachable by the type checker, but they are.
+            # INFO: Some of the checks below are considered unreachable by the type checker,
+            # but they are.
             if not isinstance(time, (int, float)):
                 raise TypeError(f"{time=} must be a number.")
             if not (isinstance(context, dict) or context is None):
@@ -140,7 +141,7 @@ class EventScheduler:
                 raise TypeError(f"{event=} must be of type Event.")
             if not (event.time >= 0 or not self.active):
                 raise ValueError(
-                    f"{event.time=} past `time=0` must be non-negative once simulation has become active."
+                    f"{event.time=} must be non-negative once simulation has become active."
                 )
 
         heapq.heappush(self.event_queue, (event.time, event))
@@ -202,6 +203,7 @@ class EventScheduler:
 
     def activate_next_event(self) -> None:
         """Activate the next scheduled event."""
+        # TODO: https://github.com/dry-python/returns?tab=readme-ov-file#maybe-container
         option_next_event = self.next_event()
         if option_next_event:
             option_next_event.activate()
@@ -217,6 +219,7 @@ class EventScheduler:
         This function has no effect on schedule state if the next event
         meeting the condition is already active.
         """
+        # TODO: https://github.com/dry-python/returns?tab=readme-ov-file#maybe-container
         option_event = self.next_event_by_condition(condition)
         if option_event is not None:
             option_event.activate()
@@ -242,6 +245,7 @@ class EventScheduler:
 
     def deactivate_next_event(self) -> None:
         """Deactive the next event in the event queue."""
+        # TODO: https://github.com/dry-python/returns?tab=readme-ov-file#maybe-container
         option_next_event = self.next_event()
         if option_next_event:
             option_next_event.deactivate()
@@ -250,6 +254,7 @@ class EventScheduler:
         self, condition: Callable[[Self, Event], bool]
     ) -> None:
         """Deactivate the next event that satisfies the given condition."""
+        # TODO: https://github.com/dry-python/returns?tab=readme-ov-file#maybe-container
         option_event = self.next_event_by_condition(condition)
         if option_event is not None:
             option_event.deactivate()
@@ -273,6 +278,7 @@ class EventScheduler:
         self, condition: Callable[[Self, Event], bool]
     ) -> None:
         """Cancel the next event that satisfies a given condition."""
+        # TODO: https://github.com/dry-python/returns?tab=readme-ov-file#maybe-container
         option_event = self.next_event_by_condition(condition)
         if option_event is not None:
             self.event_queue.remove(
@@ -306,9 +312,9 @@ class EventScheduler:
         event (i.e. `event_result`).
 
         Running this function will activate, and subsequently deactivate, a the simulation
-        according to a binary variable, `EventScheduler.active`. This attribute will ensure consistent
-        scheduling of variables in temporal order during simulations provided that Python's
-        `__debug__ == True`.
+        according to a binary variable, `EventScheduler.active`. This attribute will ensure
+        consistent scheduling of variables in temporal order during simulations provided
+        that Python's `__debug__ == True`.
         """
         # OPTIMIZE: Chooses efficient implementation.
         if not logging:
