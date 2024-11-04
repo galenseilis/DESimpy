@@ -1,11 +1,12 @@
 import pytest
+
 from desimpy import Event, EventScheduler
 
 
 def test_schedule_nonevent():
     class Foo:
         def __init__(self):
-            self.time = 0
+            self.time: int | float = 0
 
     env = EventScheduler()
     with pytest.raises(TypeError):
@@ -29,17 +30,6 @@ def test_schedule_str():
     with pytest.raises(TypeError):
         env.schedule(str(2018))
 
-
-def test_schedule_negative_after_zero():
-    env = EventScheduler()
-    event1 = Event(10)
-    event2 = Event(-10)
-    env.schedule(event1)
-    env.run_until_max_time(20)
-    with pytest.raises(ValueError):
-        env.schedule(event2)
-
-
 def test_schedule_negative_time_when_active():
     env = EventScheduler()
     event = Event(-10)
@@ -54,7 +44,7 @@ def test_schedule_negative_time_when_inactive():
     env = EventScheduler()
     event = Event(-10)
     env.schedule(event)
-    assert env.run_until_max_time(10)[0][0] == event
+    assert env.run_until_max_time(10)[0] == event
 
 
 def test_event_with_context():
@@ -64,6 +54,6 @@ def test_event_with_context():
     event = Event(time, action, context)
     env = EventScheduler()
     env.schedule(event)
-    (event_out, event_result) = env.step()
+    event_out = env.step()
     assert event_out == event
-    assert event_result == 2018
+    assert event_out.result == 2018

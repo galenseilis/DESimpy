@@ -1,8 +1,9 @@
 """Core components of a discrete event simulation (DES)."""
+from __future__ import annotations
 
 import heapq
 from enum import Enum, auto
-from typing import Any, Callable, NoReturn, Optional, Self
+from typing import Any, Callable, Self
 
 __all__ = ["Event", "EventScheduler"]
 
@@ -60,7 +61,6 @@ class Event:
                 raise TypeError(f"{action=} must be a callable or None.")
 
         self.time: float | int = time
-        # NOTE: `self.action` has a non-none default assigned.
         self.action: Callable[[], Any] = (lambda: None) if action is None else action
         self.context: dict[Any, Any] = {} if context is None else context
         self.active: bool = True  # TODO: Consider whether ENUMS would be better here.

@@ -1,4 +1,4 @@
-from desimpy import Event, EventScheduler
+from desimpy import EventScheduler
 
 
 def test_event_with_context():
@@ -7,8 +7,8 @@ def test_event_with_context():
     context = {"foo": "bar", 1: "baz"}
     env = EventScheduler()
     env.timeout(delay=delay, action=action, context=context)
-    (event_out, event_result) = env.step()
+    event_out = env.step()
     assert event_out.time == 10
     assert event_out.action() == 2018
     assert event_out.context == context
-    assert event_result == 2018
+    assert event_out.result == 2018
