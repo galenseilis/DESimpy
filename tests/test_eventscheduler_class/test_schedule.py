@@ -30,6 +30,7 @@ def test_schedule_str():
     with pytest.raises(TypeError):
         env.schedule(str(2018))
 
+
 def test_schedule_negative_time_when_active():
     env = EventScheduler()
     event = Event(-10)

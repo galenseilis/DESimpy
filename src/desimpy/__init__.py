@@ -1,4 +1,5 @@
 """Core components of a discrete event simulation (DES)."""
+
 from __future__ import annotations
 
 import heapq
