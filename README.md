@@ -38,7 +38,7 @@ env = EventScheduler()
 clock(env, "fast", 0.5)
 clock(env, "slow", 1)
 
-event_log = env.run_until_max_time(2, logging=False)
+event_log = env.run_until_max_time(2)
 ```
 
 # Design
