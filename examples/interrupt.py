@@ -28,7 +28,7 @@ if __name__ == "__main__":
     results = env.run_until_max_time(6)
 
     for event in results:
-        print(event.time, event.result, event.context, event.active)
+        print(event.time, event.result, event.context, event.status)
 
     ################################
     # $2 INTERRUPT BY CANCELLATION #
@@ -50,4 +50,4 @@ if __name__ == "__main__":
     results = env.run_until_max_time(11)
 
     for event in results:
-        print(event.time, event.result, event.context, event.active)
+        print(event.time, event.result, event.context, event.status)

@@ -65,18 +65,16 @@ class Event:
         self.time: float | int = time
         self.action: Callable[[], Any] = (lambda: None) if action is None else action
         self.context: dict[Any, Any] = {} if context is None else context
-        self.active: bool = True  # TODO: Consider whether ENUMS would be better here.
+        self.status: EventStatus = EventStatus.ACTIVE
         self.result = None
 
-    # TODO: Consider whether ENUMS would be better here.
     def activate(self) -> None:
         """Activate event."""
-        self.active = True
+        self.status = EventStatus.ACTIVE
 
-    # TODO: Consider whether ENUMS would be better here.
     def deactivate(self) -> None:
         """Deactivate event."""
-        self.active = False
+        self.status = EventStatus.INACTIVE
 
     def run(self):
         """Apply event's state transitions.
@@ -89,7 +87,7 @@ class Event:
         action will not occur, in which case `None`
         is implicitly returned by `run`.
         """
-        if self.active:
+        if self.status == EventStatus.ACTIVE:
             self.result: Any = self.action()
 
     def __le__(self, other: Self):
@@ -111,7 +109,7 @@ class EventScheduler:
         self.current_time: float | int = 0
         self.event_queue: list[tuple[float, Event]] = []
         self.event_log: list[Event] = []
-        self.active: bool = False  # TODO: Consider whether ENUMS would be better here.
+        self.status: EventSchedulerStatus = EventSchedulerStatus.ACTIVE
 
     @property
     def now(self) -> float:
@@ -139,7 +137,7 @@ class EventScheduler:
             if not isinstance(event, Event):
                 # INFO: Type checker may indicate that this code is unreachable, but it is.
                 raise TypeError(f"{event=} must be of type Event.")
-            if not (event.time >= 0 or not self.active):
+            if not (event.time >= 0 or not self.status == EventSchedulerStatus.ACTIVE):
                 raise ValueError(
                     f"{event.time=} must be non-negative once simulation has become active."
                 )
@@ -289,7 +287,7 @@ class EventScheduler:
         """Removes all events from the event schedule."""
         self.event_queue = []
 
-    def cancel_all_events_by_condition(self, condition: Callable[[Self, Event], bool]):
+    def cancel_all_events_by_condition(self, condition: Callable[[Self, Event], bool]) -> None:
         """Remove all events by a given condtion."""
         targets: list[Event] = []
         for _, event in self.event_queue:
@@ -312,7 +310,7 @@ class EventScheduler:
         event (i.e. `event_result`).
 
         Running this function will activate, and subsequently deactivate, a the simulation
-        according to a binary variable, `EventScheduler.active`. This attribute will ensure
+        according to a binary variable, `EventScheduler.status`. This attribute will ensure
         consistent scheduling of variables in temporal order during simulations provided
         that Python's `__debug__ == True`.
         """
@@ -365,7 +363,7 @@ class EventScheduler:
 
     def run_until_max_time(
         self, max_time: float, logging: Callable[[Self], bool] | bool = True
-    ):
+    ) -> list[Event]:
         """Simulate until a maximum time is reached.
 
         This method is a convenience wrapper around the run
@@ -382,7 +380,7 @@ class EventScheduler:
 
     def run_until_given_event(
         self, event: Event, logging: Callable[[Self], bool] | bool = True
-    ):
+    ) -> list[Event]:
         """Simulate until a given event has elapsed.
 
         This function is a convenience wrapper around the run
@@ -392,12 +390,10 @@ class EventScheduler:
 
         return self.run(stop, logging)
 
-    # TODO: Consider whether ENUMS would be better here.
-    def _activate(self):
+    def _activate(self) -> None:
         """Set the simulation status to "active"."""
-        self.active = True
+        self.status: EventSchedulerStatus =  EventSchedulerStatus.ACTIVE
 
-    # TODO: Consider whether ENUMS would be better here.
-    def _deactivate(self):
+    def _deactivate(self) -> None:
         """Set the simulation status to "inactive"."""
-        self.active = False
+        self.status: EventSchedulerStatus =  EventSchedulerStatus.INACTIVE
