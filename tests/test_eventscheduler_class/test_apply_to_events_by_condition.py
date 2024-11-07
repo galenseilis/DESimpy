@@ -10,14 +10,20 @@ def scheduler() -> EventScheduler:
     """Fixture to create a fresh EventScheduler instance for each test."""
     return EventScheduler()
 
+
 @pytest.fixture
 def event() -> Callable[[float], Event]:
     """Helper function to create an event with a given time."""
+
     def _create_event(time: float) -> Event:
         return Event(time)
+
     return _create_event
 
-def test_apply_to_events_by_condition_no_matching_events(scheduler: EventScheduler, event: Callable[[float], Event]) -> None:
+
+def test_apply_to_events_by_condition_no_matching_events(
+    scheduler: EventScheduler, event: Callable[[float], Event]
+) -> None:
     """Test that apply_to_events_by_condition does nothing when no events match the condition."""
     event1 = event(10.0)
     event2 = event(15.0)
@@ -37,7 +43,10 @@ def test_apply_to_events_by_condition_no_matching_events(scheduler: EventSchedul
     assert event1.time == 10.0
     assert event2.time == 15.0
 
-def test_apply_to_events_by_condition_matching_events(scheduler: EventScheduler, event: Callable[[float], Event]) -> None:
+
+def test_apply_to_events_by_condition_matching_events(
+    scheduler: EventScheduler, event: Callable[[float], Event]
+) -> None:
     """Test that apply_to_events_by_condition modifies only the events that match the condition."""
     event1 = event(5.0)
     event2 = event(15.0)
@@ -60,13 +69,16 @@ def test_apply_to_events_by_condition_matching_events(scheduler: EventScheduler,
     assert event2.time == 20.0
     assert event3.time == 30.0
 
-def test_apply_to_events_by_condition_toggle_attribute(scheduler: EventScheduler, event: Callable[[float], Event]) -> None:
+
+def test_apply_to_events_by_condition_toggle_attribute(
+    scheduler: EventScheduler, event: Callable[[float], Event]
+) -> None:
     """Test that apply_to_events_by_condition can toggle an attribute based on a condition."""
     event1 = event(5.0)
     event2 = event(15.0)
     scheduler.schedule(event1)
     scheduler.schedule(event2)
-    
+
     # Assume events have an 'active' attribute that we want to toggle
     event1.status = EventStatus.ACTIVE
     event2.status = EventStatus.INACTIVE
@@ -76,7 +88,11 @@ def test_apply_to_events_by_condition_toggle_attribute(scheduler: EventScheduler
         return e.time >= 10.0  # Only event2 should match
 
     def toggle_active(e: Event) -> None:
-        e.status = EventStatus.ACTIVE if e.status == EventStatus.INACTIVE else EventStatus.ACTIVE
+        e.status = (
+            EventStatus.ACTIVE
+            if e.status == EventStatus.INACTIVE
+            else EventStatus.ACTIVE
+        )
 
     scheduler.apply_to_events_by_condition(toggle_active, condition)
 
@@ -84,7 +100,10 @@ def test_apply_to_events_by_condition_toggle_attribute(scheduler: EventScheduler
     event1.status = EventStatus.ACTIVE
     event2.status = EventStatus.ACTIVE
 
-def test_apply_to_events_by_condition_reset_time(scheduler: EventScheduler, event: Callable[[float], Event]) -> None:
+
+def test_apply_to_events_by_condition_reset_time(
+    scheduler: EventScheduler, event: Callable[[float], Event]
+) -> None:
     """Test that apply_to_events_by_condition can reset the time of matched events."""
     event1 = event(3.0)
     event2 = event(6.0)
@@ -107,7 +126,10 @@ def test_apply_to_events_by_condition_reset_time(scheduler: EventScheduler, even
     assert event2.time == 0.0
     assert event3.time == 9.0
 
-def test_apply_to_events_by_condition_no_op(scheduler: EventScheduler, event: Callable[[float], Event]) -> None:
+
+def test_apply_to_events_by_condition_no_op(
+    scheduler: EventScheduler, event: Callable[[float], Event]
+) -> None:
     """Test that apply_to_events_by_condition makes no changes if the function is a no-op."""
     event1 = event(7.0)
     event2 = event(9.0)
@@ -119,7 +141,7 @@ def test_apply_to_events_by_condition_no_op(scheduler: EventScheduler, event: Ca
         return e.time > 5.0  # Both events should match
 
     def no_op(e: Event) -> None:
-        _ = e # Function does nothing
+        _ = e  # Function does nothing
 
     scheduler.apply_to_events_by_condition(no_op, condition)
 
@@ -127,7 +149,10 @@ def test_apply_to_events_by_condition_no_op(scheduler: EventScheduler, event: Ca
     assert event1.time == 7.0
     assert event2.time == 9.0
 
-def test_apply_to_events_by_condition_negative_time(scheduler: EventScheduler, event: Callable[[float], Event]) -> None:
+
+def test_apply_to_events_by_condition_negative_time(
+    scheduler: EventScheduler, event: Callable[[float], Event]
+) -> None:
     """Test that apply_to_events_by_condition allows setting negative times for matched events."""
     event1 = event(5.0)
     event2 = event(10.0)
@@ -146,4 +171,3 @@ def test_apply_to_events_by_condition_negative_time(scheduler: EventScheduler, e
     # Verify that both events now have the time set to -10.0
     assert event1.time == -10.0
     assert event2.time == -10.0
-
