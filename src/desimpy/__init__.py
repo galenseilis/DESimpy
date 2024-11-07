@@ -109,7 +109,7 @@ class EventScheduler:
         self.current_time: float | int = 0
         self.event_queue: list[tuple[float, Event]] = []
         self.event_log: list[Event] = []
-        self.status: EventSchedulerStatus = EventSchedulerStatus.ACTIVE
+        self.status: EventSchedulerStatus = EventSchedulerStatus.INACTIVE
 
     @property
     def now(self) -> float:

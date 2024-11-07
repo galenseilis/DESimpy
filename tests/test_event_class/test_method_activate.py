@@ -1,21 +1,21 @@
-from desimpy import Event
+from desimpy import Event, EventStatus
 
 
 def test_already_active():
     event = Event(2018)
     event.activate()
-    assert event.active == True
+    assert event.status == EventStatus.ACTIVE
 
 
 def test_activate_manual_inactive():
     event = Event(2018)
-    event.active = False
+    event.status = EventStatus.INACTIVE
     event.activate()
-    assert event.active == True
+    assert event.status == EventStatus.ACTIVE
 
 
 def test_activate_deactivated_event():
     event = Event(2018)
     event.deactivate()
     event.activate()
-    assert event.active == True
+    assert event.status == EventStatus.ACTIVE

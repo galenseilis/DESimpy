@@ -2,7 +2,7 @@ import re
 
 import pytest
 
-from desimpy import Event
+from desimpy import Event, EventStatus
 
 
 def test_event_initialization_default():
@@ -20,7 +20,7 @@ def test_event_initialization_default():
     assert event.context == {}
 
     # The event should be active by default
-    assert event.active is True
+    assert event.status == EventStatus.ACTIVE
 
 
 def test_event_initialization_custom():
@@ -41,7 +41,7 @@ def test_event_initialization_custom():
     assert event.context == {"key": "value"}
 
     # The event should still be active by default
-    assert event.active is True
+    assert event.status == EventStatus.ACTIVE
 
 
 def test_event_initialization_invalid_time():
@@ -61,10 +61,11 @@ def test_event_run_without_activation():
     custom_action = lambda: "executed"
     event = Event(time=10.0, action=custom_action)
 
-    event.active = False  # Manually deactivate the event
-    result = event.run()
+    event.status = EventStatus.INACTIVE # Manually deactivate the event
 
-    assert result is None  # Event action should not be executed when inactive
+    event.run()
+
+    assert event.result == None  # Event action should not be executed when inactive
 
 
 def test_event_comparison_invalid():
