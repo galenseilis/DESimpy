@@ -11,4 +11,5 @@ def test_event_with_context():
     assert event_out.time == 10
     assert event_out.action() == 2018
     assert event_out.context == context
-    assert event_out.result == 2018
+    event_result: int = event_out.result
+    assert event_result == 2018
