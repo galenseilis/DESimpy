@@ -139,10 +139,10 @@ def test_deactivate_next_event_by_condition_already_inactive():
     scheduler.schedule(event1)
     scheduler.schedule(event2)
 
-    # Apply condition to deactivate events (event1 should not be re-deactivated)
+    # Apply condition to deactivate events 
     scheduler.deactivate_next_event_by_condition(condition_example)
 
-    # Ensure event1 remains inactive and event2 is deactivated
+    # Ensure event1 remains inactive and event2 is remains active.
     assert event1.status == EventStatus.INACTIVE, "Event1 should remain inactive."
     assert event2.status == EventStatus.ACTIVE, "Event2 should remain active."
 
