@@ -2,9 +2,11 @@ from desimpy import Event, EventScheduler, EventStatus
 
 # Test Suite for deactivate_next_event_by_condition
 
+
 def condition_example(scheduler: EventScheduler, event: Event):
     """Example condition function for testing."""
     return event.time < 10  # For testing, deactivate events with time < 10.
+
 
 def test_deactivate_next_event_by_condition_empty_queue():
     """Test `deactivate_next_event_by_condition` with an empty event queue."""
@@ -16,11 +18,12 @@ def test_deactivate_next_event_by_condition_empty_queue():
     # Ensure the queue remains empty
     assert len(scheduler.event_queue) == 0, "The event queue should remain empty."
 
+
 def test_deactivate_next_event_by_condition_single_event_no_match():
     """Test `deactivate_next_event_by_condition` with a single event that doesn't match the condition."""
     scheduler = EventScheduler()
     event1 = Event(time=15)
-    
+
     # Schedule event1
     scheduler.schedule(event1)
 
@@ -28,13 +31,16 @@ def test_deactivate_next_event_by_condition_single_event_no_match():
     scheduler.deactivate_next_event_by_condition(condition_example)
 
     # Ensure event1 is still active
-    assert event1.status == EventStatus.ACTIVE, "Event1 should remain active as it doesn't meet the condition."
+    assert (
+        event1.status == EventStatus.ACTIVE
+    ), "Event1 should remain active as it doesn't meet the condition."
+
 
 def test_deactivate_next_event_by_condition_single_event_match():
     """Test `deactivate_next_event_by_condition` with a single event that matches the condition."""
     scheduler = EventScheduler()
     event1 = Event(time=5)
-    
+
     # Schedule event1
     scheduler.schedule(event1)
 
@@ -42,7 +48,10 @@ def test_deactivate_next_event_by_condition_single_event_match():
     scheduler.deactivate_next_event_by_condition(condition_example)
 
     # Ensure event1 is deactivated
-    assert event1.status == EventStatus.INACTIVE, "Event1 should be deactivated as it meets the condition."
+    assert (
+        event1.status == EventStatus.INACTIVE
+    ), "Event1 should be deactivated as it meets the condition."
+
 
 def test_deactivate_next_event_by_condition_multiple_events_some_match():
     """Test `deactivate_next_event_by_condition` with multiple events, some matching the condition."""
@@ -64,6 +73,7 @@ def test_deactivate_next_event_by_condition_multiple_events_some_match():
     assert event2.status == EventStatus.ACTIVE, "Event2 should remain active."
     assert event3.status == EventStatus.ACTIVE, "Event3 should still be active."
 
+
 def test_deactivate_next_event_by_condition_all_events_match():
     """Test `deactivate_next_event_by_condition` with multiple events, all matching the condition."""
     scheduler = EventScheduler()
@@ -84,6 +94,7 @@ def test_deactivate_next_event_by_condition_all_events_match():
     assert event2.status == EventStatus.ACTIVE, "Event2 should still be active."
     assert event3.status == EventStatus.INACTIVE, "Event3 should be deactivated."
 
+
 def test_deactivate_next_event_by_condition_none_match():
     """Test `deactivate_next_event_by_condition` with multiple events, none matching the condition."""
     scheduler = EventScheduler()
@@ -103,6 +114,7 @@ def test_deactivate_next_event_by_condition_none_match():
     assert event1.status == EventStatus.ACTIVE, "Event1 should remain active."
     assert event2.status == EventStatus.ACTIVE, "Event2 should remain active."
     assert event3.status == EventStatus.ACTIVE, "Event3 should remain active."
+
 
 def test_deactivate_next_event_by_condition_deactivate_one_at_a_time():
     """Test `deactivate_next_event_by_condition` to ensure only one event is deactivated at a time."""
@@ -126,6 +138,7 @@ def test_deactivate_next_event_by_condition_deactivate_one_at_a_time():
     assert event2.status == EventStatus.INACTIVE, "Event2 should be deactivated."
     assert event3.status == EventStatus.ACTIVE, "Event3 should remain active."
 
+
 def test_deactivate_next_event_by_condition_already_inactive():
     """Test `deactivate_next_event_by_condition` where the event is already inactive."""
     scheduler = EventScheduler()
@@ -139,12 +152,13 @@ def test_deactivate_next_event_by_condition_already_inactive():
     scheduler.schedule(event1)
     scheduler.schedule(event2)
 
-    # Apply condition to deactivate events 
+    # Apply condition to deactivate events
     scheduler.deactivate_next_event_by_condition(condition_example)
 
     # Ensure event1 remains inactive and event2 is remains active.
     assert event1.status == EventStatus.INACTIVE, "Event1 should remain inactive."
     assert event2.status == EventStatus.ACTIVE, "Event2 should remain active."
+
 
 def test_deactivate_next_event_by_condition_with_different_conditions():
     """Test `deactivate_next_event_by_condition` with different condition functions."""
@@ -170,5 +184,3 @@ def test_deactivate_next_event_by_condition_with_different_conditions():
     assert event1.status == EventStatus.ACTIVE, "Event1 should remain active."
     assert event2.status == EventStatus.ACTIVE, "Event2 should remain active."
     assert event3.status == EventStatus.INACTIVE, "Event3 should be deactivated."
-
-

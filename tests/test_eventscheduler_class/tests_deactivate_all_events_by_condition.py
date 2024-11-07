@@ -2,10 +2,12 @@ from desimpy import Event, EventScheduler, EventStatus
 
 # Test Suite for deactivate_all_events_by_condition
 
+
 def condition_example(scheduler: EventScheduler, event: Event):
     """Example condition function for testing."""
     _ = scheduler
     return event.time < 10  # For testing, deactivate events with time < 10.
+
 
 def test_deactivate_all_events_by_condition_empty_queue():
     """Test `deactivate_all_events_by_condition` with an empty event queue."""
@@ -16,6 +18,7 @@ def test_deactivate_all_events_by_condition_empty_queue():
 
     # Ensure the queue remains empty
     assert len(scheduler.event_queue) == 0, "The event queue should remain empty."
+
 
 def test_deactivate_all_events_by_condition_no_match():
     """Test `deactivate_all_events_by_condition` with events that don't match the condition."""
@@ -33,6 +36,7 @@ def test_deactivate_all_events_by_condition_no_match():
     # Ensure no events are deactivated
     assert event1.status == EventStatus.ACTIVE, "Event1 should remain active."
     assert event2.status == EventStatus.ACTIVE, "Event2 should remain active."
+
 
 def test_deactivate_all_events_by_condition_all_match():
     """Test `deactivate_all_events_by_condition` with events that all match the condition."""
@@ -54,6 +58,7 @@ def test_deactivate_all_events_by_condition_all_match():
     assert event2.status == EventStatus.INACTIVE, "Event2 should be deactivated."
     assert event3.status == EventStatus.INACTIVE, "Event3 should be deactivated."
 
+
 def test_deactivate_all_events_by_condition_some_match():
     """Test `deactivate_all_events_by_condition` with some events matching the condition."""
     scheduler = EventScheduler()
@@ -74,6 +79,7 @@ def test_deactivate_all_events_by_condition_some_match():
     assert event2.status == EventStatus.ACTIVE, "Event2 should remain active."
     assert event3.status == EventStatus.INACTIVE, "Event3 should be deactivated."
 
+
 def test_deactivate_all_events_by_condition_none_match():
     """Test `deactivate_all_events_by_condition` with no events matching the condition."""
     scheduler = EventScheduler()
@@ -93,6 +99,7 @@ def test_deactivate_all_events_by_condition_none_match():
     assert event1.status == EventStatus.ACTIVE, "Event1 should remain active."
     assert event2.status == EventStatus.ACTIVE, "Event2 should remain active."
     assert event3.status == EventStatus.ACTIVE, "Event3 should remain active."
+
 
 def test_deactivate_all_events_by_condition_already_inactive():
     """Test `deactivate_all_events_by_condition` where some events are already inactive."""
@@ -116,6 +123,7 @@ def test_deactivate_all_events_by_condition_already_inactive():
     assert event1.status == EventStatus.INACTIVE, "Event1 should be deactivated."
     assert event2.status == EventStatus.INACTIVE, "Event2 should remain inactive."
     assert event3.status == EventStatus.INACTIVE, "Event3 should be deactivated."
+
 
 def test_deactivate_all_events_by_condition_multiple_conditions():
     """Test `deactivate_all_events_by_condition` with multiple conditions."""
@@ -142,6 +150,7 @@ def test_deactivate_all_events_by_condition_multiple_conditions():
     assert event2.status == EventStatus.ACTIVE, "Event2 should remain active."
     assert event3.status == EventStatus.INACTIVE, "Event3 should be deactivated."
 
+
 def test_deactivate_all_events_by_condition_deactivate_one_at_a_time():
     """Test `deactivate_all_events_by_condition` to ensure only events that match are deactivated."""
     scheduler = EventScheduler()
@@ -162,12 +171,13 @@ def test_deactivate_all_events_by_condition_deactivate_one_at_a_time():
     assert event2.status == EventStatus.ACTIVE, "Event2 should remain active."
     assert event3.status == EventStatus.INACTIVE, "Event3 should be deactivated."
 
+
 def test_deactivate_all_events_by_condition_condition_function():
     """Test `deactivate_all_events_by_condition` with a custom condition function."""
     scheduler = EventScheduler()
 
     def custom_condition(scheduler: EventScheduler, event: Event):
-        _ = scheduler 
+        _ = scheduler
         return event.time > 10  # Deactivate events with time greater than 10.
 
     event1 = Event(time=5)
@@ -186,4 +196,3 @@ def test_deactivate_all_events_by_condition_condition_function():
     assert event1.status == EventStatus.ACTIVE, "Event1 should remain active."
     assert event2.status == EventStatus.INACTIVE, "Event2 should be deactivated."
     assert event3.status == EventStatus.INACTIVE, "Event3 should be deactivated."
-

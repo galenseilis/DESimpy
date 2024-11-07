@@ -2,6 +2,7 @@ from desimpy import Event, EventScheduler, EventStatus
 
 # Test Suite for deactivate_next_event
 
+
 def test_deactivate_next_event_empty_queue():
     """Test `deactivate_next_event` with an empty event queue."""
     scheduler = EventScheduler()
@@ -11,7 +12,8 @@ def test_deactivate_next_event_empty_queue():
 
     # Ensure no errors occurred and the queue remains empty
     assert len(scheduler.event_queue) == 0, "The event queue should remain empty."
-    
+
+
 def test_deactivate_next_event_single_event():
     """Test `deactivate_next_event` with a single event in the queue."""
     scheduler = EventScheduler()
@@ -23,8 +25,11 @@ def test_deactivate_next_event_single_event():
     scheduler.deactivate_next_event()
 
     # Ensure the event was deactivated
-    assert event1.status == EventStatus.INACTIVE, "Event1 should be deactivated after calling deactivate_next_event."
-    
+    assert (
+        event1.status == EventStatus.INACTIVE
+    ), "Event1 should be deactivated after calling deactivate_next_event."
+
+
 def test_deactivate_next_event_multiple_events():
     """Test `deactivate_next_event` with multiple events in the queue."""
     scheduler = EventScheduler()
@@ -45,8 +50,13 @@ def test_deactivate_next_event_multiple_events():
 
     # Ensure the first event (event1) is deactivated, others remain active
     assert event1.status == EventStatus.INACTIVE, "Event1 should be deactivated."
-    assert event2.status == EventStatus.INACTIVE, "Event2 should remain inactive as it's not the next event."
-    assert event3.status == EventStatus.INACTIVE, "Event3 should remain inactive as it's not the next event."
+    assert (
+        event2.status == EventStatus.INACTIVE
+    ), "Event2 should remain inactive as it's not the next event."
+    assert (
+        event3.status == EventStatus.INACTIVE
+    ), "Event3 should remain inactive as it's not the next event."
+
 
 def test_deactivate_next_event_with_already_inactive_event():
     """Test `deactivate_next_event` when the next event is already inactive."""
@@ -65,8 +75,11 @@ def test_deactivate_next_event_with_already_inactive_event():
 
     # Ensure event1 stays inactive and event2 becomes inactive as it's the next event to deactivate
     assert event1.status == EventStatus.INACTIVE, "Event1 should remain inactive."
-    assert event2.status == EventStatus.INACTIVE, "Event2 should become inactive after calling deactivate_next_event."
-    
+    assert (
+        event2.status == EventStatus.INACTIVE
+    ), "Event2 should become inactive after calling deactivate_next_event."
+
+
 def test_deactivate_next_event_multiple_deactivations():
     """Test `deactivate_next_event` with multiple consecutive deactivations."""
     scheduler = EventScheduler()
@@ -91,11 +104,12 @@ def test_deactivate_next_event_multiple_deactivations():
     assert event2.status == EventStatus.INACTIVE, "Event2 should be deactivated."
     assert event3.status == EventStatus.INACTIVE, "Event3 should remain inactive."
 
+
 def test_deactivate_next_event_last_event_in_queue():
     """Test `deactivate_next_event` when there is only one event in the queue."""
     scheduler = EventScheduler()
     event1 = Event(time=5)
-    
+
     # Deactivate event1 manually and schedule it
     event1.deactivate()
     scheduler.schedule(event1)
@@ -105,6 +119,7 @@ def test_deactivate_next_event_last_event_in_queue():
 
     # Ensure event1 is deactivated
     assert event1.status == EventStatus.INACTIVE, "Event1 should be deactivated."
+
 
 def test_deactivate_next_event_after_event_activation():
     """Test `deactivate_next_event` after activating some events."""
@@ -130,14 +145,17 @@ def test_deactivate_next_event_after_event_activation():
     scheduler.deactivate_next_event()
 
     # Ensure event1 is deactivated
-    assert event1.status == EventStatus.INACTIVE, "Event1 should be deactivated after calling deactivate_next_event."
+    assert (
+        event1.status == EventStatus.INACTIVE
+    ), "Event1 should be deactivated after calling deactivate_next_event."
+
 
 def test_deactivate_next_event_with_unactivated_events():
     """Test `deactivate_next_event` with unactivated events in the queue."""
     scheduler = EventScheduler()
     event1 = Event(time=5)
     event2 = Event(time=10)
-    
+
     # Deactivate event1 manually and schedule both events
     event1.deactivate()
     event2.deactivate()
@@ -152,4 +170,3 @@ def test_deactivate_next_event_with_unactivated_events():
 
     # Ensure event2 remains inactive since it's the next event in the queue
     assert event2.status == EventStatus.INACTIVE, "Event2 should remain inactive."
-
