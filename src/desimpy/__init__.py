@@ -188,6 +188,8 @@ class EventScheduler:
 
         return float("inf")
 
+    # TODO: Implement `peek_by_condition`.
+
     def apply_to_all_events(self, func: Callable[[Event], Any]) -> None:
         """Apply a function to all events in schedule."""
         for _, event in self.event_queue:
