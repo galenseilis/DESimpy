@@ -178,6 +178,8 @@ class EventScheduler:
     def peek(self) -> float | None:
         """Get the time of the next event.
 
+        Does not distinguish between active and inactive events.
+
         Returns infinity if there is no next event.
         """
         next_event = self.next_event()
