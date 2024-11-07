@@ -33,7 +33,6 @@ packages = ["src/desimpy"]
 [tool.pdm]
 distribution = true
 
-[tool.pdm.dev-dependencies]
-test = [
-    "pytest>=8.3.3",
-]
+
+[dependency-groups]
+test = ["pytest>=8.3.3", "pytest-cov>=6.0.0"]
