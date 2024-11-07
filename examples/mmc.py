@@ -104,4 +104,4 @@ if __name__ == "__main__":
 
     results = simulation.run()
     for result in results:
-        print(result[0].context)
+        print(result.context)
