@@ -274,7 +274,8 @@ class EventScheduler:
 
     def cancel_next_event(self) -> None:
         """Removes next event from the event schedule."""
-        _ = heapq.heappop(self.event_queue)
+        if self.event_queue:
+            _ = heapq.heappop(self.event_queue)
 
     def cancel_next_event_by_condition(
         self, condition: Callable[[Self, Event], bool]
