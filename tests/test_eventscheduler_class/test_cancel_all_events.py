@@ -2,6 +2,7 @@ from desimpy import Event, EventScheduler
 
 # Test Suite for cancel_all_events
 
+
 def test_cancel_all_events_empty_queue():
     """Test `cancel_all_events` when the event queue is empty."""
     scheduler = EventScheduler()
@@ -11,6 +12,7 @@ def test_cancel_all_events_empty_queue():
 
     # The queue should remain empty
     assert len(scheduler.event_queue) == 0, "The event queue should remain empty."
+
 
 def test_cancel_all_events_single_event():
     """Test `cancel_all_events` when there is only one event in the queue."""
@@ -24,8 +26,14 @@ def test_cancel_all_events_single_event():
     scheduler.cancel_all_events()
 
     # The queue should be empty
-    assert len(scheduler.event_queue) == 0, "The event queue should be empty after canceling all events."
-    assert (event1.time, event1) not in scheduler.event_queue, "Event1 should be removed from the queue."
+    assert (
+        len(scheduler.event_queue) == 0
+    ), "The event queue should be empty after canceling all events."
+    assert (
+        event1.time,
+        event1,
+    ) not in scheduler.event_queue, "Event1 should be removed from the queue."
+
 
 def test_cancel_all_events_multiple_events():
     """Test `cancel_all_events` when there are multiple events in the queue."""
@@ -43,10 +51,22 @@ def test_cancel_all_events_multiple_events():
     scheduler.cancel_all_events()
 
     # The queue should be empty
-    assert len(scheduler.event_queue) == 0, "The event queue should be empty after canceling all events."
-    assert (event1.time, event1) not in scheduler.event_queue, "Event1 should be removed from the queue."
-    assert (event2.time, event2) not in scheduler.event_queue, "Event2 should be removed from the queue."
-    assert (event3.time, event3) not in scheduler.event_queue, "Event3 should be removed from the queue."
+    assert (
+        len(scheduler.event_queue) == 0
+    ), "The event queue should be empty after canceling all events."
+    assert (
+        event1.time,
+        event1,
+    ) not in scheduler.event_queue, "Event1 should be removed from the queue."
+    assert (
+        event2.time,
+        event2,
+    ) not in scheduler.event_queue, "Event2 should be removed from the queue."
+    assert (
+        event3.time,
+        event3,
+    ) not in scheduler.event_queue, "Event3 should be removed from the queue."
+
 
 def test_cancel_all_events_with_condition_on_event_attributes():
     """Test `cancel_all_events` when events have different attributes (e.g., time, priority)."""
@@ -64,10 +84,22 @@ def test_cancel_all_events_with_condition_on_event_attributes():
     scheduler.cancel_all_events()
 
     # The queue should be empty after cancellation
-    assert len(scheduler.event_queue) == 0, "The event queue should be empty after canceling all events."
-    assert (event1.time, event1) not in scheduler.event_queue, "Event1 should be removed from the queue."
-    assert (event2.time, event2) not in scheduler.event_queue, "Event2 should be removed from the queue."
-    assert (event3.time, event3) not in scheduler.event_queue, "Event3 should be removed from the queue."
+    assert (
+        len(scheduler.event_queue) == 0
+    ), "The event queue should be empty after canceling all events."
+    assert (
+        event1.time,
+        event1,
+    ) not in scheduler.event_queue, "Event1 should be removed from the queue."
+    assert (
+        event2.time,
+        event2,
+    ) not in scheduler.event_queue, "Event2 should be removed from the queue."
+    assert (
+        event3.time,
+        event3,
+    ) not in scheduler.event_queue, "Event3 should be removed from the queue."
+
 
 def test_cancel_all_events_with_condition_on_time():
     """Test `cancel_all_events` with events having different times and a time-based condition."""
@@ -85,10 +117,22 @@ def test_cancel_all_events_with_condition_on_time():
     scheduler.cancel_all_events()
 
     # The queue should be empty
-    assert len(scheduler.event_queue) == 0, "The event queue should be empty after canceling all events."
-    assert (event1.time, event1) not in scheduler.event_queue, "Event1 should be removed from the queue."
-    assert (event2.time, event2) not in scheduler.event_queue, "Event2 should be removed from the queue."
-    assert (event3.time, event3) not in scheduler.event_queue, "Event3 should be removed from the queue."
+    assert (
+        len(scheduler.event_queue) == 0
+    ), "The event queue should be empty after canceling all events."
+    assert (
+        event1.time,
+        event1,
+    ) not in scheduler.event_queue, "Event1 should be removed from the queue."
+    assert (
+        event2.time,
+        event2,
+    ) not in scheduler.event_queue, "Event2 should be removed from the queue."
+    assert (
+        event3.time,
+        event3,
+    ) not in scheduler.event_queue, "Event3 should be removed from the queue."
+
 
 def test_cancel_all_events_after_some_cancellations():
     """Test `cancel_all_events` after some events have already been canceled."""
@@ -110,10 +154,22 @@ def test_cancel_all_events_after_some_cancellations():
     scheduler.cancel_all_events()
 
     # The queue should be empty
-    assert len(scheduler.event_queue) == 0, "The event queue should be empty after canceling all events."
-    assert (event1.time, event1) not in scheduler.event_queue, "Event1 should be removed from the queue."
-    assert (event2.time, event2) not in scheduler.event_queue, "Event2 should be removed from the queue."
-    assert (event3.time, event3) not in scheduler.event_queue, "Event3 should be removed from the queue."
+    assert (
+        len(scheduler.event_queue) == 0
+    ), "The event queue should be empty after canceling all events."
+    assert (
+        event1.time,
+        event1,
+    ) not in scheduler.event_queue, "Event1 should be removed from the queue."
+    assert (
+        event2.time,
+        event2,
+    ) not in scheduler.event_queue, "Event2 should be removed from the queue."
+    assert (
+        event3.time,
+        event3,
+    ) not in scheduler.event_queue, "Event3 should be removed from the queue."
+
 
 def test_cancel_all_events_after_rescheduling():
     """Test `cancel_all_events` after some events have been rescheduled."""
@@ -135,10 +191,22 @@ def test_cancel_all_events_after_rescheduling():
     scheduler.cancel_all_events()
 
     # The queue should be empty
-    assert len(scheduler.event_queue) == 0, "The event queue should be empty after canceling all events."
-    assert (event1.time, event1) not in scheduler.event_queue, "Event1 should be removed from the queue."
-    assert (event2.time, event2) not in scheduler.event_queue, "Event2 should be removed from the queue."
-    assert (event3.time, event3) not in scheduler.event_queue, "Event3 should be removed from the queue."
+    assert (
+        len(scheduler.event_queue) == 0
+    ), "The event queue should be empty after canceling all events."
+    assert (
+        event1.time,
+        event1,
+    ) not in scheduler.event_queue, "Event1 should be removed from the queue."
+    assert (
+        event2.time,
+        event2,
+    ) not in scheduler.event_queue, "Event2 should be removed from the queue."
+    assert (
+        event3.time,
+        event3,
+    ) not in scheduler.event_queue, "Event3 should be removed from the queue."
+
 
 def test_cancel_all_events_with_edge_case():
     """Test `cancel_all_events` when the event queue has edge cases, such as identical times."""
@@ -156,8 +224,18 @@ def test_cancel_all_events_with_edge_case():
     scheduler.cancel_all_events()
 
     # The queue should be empty after cancellation
-    assert len(scheduler.event_queue) == 0, "The event queue should be empty after canceling all events."
-    assert (event1.time, event1) not in scheduler.event_queue, "Event1 should be removed from the queue."
-    assert (event2.time, event2) not in scheduler.event_queue, "Event2 should be removed from the queue."
-    assert (event3.time, event3) not in scheduler.event_queue, "Event3 should be removed from the queue."
-
+    assert (
+        len(scheduler.event_queue) == 0
+    ), "The event queue should be empty after canceling all events."
+    assert (
+        event1.time,
+        event1,
+    ) not in scheduler.event_queue, "Event1 should be removed from the queue."
+    assert (
+        event2.time,
+        event2,
+    ) not in scheduler.event_queue, "Event2 should be removed from the queue."
+    assert (
+        event3.time,
+        event3,
+    ) not in scheduler.event_queue, "Event3 should be removed from the queue."
