@@ -1,18 +1,9 @@
-import random
 from typing import Callable, Self
 
-from desimpy import EventScheduler
-
 # TODO: Pull in simdist package for distributions.
+from simdist import dists
 
-
-class Gamma:
-    def __init__(self, alpha: float, beta: float):
-        self.alpha: float = alpha
-        self.beta: float = beta
-
-    def sample(self):
-        return random.gammavariate(self.alpha, self.beta)
+from desimpy import EventScheduler
 
 
 class Customer:
@@ -32,16 +23,16 @@ class Node:
     def __init__(
         self,
         queue_id: int,
-        arrival_dist: Callable[[], float],
-        service_dist: Callable[[], float],
+        arrival_dist: dists.Distribution,
+        service_dist: dists.Distribution,
         num_servers: int,
         routing_func: Callable[[], Self],
-        depart_dist: Callable[[], float],
+        depart_dist: dists.Distribution,
         scheduler: EventScheduler,  # FIX: Provide instance of Network instead, which will have access to scheduler.
     ):
         self.queue_id: int = queue_id
-        self.arrival_dist: Callable[[], float] = arrival_dist
-        self.service_dist: Callable[[], float] = service_dist
+        self.arrival_dist: dists.Distribution = arrival_dist
+        self.service_dist: dists.Distribution = service_dist
         self.num_servers: int = num_servers
         self.scheduler: EventScheduler = (
             scheduler  # Shared event scheduler for the network
@@ -56,12 +47,12 @@ class Node:
         self.routing_func: Callable[[], Self] = (
             routing_func  # Function to route customers to other queues
         )
-        self.depart_dist: Callable[[], float] = depart_dist
+        self.depart_dist: dists.Distribution = depart_dist
 
     def schedule_arrival(self, inter_arrival_time: float | None = None) -> None:
         """Schedule the next customer arrival."""
         if inter_arrival_time is None:
-            inter_arrival_time = self.arrival_dist.sample()
+            inter_arrival_time: float = self.arrival_dist.sample()
         self.scheduler.timeout(
             inter_arrival_time,
             lambda: self.handle_arrival(),
@@ -97,26 +88,28 @@ class Node:
                 return i
         return None
 
-    def start_service(self, customer, server_id):
+    def start_service(self, customer: Customer, server_id: int):
         """Start service for a customer at a given server."""
-        service_time = self.service_dist.sample()
+        service_time: float = self.service_dist.sample()
         customer.service_start_time = self.scheduler.current_time
         self.servers[server_id] = customer  # Mark the server as busy
 
+        action: Callable[[], None] = lambda: self.handle_departure(server_id)
+        context = {
+            "type": "handle_departure",
+            "schedule_time": self.scheduler.current_time,
+            "queue_id": self.queue_id,
+            "server": server_id,
+            "customer_id": customer.customer_id,
+        }
         # Schedule the departure event
         self.scheduler.timeout(
             service_time,
-            lambda: self.handle_departure(server_id),
-            context={
-                "type": "handle_departure",
-                "schedule_time": self.scheduler.current_time,
-                "queue_id": self.queue_id,
-                "server": server_id,
-                "customer_id": customer.customer_id,
-            },
+            action=action,
+            context=context
         )
 
-    def handle_departure(self, server_id):
+    def handle_departure(self, server_id: int):
         """Handle the departure of a customer from a given server."""
         customer = self.servers[server_id]
         customer.departure_time = self.scheduler.current_time
@@ -129,7 +122,7 @@ class Node:
             self.start_service(next_customer, server_id)
 
         # Route the customer to the next queue (or complete their journey)
-        next_node = self.routing_func(self)
+        next_node: Node | None = self.routing_func(self)
         if next_node is not None:
             # Route the customer to the next node in the network
             next_node.schedule_arrival(  # FIX: Pass customer to be reused.
@@ -157,7 +150,7 @@ class Network:
 
 
 # Routing function example: round-robin routing between two queues
-def round_robin_routing(queue):
+def round_robin_routing(queue: Node) -> Node | None:
     if queue.queue_id == 0:
         return network.queues[1]
     elif queue.queue_id == 1:
@@ -170,10 +163,10 @@ def round_robin_routing(queue):
 if __name__ == "__main__":
     network = Network()  # Maximum simulation time
     # Create two queues with different service distributions and add to the network
-    arrival_dist = Gamma(1, 2)  # Shared arrival distribution for both queues
-    service_dist1 = Gamma(2, 1)  # Service time for the first queue
-    service_dist2 = Gamma(3, 1)  # Service time for the second queue
-    depart_dist = Gamma(4, 2)  # departure delay distribution for both queues.
+    arrival_dist = dists.Gamma(1, 2)  # Shared arrival distribution for both queues
+    service_dist1 = dists.Gamma(2, 1)  # Service time for the first queue
+    service_dist2 = dists.Gamma(3, 1)  # Service time for the second queue
+    depart_dist = dists.Gamma(4, 2)  # departure delay distribution for both queues.
 
     queue1 = Node(
         queue_id=0,
@@ -198,8 +191,8 @@ if __name__ == "__main__":
     network.add_queue(queue2)
 
     # Run the simulation
-    results = network.run(10)
+    event_log = network.run(10)
 
     # Print results
-    for result in results:
-        print(result[0].time, result[0].context, result[1])
+    for event in event_log:
+        print(event.time, event.context, event.result)

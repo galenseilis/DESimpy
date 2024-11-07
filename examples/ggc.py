@@ -1,51 +1,46 @@
-import random
+from typing import Any, Callable
+
+from simdist import dists
 
 from desimpy import EventScheduler
-
-
-class Gamma:
-    def __init__(self, alpha, beta):
-        self.alpha = alpha
-        self.beta = beta
-
-    def sample(self):
-        return random.gammavariate(self.alpha, self.beta)
 
 
 class Customer:
     """Class representing a customer in the queueing system."""
 
-    def __init__(self, customer_id, arrival_time):
-        self.customer_id = customer_id
-        self.arrival_time = arrival_time
-        self.service_start_time = None
-        self.departure_time = None
+    def __init__(self, customer_id: int, arrival_time: float):
+        self.customer_id: int = customer_id
+        self.arrival_time: float = arrival_time
+        self.service_start_time: float | None = None
+        self.departure_time: float | None = None
 
 
 class GGcQueue:
-    def __init__(self, arrival_dist, service_dist, num_servers, max_time):
-        self.arrival_dist = arrival_dist
-        self.service_dist = service_dist
-        self.num_servers = num_servers  # c (number of servers)
-        self.max_time = max_time  # Max simulation time
-        self.scheduler = EventScheduler()  # Event scheduler
-        self.queue = []  # Queue for customers
-        self.servers = [None] * self.num_servers  # Track server status
-        self.total_customers = 0  # Total customers processed
-        self.total_wait_time = 0.0  # Accumulated wait time
+    def __init__(self, arrival_dist: dists.Distribution , service_dist: dists.Distribution, num_servers: int, max_time: float):
+        self.arrival_dist: dists.Distribution = arrival_dist
+        self.service_dist: dists.Distribution = service_dist
+        self.num_servers: int = num_servers  # c (number of servers)
+        self.max_time: float = max_time  # Max simulation time
+        self.scheduler: EventScheduler = EventScheduler()  # Event scheduler
+        self.queue: list[Customer] = []  # Queue for customers
+        self.servers: list[Customer | None] = [None] * self.num_servers  # Track server status
+        self.total_customers: int = 0  # Total customers processed
+        self.total_wait_time: float = 0.0  # Accumulated wait time
 
     def schedule_arrival(self):
         """Schedule the next customer arrival."""
-        inter_arrival_time = self.arrival_dist.sample()
+        inter_arrival_time: float = self.arrival_dist.sample()
+        action = lambda: self.handle_arrival()
+        context={"type": "arrival", "schedule_time": self.scheduler.current_time}
         self.scheduler.timeout(
             inter_arrival_time,
-            lambda: self.handle_arrival(),
-            context={"type": "arrival", "schedule_time": self.scheduler.current_time},
+            action,
+            context=context
         )
 
     def handle_arrival(self):
         """Handle a customer arrival."""
-        customer = Customer(self.total_customers, self.scheduler.current_time)
+        customer: Customer = Customer(self.total_customers, self.scheduler.current_time)
         self.total_customers += 1
 
         free_server = self.find_free_server()
@@ -64,32 +59,34 @@ class GGcQueue:
                 return i
         return None
 
-    def start_service(self, customer, server_id):
+    def start_service(self, customer: Customer, server_id: int):
         """Start service for a customer at a given server."""
-        service_time = self.service_dist.sample()
+        service_time: float = self.service_dist.sample()
         customer.service_start_time = self.scheduler.current_time
         self.servers[server_id] = customer  # Mark the server as busy
 
+        action: Callable[[], None] = lambda: self.handle_departure(server_id)
+        context: dict[str, Any] = {
+            "type": "handle_departure",
+            "schedule_time": self.scheduler.current_time,
+            "server": server_id,
+            "customer_id": customer.customer_id,
+        }
         # Schedule the departure event
 
         self.scheduler.timeout(
             service_time,
-            lambda: self.handle_departure(server_id),
-            context={
-                "type": "handle_departure",
-                "schedule_time": self.scheduler.current_time,
-                "server": server_id,
-                "customer_id": customer.customer_id,
-            },
+            action=action,
+            context=context
         )
 
-    def handle_departure(self, server_id):
+    def handle_departure(self, server_id: int) -> None:
         """Handle the departure of a customer from a given server."""
         customer = self.servers[server_id]
         customer.departure_time = self.scheduler.current_time
         self.servers[server_id] = None  # Free the server
 
-        wait_time = customer.service_start_time - customer.arrival_time
+        wait_time: float = customer.service_start_time - customer.arrival_time
         self.total_wait_time += wait_time
 
         if self.queue:
@@ -104,13 +101,13 @@ class GGcQueue:
 
 # Example usage of the simulation
 if __name__ == "__main__":
-    arrival_dist = Gamma(1, 2)
-    service_dist = Gamma(2, 1)
+    arrival_dist = dists.Gamma(1, 2)
+    service_dist = dists.Gamma(2, 1)
     num_servers = 2  # Number of servers
     max_time = 100.0  # Maximum simulation time
 
     simulation = GGcQueue(arrival_dist, service_dist, num_servers, max_time)
 
-    results = simulation.run()
-    for result in results:
-        print(result[0].context)
+    event_log = simulation.run()
+    for event in event_log:
+        print(event)
