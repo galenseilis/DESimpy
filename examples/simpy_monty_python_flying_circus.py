@@ -38,4 +38,4 @@ env.schedule(my_proc)
 # $4 RUN SIMULATION #
 #####################
 
-env.run_until_event(my_proc)[0][1]
+_ = env.run_until_given_event(my_proc)
