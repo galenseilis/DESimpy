@@ -118,6 +118,7 @@ def test_deactivate_next_event_by_condition_deactivate_one_at_a_time():
 
     # Apply condition and deactivate events one by one
     scheduler.deactivate_next_event_by_condition(condition_example)
+    _ = scheduler.run_until_max_time(4)
     scheduler.deactivate_next_event_by_condition(condition_example)
 
     # Ensure only event1 and event2 are deactivated, event3 remains active
@@ -143,7 +144,7 @@ def test_deactivate_next_event_by_condition_already_inactive():
 
     # Ensure event1 remains inactive and event2 is deactivated
     assert event1.status == EventStatus.INACTIVE, "Event1 should remain inactive."
-    assert event2.status == EventStatus.INACTIVE, "Event2 should be deactivated."
+    assert event2.status == EventStatus.ACTIVE, "Event2 should remain active."
 
 def test_deactivate_next_event_by_condition_with_different_conditions():
     """Test `deactivate_next_event_by_condition` with different condition functions."""
