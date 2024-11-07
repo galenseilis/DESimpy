@@ -9,9 +9,11 @@ from desimpy import Event, EventScheduler
 def scheduler():
     return EventScheduler()
 
+
 def test_now_initial_time(scheduler: EventScheduler):
     """Test that the initial time is zero."""
     assert scheduler.now == 0, "Initial time should be 0."
+
 
 def test_now_after_scheduling_events(scheduler: EventScheduler):
     """Test that scheduling events does not alter the current time."""
@@ -19,6 +21,7 @@ def test_now_after_scheduling_events(scheduler: EventScheduler):
     mock_event.time = 5
     scheduler.schedule(mock_event)
     assert scheduler.now == 0, "Current time should remain 0 after scheduling events."
+
 
 def test_now_progression_after_step(scheduler: EventScheduler):
     """Test that current time (`now`) updates correctly as events are processed."""
@@ -38,6 +41,7 @@ def test_now_progression_after_step(scheduler: EventScheduler):
     _ = scheduler.step()
     assert scheduler.now == 7, "Current time should update to 7 after the second event."
 
+
 def test_now_stops_at_max_time(scheduler: EventScheduler):
     """Test that simulation stops at a specified max time."""
     mock_event1 = Mock(spec=Event)
@@ -49,9 +53,12 @@ def test_now_stops_at_max_time(scheduler: EventScheduler):
 
     # Run until max time of 5
     _ = scheduler.run_until_max_time(5)
-    assert scheduler.now == 3, "Simulation should stop at the first event time before reaching max time 5."
+    assert (
+        scheduler.now == 3
+    ), "Simulation should stop at the first event time before reaching max time 5."
 
     # Run until max time of 8
     _ = scheduler.run_until_max_time(8)
-    assert scheduler.now == 7, "Simulation should stop at the time of the second event before reaching max time 8."
-
+    assert (
+        scheduler.now == 7
+    ), "Simulation should stop at the time of the second event before reaching max time 8."

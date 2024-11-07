@@ -16,16 +16,24 @@ class Customer:
 
 
 class MMcQueueSimulation:
-    def __init__(self, arrival_rate: float, service_rate: float, num_servers: int, max_time: float):
-        self.arrival_rate: float = arrival_rate          # λ (arrival rate)
-        self.service_rate: float = service_rate          # μ (service rate)
-        self.num_servers: int = num_servers            # c (number of servers)
-        self.max_time: float = max_time                  # Max simulation time
-        self.scheduler: EventScheduler = EventScheduler()         # Event scheduler
-        self.queue: list[Customer] = []                           # Queue for customers
-        self.servers: list[Customer | None] = [None] * self.num_servers  # Track server status
-        self.total_customers: int = 0                  # Total customers processed
-        self.total_wait_time: float = 0.0                # Accumulated wait time
+    def __init__(
+        self,
+        arrival_rate: float,
+        service_rate: float,
+        num_servers: int,
+        max_time: float,
+    ):
+        self.arrival_rate: float = arrival_rate  # λ (arrival rate)
+        self.service_rate: float = service_rate  # μ (service rate)
+        self.num_servers: int = num_servers  # c (number of servers)
+        self.max_time: float = max_time  # Max simulation time
+        self.scheduler: EventScheduler = EventScheduler()  # Event scheduler
+        self.queue: list[Customer] = []  # Queue for customers
+        self.servers: list[Customer | None] = [
+            None
+        ] * self.num_servers  # Track server status
+        self.total_customers: int = 0  # Total customers processed
+        self.total_wait_time: float = 0.0  # Accumulated wait time
 
     def schedule_arrival(self):
         """Schedule the next customer arrival."""

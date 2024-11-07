@@ -61,7 +61,7 @@ def test_event_run_without_activation():
     custom_action = lambda: "executed"
     event = Event(time=10.0, action=custom_action)
 
-    event.status = EventStatus.INACTIVE # Manually deactivate the event
+    event.status = EventStatus.INACTIVE  # Manually deactivate the event
 
     event.run()
 

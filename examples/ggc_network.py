@@ -103,11 +103,7 @@ class Node:
             "customer_id": customer.customer_id,
         }
         # Schedule the departure event
-        self.scheduler.timeout(
-            service_time,
-            action=action,
-            context=context
-        )
+        self.scheduler.timeout(service_time, action=action, context=context)
 
     def handle_departure(self, server_id: int):
         """Handle the departure of a customer from a given server."""

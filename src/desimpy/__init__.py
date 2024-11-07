@@ -287,7 +287,9 @@ class EventScheduler:
         """Removes all events from the event schedule."""
         self.event_queue = []
 
-    def cancel_all_events_by_condition(self, condition: Callable[[Self, Event], bool]) -> None:
+    def cancel_all_events_by_condition(
+        self, condition: Callable[[Self, Event], bool]
+    ) -> None:
         """Remove all events by a given condtion."""
         targets: list[Event] = []
         for _, event in self.event_queue:
@@ -392,8 +394,8 @@ class EventScheduler:
 
     def _activate(self) -> None:
         """Set the simulation status to "active"."""
-        self.status: EventSchedulerStatus =  EventSchedulerStatus.ACTIVE
+        self.status: EventSchedulerStatus = EventSchedulerStatus.ACTIVE
 
     def _deactivate(self) -> None:
         """Set the simulation status to "inactive"."""
-        self.status: EventSchedulerStatus =  EventSchedulerStatus.INACTIVE
+        self.status: EventSchedulerStatus = EventSchedulerStatus.INACTIVE

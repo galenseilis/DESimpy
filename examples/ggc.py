@@ -16,14 +16,22 @@ class Customer:
 
 
 class GGcQueue:
-    def __init__(self, arrival_dist: dists.Distribution , service_dist: dists.Distribution, num_servers: int, max_time: float):
+    def __init__(
+        self,
+        arrival_dist: dists.Distribution,
+        service_dist: dists.Distribution,
+        num_servers: int,
+        max_time: float,
+    ):
         self.arrival_dist: dists.Distribution = arrival_dist
         self.service_dist: dists.Distribution = service_dist
         self.num_servers: int = num_servers  # c (number of servers)
         self.max_time: float = max_time  # Max simulation time
         self.scheduler: EventScheduler = EventScheduler()  # Event scheduler
         self.queue: list[Customer] = []  # Queue for customers
-        self.servers: list[Customer | None] = [None] * self.num_servers  # Track server status
+        self.servers: list[Customer | None] = [
+            None
+        ] * self.num_servers  # Track server status
         self.total_customers: int = 0  # Total customers processed
         self.total_wait_time: float = 0.0  # Accumulated wait time
 
@@ -31,12 +39,8 @@ class GGcQueue:
         """Schedule the next customer arrival."""
         inter_arrival_time: float = self.arrival_dist.sample()
         action = lambda: self.handle_arrival()
-        context={"type": "arrival", "schedule_time": self.scheduler.current_time}
-        self.scheduler.timeout(
-            inter_arrival_time,
-            action,
-            context=context
-        )
+        context = {"type": "arrival", "schedule_time": self.scheduler.current_time}
+        self.scheduler.timeout(inter_arrival_time, action, context=context)
 
     def handle_arrival(self):
         """Handle a customer arrival."""
@@ -74,11 +78,7 @@ class GGcQueue:
         }
         # Schedule the departure event
 
-        self.scheduler.timeout(
-            service_time,
-            action=action,
-            context=context
-        )
+        self.scheduler.timeout(service_time, action=action, context=context)
 
     def handle_departure(self, server_id: int) -> None:
         """Handle the departure of a customer from a given server."""
