@@ -9,4 +9,4 @@ from desimpy import EventScheduler
 if __name__ == "__main__":
     env = EventScheduler()
     for i in range(100):
-        env.run_until_max_time(i)
+        _ = env.run_until_max_time(i)
