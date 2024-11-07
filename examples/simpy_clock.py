@@ -49,12 +49,10 @@ def clock(env: EventScheduler, name: str, tick: float) -> None:
 
     env.timeout(0, action=action)
 
-
-if __name__ == "__name__":
+if __name__ == "__main__":
     #################################
     # $2 INITIALIZE EVENT SCHEDULER #
     #################################
-
     env = EventScheduler()
 
     ##############################
@@ -68,4 +66,5 @@ if __name__ == "__name__":
     # $4 RUN SIMULATION #
     #####################
 
-    _ = env.run_until_max_time(2, logging=False)
+    _ = env.run_until_max_time(2, logging=True)
+
