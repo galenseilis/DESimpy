@@ -80,6 +80,7 @@ def test_peek_after_all_events_canceled(scheduler: EventScheduler, event: Callab
 
 def test_peek_with_active_status(scheduler: EventScheduler, event: Callable[[float], Event]):
     """Test that peek still returns the correct time when the scheduler is active."""
+    # WARN: Using private name `_activate`.
     scheduler._activate()
     event1 = event(2.0)
     event2 = event(5.0)
@@ -87,5 +88,6 @@ def test_peek_with_active_status(scheduler: EventScheduler, event: Callable[[flo
     scheduler.schedule(event2)
     
     assert scheduler.peek() == 2.0
+    # WARN: Using private name `_deactivate`.
     scheduler._deactivate()
 
