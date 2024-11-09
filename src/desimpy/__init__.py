@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import heapq
 from enum import Enum, auto
-from typing import Any, Callable, Self
+from typing import Any, Self
+from collections.abc import Callable
 
 __all__ = ["Event", "EventScheduler"]
 
@@ -392,7 +393,8 @@ class EventScheduler:
 
         This function is a convenience wrapper around the run
         method so that simulating until an event is elapsed is
-        assumed as the stop condition."""
+        assumed as the stop condition.
+        """
         stop: Callable[[Self], bool] = lambda scheduler: (event in scheduler.event_log)
 
         return self.run(stop, logging)

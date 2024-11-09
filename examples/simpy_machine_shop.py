@@ -1,5 +1,4 @@
-"""
-```yaml
+"""```yaml
 contents:
     - 0. Imports
     - 1. Configuration
@@ -46,8 +45,7 @@ SIM_TIME = WEEKS * 7 * 24 * 60
 
 
 def time_per_part() -> float:
-    """
-    Samples the duration of time required to complete a part.
+    """Samples the duration of time required to complete a part.
 
     This function generates a time value based on a truncated normal distribution with a mean and standard deviation defined in the configuration. The value is truncated at zero to ensure positive time.
 
@@ -61,8 +59,7 @@ def time_per_part() -> float:
 
 
 def time_to_failure() -> float:
-    """
-    Samples the time until the next machine failure.
+    """Samples the time until the next machine failure.
 
     This function generates a failure time following an exponential distribution
     based on the mean time to failure (MTTF) defined in the configuration.
@@ -79,8 +76,7 @@ def time_to_failure() -> float:
 
 
 class Machine:
-    """
-    Represents a machine in the shop that processes parts and can break down.
+    """Represents a machine in the shop that processes parts and can break down.
 
     Each machine works on parts and can fail at random intervals, requiring a repairman
     to fix it. The machine class manages the part processing and failure events.
@@ -97,8 +93,7 @@ class Machine:
     """
 
     def __init__(self, env, name: Any, repairman) -> None:
-        """
-        Initializes a machine instance.
+        """Initializes a machine instance.
 
         Args:
             env (EventScheduler): The event scheduler for handling events.
@@ -118,8 +113,7 @@ class Machine:
         self.gonna_break()
 
     def working(self, back_to_work: bool = False) -> None:
-        """
-        Starts working on a part.
+        """Starts working on a part.
 
         If a part is already being worked on, it resumes from where it left off
         before any interruptions (such as a breakdown). Otherwise, a new part
@@ -141,8 +135,7 @@ class Machine:
         self.env.schedule(self.current_job)
 
     def complete_part(self) -> None:
-        """
-        Completes the current part and begins working on the next part.
+        """Completes the current part and begins working on the next part.
 
         This method increments the part count and schedules the next part to be processed.
         """
@@ -151,8 +144,7 @@ class Machine:
         self.working()
 
     def gonna_break(self) -> None:
-        """
-        Schedules a machine breakdown event based on a sampled failure time.
+        """Schedules a machine breakdown event based on a sampled failure time.
 
         This method uses the time-to-failure function to determine when the machine
         will break down and schedules an event accordingly.
@@ -161,8 +153,7 @@ class Machine:
         self.env.timeout(time_to_break, self.break_machine)
 
     def break_machine(self) -> None:
-        """
-        Handles the machine breaking down.
+        """Handles the machine breaking down.
 
         When the machine breaks, it halts the current part processing, and a request
         is sent to the repairman for repair.
@@ -181,8 +172,7 @@ class Machine:
 
 
 class Repairman:
-    """
-    Manages the repair and handling of machine breakdowns.
+    """Manages the repair and handling of machine breakdowns.
 
     The repairman class handles repair requests from machines and can be preempted
     to prioritize more urgent tasks. It uses a priority queue to manage job requests.
@@ -195,8 +185,7 @@ class Repairman:
     """
 
     def __init__(self, env: EventScheduler) -> None:
-        """
-        Initializes a repairman instance.
+        """Initializes a repairman instance.
 
         Args:
             env (EventScheduler): The event scheduler managing simulation events.
@@ -207,8 +196,7 @@ class Repairman:
         self.current_job = None
 
     def request(self, requestor: Any, request_priority: int) -> None:
-        """
-        Processes a repair or other job request.
+        """Processes a repair or other job request.
 
         This method either schedules a new job if no current job is active,
         or adds the request to the queue if it has a lower priority.
@@ -276,8 +264,7 @@ class Repairman:
         return Event(time, action, context)
 
     def complete_job(self) -> None:
-        """
-        Completes the current job and processes the next job in the queue, if any.
+        """Completes the current job and processes the next job in the queue, if any.
 
         This method updates the machine's status when repairs are complete or handles
         other types of jobs if scheduled.
@@ -367,8 +354,7 @@ class Repairman:
 
 
 def other_jobs(repairman: Repairman):
-    """
-    Generates other miscellaneous tasks for the repairman to handle.
+    """Generates other miscellaneous tasks for the repairman to handle.
 
     This function submits a job with lower priority, such as maintenance or other tasks,
     to keep the repairman busy when machines are not broken.

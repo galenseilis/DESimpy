@@ -1,4 +1,5 @@
-from typing import Callable, Self
+from typing import Self
+from collections.abc import Callable
 
 # TODO: Pull in simdist package for distributions.
 from simdist import dists

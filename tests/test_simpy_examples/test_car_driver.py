@@ -7,7 +7,7 @@ def run_simpy():
         yield env.timeout(3)
         car.action.interrupt()
 
-    class Car(object):
+    class Car:
         def __init__(self, env):
             self.env = env
             self.action = env.process(self.run())

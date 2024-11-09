@@ -1,5 +1,4 @@
-"""
-```yaml
+"""```yaml
 source: https://stats.stackexchange.com/questions/447118/queuing-theory-for-elevators
 ```
 """

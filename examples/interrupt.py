@@ -1,5 +1,4 @@
-"""
-```yaml
+"""```yaml
 contents:
     - 0. Imports
     - 1. Interrupt by Deactivation

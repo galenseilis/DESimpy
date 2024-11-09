@@ -1,5 +1,4 @@
-"""
-```yaml
+"""```yaml
 contents:
     - 0. Imports
     - 1. Define Battery Charging Station
@@ -23,8 +22,7 @@ from desimpy import Event, EventScheduler
 
 
 class BatteryChargingStation:
-    """
-    A resource representing a battery charging station with a limited number of charging spots.
+    """A resource representing a battery charging station with a limited number of charging spots.
 
     This class models a charging station with a fixed capacity. Cars can request
     charging spots, and if all spots are occupied, they are placed in a waiting queue.
@@ -37,8 +35,7 @@ class BatteryChargingStation:
     """
 
     def __init__(self, env: EventScheduler, capacity: int) -> None:
-        """
-        Initialize the BatteryChargingStation with a given capacity.
+        """Initialize the BatteryChargingStation with a given capacity.
 
         Args:
             env (EventScheduler): The simulation's event scheduler.
@@ -50,8 +47,7 @@ class BatteryChargingStation:
         self.waiting_queue = []
 
     def request(self, car) -> None:
-        """
-        Request a charging spot for a car.
+        """Request a charging spot for a car.
 
         If a charging spot is available, it reduces the available spots by one
         and schedules the car to start charging. If no spots are available, the
@@ -68,8 +64,7 @@ class BatteryChargingStation:
             print(f"{car.name} is waiting at time {self.env.current_time}")
 
     def release(self) -> None:
-        """
-        Release a charging spot after a car finishes charging.
+        """Release a charging spot after a car finishes charging.
 
         Increases the number of available spots by one. If any cars are waiting in
         the queue, the first car in the queue is assigned the newly available spot
@@ -87,8 +82,7 @@ class BatteryChargingStation:
 
 
 class Car:
-    """
-    A car that uses a battery charging station within a simulation environment.
+    """A car that uses a battery charging station within a simulation environment.
 
     Each car has a defined driving time, after which it arrives at the charging
     station and requests a spot to charge. Once a spot becomes available, the car
@@ -110,8 +104,7 @@ class Car:
         driving_time: float,
         charge_duration: float,
     ) -> None:
-        """
-        Initialize the Car object and schedule its arrival at the charging station.
+        """Initialize the Car object and schedule its arrival at the charging station.
 
         Args:
             env (EventScheduler): The simulation's event scheduler.
@@ -129,8 +122,7 @@ class Car:
         self.env.schedule(Event(self.env.current_time + self.driving_time, self.arrive))
 
     def arrive(self) -> None:
-        """
-        Trigger the car's arrival at the charging station.
+        """Trigger the car's arrival at the charging station.
 
         Once the car arrives, it requests a charging spot. If one is available,
         it will be scheduled to start charging; otherwise, it will wait in a queue.
@@ -142,8 +134,7 @@ class Car:
         self.bcs.request(self)
 
     def start_charging(self) -> None:
-        """
-        Start the car's charging process.
+        """Start the car's charging process.
 
         When a charging spot becomes available, the car starts charging. The duration
         of charging is predefined, and after this time, the car will be scheduled to leave.
@@ -158,8 +149,7 @@ class Car:
         )
 
     def leave(self) -> None:
-        """
-        End the car's charging process and release the charging spot.
+        """End the car's charging process and release the charging spot.
 
         Once the car finishes charging, it leaves the charging station, freeing
         up a spot for other waiting cars.

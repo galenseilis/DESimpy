@@ -23,8 +23,7 @@ from desimpy import EventScheduler
 
 
 def clock(env: EventScheduler, name: str, tick: float) -> None:
-    """
-    Simulates a clock process that prints the current simulation time at regular intervals.
+    """Simulates a clock process that prints the current simulation time at regular intervals.
 
     The clock ticks at the specified interval and prints its name along with the
     current simulation time. This process continues until the simulation ends.
@@ -38,8 +37,7 @@ def clock(env: EventScheduler, name: str, tick: float) -> None:
     """
 
     def action() -> None:
-        """
-        Schedules the next tick of the clock.
+        """Schedules the next tick of the clock.
 
         Prints the clock's name and the current simulation time, and schedules
         the next tick to occur after the specified interval.

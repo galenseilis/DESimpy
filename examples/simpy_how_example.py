@@ -1,5 +1,4 @@
-"""
-```yaml
+"""```yaml
 contents:
     - 0. Imports
     - 1. Define Example Process
@@ -14,7 +13,7 @@ source: https://simpy.readthedocs.io/en/stable/topical_guides/simpy_basics.html#
 # $0 IMPORTS #
 ##############
 
-from typing import Callable
+from collections.abc import Callable
 
 from desimpy import EventScheduler
 
@@ -24,8 +23,7 @@ from desimpy import EventScheduler
 
 
 def example(env: EventScheduler) -> None:
-    """
-    Example function that schedules an action in a simulation environment.
+    """Example function that schedules an action in a simulation environment.
 
     This function defines an action that prints the current time in the environment
     along with a hardcoded value of 42. It schedules this action to occur after a

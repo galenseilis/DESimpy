@@ -42,8 +42,7 @@ random.seed(RANDOM_SEED)
 
 
 class Counter:
-    """
-    A resource representing the bank counter with limited capacity.
+    """A resource representing the bank counter with limited capacity.
 
     Attributes:
         env (EventScheduler): The event scheduler.
@@ -59,8 +58,7 @@ class Counter:
         self.queue = []
 
     def request(self, customer):
-        """
-        Request service for a customer. If there's space, they will be served immediately,
+        """Request service for a customer. If there's space, they will be served immediately,
         otherwise, they join the queue.
         """
         if self.available > 0:
@@ -71,8 +69,7 @@ class Counter:
             print(f"{customer.name} is waiting at {self.env.current_time}")
 
     def release(self):
-        """
-        Release a spot when a customer finishes service. If there are customers in the queue,
+        """Release a spot when a customer finishes service. If there are customers in the queue,
         schedule the next one to be served.
         """
         self.available += 1
@@ -87,8 +84,7 @@ class Counter:
 
 
 class Customer:
-    """
-    Represents a customer arriving at the bank, with a limited patience.
+    """Represents a customer arriving at the bank, with a limited patience.
 
     Attributes:
         env (EventScheduler): The event scheduler.
@@ -111,16 +107,14 @@ class Customer:
         self.env.schedule(Event(self.arrive_time, self.check_patience))
 
     def check_patience(self):
-        """
-        Check if the customer can be served before their patience runs out.
+        """Check if the customer can be served before their patience runs out.
         """
         self.counter.request(self)
         # Schedule reneging event based on the patience
         self.env.schedule(Event(self.env.current_time + self.patience, self.renege))
 
     def start_service(self):
-        """
-        Start the service at the counter and schedule the finish event.
+        """Start the service at the counter and schedule the finish event.
         """
         wait_time = self.env.current_time - self.arrive_time
         print(f"{self.env.current_time:.4f} {self.name}: Waited {wait_time:.3f}")
@@ -130,15 +124,13 @@ class Customer:
         )
 
     def finish_service(self):
-        """
-        Finish the service and leave the bank.
+        """Finish the service and leave the bank.
         """
         print(f"{self.env.current_time:.4f} {self.name}: Finished")
         self.counter.release()
 
     def renege(self):
-        """
-        Reneges if the customer has not been served before their patience runs out.
+        """Reneges if the customer has not been served before their patience runs out.
         """
         if self in self.counter.queue:
             self.counter.queue.remove(self)
@@ -154,8 +146,7 @@ class Customer:
 
 
 class Bank:
-    """
-    Simulate the bank, generating customers at random intervals and handling their service.
+    """Simulate the bank, generating customers at random intervals and handling their service.
     """
 
     # WARN: Not to be confused with `collections.Counter`.
@@ -166,8 +157,7 @@ class Bank:
     def generate_customers(
         self, num_customers: int, interval: float, time_in_bank: float
     ):
-        """
-        Generate customers at random intervals.
+        """Generate customers at random intervals.
         """
         for i in range(num_customers):
             arrival_time = random.expovariate(1.0 / interval)

@@ -1,5 +1,4 @@
-"""
-```yaml
+"""```yaml
 source: https://simpy.readthedocs.io/en/stable/examples/carwash.html
 ```
 """
@@ -38,8 +37,7 @@ random.seed(RANDOM_SEED)
 
 
 class Carwash:
-    """
-    A carwash that has a limited number of washing machines (NUM_MACHINES).
+    """A carwash that has a limited number of washing machines (NUM_MACHINES).
     It cleans cars in parallel, subject to availability of machines.
     """
 
@@ -51,8 +49,7 @@ class Carwash:
         self.queue = []
 
     def request(self, car):
-        """
-        Request a machine for washing. If a machine is available, it starts
+        """Request a machine for washing. If a machine is available, it starts
         the wash immediately; otherwise, the car waits in the queue.
         """
         if self.available_machines > 0:
@@ -68,8 +65,7 @@ class Carwash:
             self.queue.append(car)
 
     def finish_wash(self, car):
-        """
-        Called when a car finishes washing. It releases the machine and checks
+        """Called when a car finishes washing. It releases the machine and checks
         if any cars are waiting in the queue to start washing.
         """
         pct_dirt = random.randint(50, 99)
@@ -91,8 +87,7 @@ class Carwash:
 
 
 class Car:
-    """
-    A car that arrives at the carwash and waits to be cleaned.
+    """A car that arrives at the carwash and waits to be cleaned.
     """
 
     def __init__(self, env: EventScheduler, name: str, carwash: Carwash):
@@ -103,8 +98,7 @@ class Car:
         self.env.schedule(Event(self.env.current_time, lambda: self.enter_carwash()))
 
     def enter_carwash(self):
-        """
-        Enter the carwash and request a machine for cleaning.
+        """Enter the carwash and request a machine for cleaning.
         """
         self.carwash.request(self.name)
 
@@ -115,8 +109,7 @@ class Car:
 
 
 def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
-    """
-    Set up the carwash simulation, starting with an initial set of cars and
+    """Set up the carwash simulation, starting with an initial set of cars and
     generating new cars at random intervals.
     """
     carwash = Carwash(env, num_machines, washtime)

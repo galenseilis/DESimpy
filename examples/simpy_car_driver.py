@@ -1,5 +1,4 @@
-"""
-```yaml
+"""```yaml
 description: Simulate a driver process interrupting a car charging process.
 source: https://simpy.readthedocs.io/en/latest/simpy_intro/process_interaction.html#interrupting-another-process
 contents:

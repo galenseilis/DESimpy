@@ -1,5 +1,4 @@
-"""
-```yaml
+"""```yaml
 contents:
     - 0. Imports
     - 1. Define Car Class
@@ -21,8 +20,7 @@ from desimpy import EventScheduler
 
 
 class Car:
-    """
-    A car that alternates between parking/charging and driving in a loop within a simulation environment.
+    """A car that alternates between parking/charging and driving in a loop within a simulation environment.
 
     Upon creation, the car is immediately scheduled to begin its first parking and charging process.
     After parking and charging, it drives for a fixed time, and then repeats the cycle indefinitely.
@@ -32,8 +30,7 @@ class Car:
     """
 
     def __init__(self, env: EventScheduler) -> None:
-        """
-        Initialize the Car object and schedule the initial run.
+        """Initialize the Car object and schedule the initial run.
 
         Args:
             env (EventScheduler): The simulation's event scheduler.
@@ -43,8 +40,7 @@ class Car:
         self.schedule_run()
 
     def schedule_run(self) -> None:
-        """
-        Schedule the initial parking and charging event.
+        """Schedule the initial parking and charging event.
 
         This method immediately schedules the first `run` event, with a delay of 0,
         meaning the parking and charging process will start at the current simulation time.
@@ -52,8 +48,7 @@ class Car:
         self.env.timeout(0, self.run)
 
     def run(self) -> None:
-        """
-        Handle the parking and charging process, followed by driving.
+        """Handle the parking and charging process, followed by driving.
 
         When this method is called, the car starts parking and charging. After
         a fixed charging time of 5 units, the car begins driving. The driving lasts
@@ -67,8 +62,7 @@ class Car:
 
         # Define the action to be executed when charging ends
         def charge_action() -> None:
-            """
-            Action to be performed after the charging period ends.
+            """Action to be performed after the charging period ends.
 
             Once the charging is complete, the car starts driving, and the next
             parking/charging cycle is scheduled.
