@@ -1,27 +1,31 @@
+"""Simpy clock example."""
+
 def run_simpy():
+    """Simpy implementation."""
     import simpy
 
-    results = []
+    results: list[tuple[str, float]] = []
 
-    def clock(env, name, tick):
+    def clock(env: simpy.Environment, name: str, tick: float):
         while True:
             results.append((name, env.now))
             yield env.timeout(tick)
 
     env = simpy.Environment()
 
-    env.process(clock(env, "fast", 0.5))
-    env.process(clock(env, "slow", 1))
+    _ = env.process(clock(env, "fast", 0.5))
+    _ = env.process(clock(env, "slow", 1))
 
-    env.run(until=2)
+    _ = env.run(until=2)
 
     return results
 
 
 def run_desimpy():
+    """DESimpy implementation."""
     from desimpy import EventScheduler
 
-    results = []
+    results: list[tuple[str, float]] = []
 
     def clock(env: EventScheduler, name: str, tick: float) -> None:
         def action() -> None:
@@ -33,10 +37,11 @@ def run_desimpy():
     env = EventScheduler()
     clock(env, "fast", 0.5)
     clock(env, "slow", 1)
-    env.run_until_max_time(2, logging=False)
+    _ = env.run_until_max_time(2, logging=False)
 
     return results
 
 
 def test_equal_histories():
+    """Compare histories of distinct implementations."""
     assert run_simpy() == run_desimpy()

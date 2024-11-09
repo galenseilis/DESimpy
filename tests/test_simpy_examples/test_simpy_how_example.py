@@ -1,26 +1,36 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
+    from typing import Any
+
+
 def run_simpy():
     import simpy
 
-    results = []
+    results: list[str] = []
 
-    def example(env):
-        event = simpy.events.Timeout(env, delay=1, value=42)
+    def example(env: simpy.Environment) -> Generator[Any, None, None]:
+        event: Any = simpy.events.Timeout(env, delay=1, value=42)
         value = yield event
         results.append("now=%d, value=%d" % (env.now, value))
 
-    env = simpy.Environment()
-    example_gen = example(env)
-    p = simpy.events.Process(env, example_gen)
-    env.run()
+    env: simpy.Environment = simpy.Environment()
+    example_gen: Generator[Any, None, None] = example(env)
+    _ = simpy.events.Process(env, example_gen)
+    _ = env.run()
 
     return results
 
 
 def run_desimpy():
     from collections.abc import Callable
+
     from desimpy import EventScheduler
 
-    results = []
+    results: list[str] = []
 
     def example(env: EventScheduler) -> None:
         delay = 1
@@ -32,7 +42,7 @@ def run_desimpy():
 
     env = EventScheduler()
     example(env)
-    env.run_until_max_time(float("inf"), logging=False)
+    _ = env.run_until_max_time(float("inf"), logging=False)
 
     return results
 

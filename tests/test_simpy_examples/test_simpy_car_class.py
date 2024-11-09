@@ -1,12 +1,15 @@
+"""`https://simpy.readthedocs.io/en/stable/simpy_intro/process_interaction.html#waiting-for-a-process`."""
+
 def run_simpy():
+    """Simpy implementation."""
     import simpy
 
-    results = []
+    results: list[str] = []
 
     class Car:
-        def __init__(self, env):
-            self.env = env
-            self.action = env.process(self.run())
+        def __init__(self, env: simpy.Environment):
+            self.env: simpy.Environment = env
+            self.action: simpy.Process = env.process(self.run())
 
         def run(self):
             while True:
@@ -17,24 +20,25 @@ def run_simpy():
                 trip_duration = 2
                 yield self.env.timeout(trip_duration)
 
-        def charge(self, duration):
+        def charge(self, duration: float):
             yield self.env.timeout(duration)
 
     env = simpy.Environment()
-    car = Car(env)
-    env.run(until=15)
+    _ = Car(env)
+    _ = env.run(until=15)
 
     return results
 
 
 def run_desimpy():
+    """DESimpy implementation."""
     from desimpy import EventScheduler
 
-    results = []
+    results: list[str] = []
 
     class Car:
         def __init__(self, env: EventScheduler) -> None:
-            self.env = env
+            self.env: EventScheduler = env
             self.schedule_run()
 
         def schedule_run(self) -> None:
@@ -50,11 +54,12 @@ def run_desimpy():
             self.env.timeout(5, charge_action)
 
     scheduler = EventScheduler()
-    Car(scheduler)
-    scheduler.run_until_max_time(15, logging=False)
+    _ = Car(scheduler)
+    _ = scheduler.run_until_max_time(15, logging=False)
 
     return results
 
 
 def test_equal_histories():
+    """Compare histories created by separate implementations."""
     assert run_simpy() == run_desimpy()
