@@ -1,0 +1,10 @@
+target-version = "py310"
+
+[lint]
+extend-select = [
+  "UP",  # pyupgrade
+  "D",   # pydocstyle
+]
+
+[lint.pydocstyle]
+convention = "google"
