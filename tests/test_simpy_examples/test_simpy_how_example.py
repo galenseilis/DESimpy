@@ -8,6 +8,7 @@ if TYPE_CHECKING:
 
 
 def run_simpy():
+    """Simpy implementation."""
     import simpy
 
     results: list[str] = []
@@ -26,6 +27,7 @@ def run_simpy():
 
 
 def run_desimpy():
+    """DESimpy implementaton."""
     from collections.abc import Callable
 
     from desimpy import EventScheduler
@@ -48,4 +50,5 @@ def run_desimpy():
 
 
 def test_equal_histories():
+    """Compare histories from distinct implementations."""
     assert run_simpy() == run_desimpy()
