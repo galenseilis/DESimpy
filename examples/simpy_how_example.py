@@ -16,7 +16,7 @@ source: https://simpy.readthedocs.io/en/stable/topical_guides/simpy_basics.html#
 
 from typing import Callable
 
-from desimpy import Event, EventScheduler
+from desimpy import EventScheduler
 
 #############################
 # $1 DEFINE EXAMPLE PROCESS #

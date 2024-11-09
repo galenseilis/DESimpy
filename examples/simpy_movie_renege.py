@@ -4,7 +4,6 @@
 
 import random
 import heapq
-from typing import Dict, List, NamedTuple, Optional
 import warnings
 
 from desimpy import Event, EventScheduler

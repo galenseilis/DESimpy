@@ -18,7 +18,7 @@ def run_simpy():
 
 def run_desimpy():
     from typing import Callable
-    from desimpy import Event, EventScheduler
+    from desimpy import EventScheduler
 
     results = []
 

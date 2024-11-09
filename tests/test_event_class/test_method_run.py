@@ -1,4 +1,3 @@
-from typing import Any
 
 from desimpy import Event, EventScheduler
 

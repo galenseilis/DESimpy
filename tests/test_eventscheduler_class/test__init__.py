@@ -1,5 +1,4 @@
 from desimpy import EventScheduler
-import pytest
 
 
 def test_default():
