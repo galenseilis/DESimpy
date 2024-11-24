@@ -107,15 +107,13 @@ class Customer:
         self.env.schedule(Event(self.arrive_time, self.check_patience))
 
     def check_patience(self):
-        """Check if the customer can be served before their patience runs out.
-        """
+        """Check if the customer can be served before their patience runs out."""
         self.counter.request(self)
         # Schedule reneging event based on the patience
         self.env.schedule(Event(self.env.current_time + self.patience, self.renege))
 
     def start_service(self):
-        """Start the service at the counter and schedule the finish event.
-        """
+        """Start the service at the counter and schedule the finish event."""
         wait_time = self.env.current_time - self.arrive_time
         print(f"{self.env.current_time:.4f} {self.name}: Waited {wait_time:.3f}")
         service_time = random.expovariate(1.0 / self.time_in_bank)
@@ -124,14 +122,12 @@ class Customer:
         )
 
     def finish_service(self):
-        """Finish the service and leave the bank.
-        """
+        """Finish the service and leave the bank."""
         print(f"{self.env.current_time:.4f} {self.name}: Finished")
         self.counter.release()
 
     def renege(self):
-        """Reneges if the customer has not been served before their patience runs out.
-        """
+        """Reneges if the customer has not been served before their patience runs out."""
         if self in self.counter.queue:
             self.counter.queue.remove(self)
             wait_time: float = self.env.current_time - self.arrive_time
@@ -146,8 +142,7 @@ class Customer:
 
 
 class Bank:
-    """Simulate the bank, generating customers at random intervals and handling their service.
-    """
+    """Simulate the bank, generating customers at random intervals and handling their service."""
 
     # WARN: Not to be confused with `collections.Counter`.
     def __init__(self, env: EventScheduler, counter: Counter):
@@ -157,8 +152,7 @@ class Bank:
     def generate_customers(
         self, num_customers: int, interval: float, time_in_bank: float
     ):
-        """Generate customers at random intervals.
-        """
+        """Generate customers at random intervals."""
         for i in range(num_customers):
             arrival_time = random.expovariate(1.0 / interval)
             self.env.schedule(

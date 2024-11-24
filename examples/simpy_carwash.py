@@ -87,8 +87,7 @@ class Carwash:
 
 
 class Car:
-    """A car that arrives at the carwash and waits to be cleaned.
-    """
+    """A car that arrives at the carwash and waits to be cleaned."""
 
     def __init__(self, env: EventScheduler, name: str, carwash: Carwash):
         self.env: EventScheduler = env
@@ -98,8 +97,7 @@ class Car:
         self.env.schedule(Event(self.env.current_time, lambda: self.enter_carwash()))
 
     def enter_carwash(self):
-        """Enter the carwash and request a machine for cleaning.
-        """
+        """Enter the carwash and request a machine for cleaning."""
         self.carwash.request(self.name)
 
 
