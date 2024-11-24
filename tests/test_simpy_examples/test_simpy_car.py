@@ -1,5 +1,6 @@
 """`https://simpy.readthedocs.io/en/stable/simpy_intro/basic_concepts.html#our-first-process`."""
 
+
 def run_simpy() -> list[str]:
     """Simpy implementation."""
     import simpy

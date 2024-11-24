@@ -1,5 +1,6 @@
 """Simpy clock example."""
 
+
 def run_simpy():
     """Simpy implementation."""
     import simpy

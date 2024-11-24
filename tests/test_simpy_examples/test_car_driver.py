@@ -1,4 +1,5 @@
 """`https://simpy.readthedocs.io/en/latest/simpy_intro/process_interaction.html#waiting-for-a-process`."""
+
 from __future__ import annotations
 
 
@@ -8,7 +9,7 @@ def run_simpy() -> list[str]:
 
     results: list[str] = []
 
-    def driver(env: simpy.Environment, car:Car):
+    def driver(env: simpy.Environment, car: Car):
         yield env.timeout(3)
         car.action.interrupt()
 

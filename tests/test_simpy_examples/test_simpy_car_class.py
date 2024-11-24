@@ -1,5 +1,6 @@
 """`https://simpy.readthedocs.io/en/stable/simpy_intro/process_interaction.html#waiting-for-a-process`."""
 
+
 def run_simpy():
     """Simpy implementation."""
     import simpy
