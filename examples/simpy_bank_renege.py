@@ -1,4 +1,26 @@
-"""source: https://simpy.readthedocs.io/en/stable/examples/bank_renege.html"""
+"""Implementation of SimPy's Bank Renege example.
+
+source: https://simpy.readthedocs.io/en/stable/examples/bank_renege.html
+"""
+
+
+##############
+# $0 IMPORTS #
+##############
+
+from __future__ import annotations
+
+import random
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing import Final
+
+from desimpy import Event, EventScheduler
+
+####################
+# $1 CONFIGURATION #
+####################
 
 COMMENT_SECTIONS = """
 ```yaml
@@ -15,25 +37,15 @@ contents:
 ```
 """
 
-##############
-# $0 IMPORTS #
-##############
-
-import random
-
-from desimpy import Event, EventScheduler
-
-####################
-# $1 CONFIGURATION #
-####################
-
-RANDOM_SEED = 42
-NEW_CUSTOMERS = 5  # Total number of customers
-INTERVAL_CUSTOMERS = 10.0  # Generate new customers roughly every x seconds
-MIN_PATIENCE = 1  # Min. customer patience
-MAX_PATIENCE = 3  # Max. customer patience
-COUNTER_CAPACITY = 1  # Num. customers that can be served in parallel
-TIME_IN_BANK = 12.0  # Time spent in bank
+RANDOM_SEED: Final[int] = 42
+NEW_CUSTOMERS: Final[int] = 5  # Total number of customers
+INTERVAL_CUSTOMERS: Final[float] = (
+    10.0  # Generate new customers roughly every x seconds
+)
+MIN_PATIENCE: Final[float] = 1.0  # Min. customer patience
+MAX_PATIENCE: Final[float] = 3.0  # Max. customer patience
+COUNTER_CAPACITY: Final[int] = 1  # Num. customers that can be served in parallel
+TIME_IN_BANK: Final[float] = 12.0  # Time spent in bank
 random.seed(RANDOM_SEED)
 
 ##############################

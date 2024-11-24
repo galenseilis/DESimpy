@@ -1,21 +1,38 @@
-"""```yaml
-contents:
-    - 0. Imports
-    - 1. Define Car Class
-    - 2. Initialize Event Scheduler
-    - 3. Initialize Car Instance
-    - 4. Run Simulation
-```
-"""
+"""Implementation of SimPy's Car example."""
 
 ##############
 # $0 IMPORTS #
 ##############
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing import Final
 
 from desimpy import EventScheduler
 
+####################
+# $1 CONFIGURATION #
+####################
+
+COMMENT_SECTIONS: Final[str] = """
+```yaml
+contents:
+    - 0. Imports
+    - 1. Configuration
+    - 2. Define Car Class
+    - 3. Initialize Event Scheduler
+    - 4. Initialize Car Instance
+    - 5. Run Simulation
+```
+"""
+
+LOGGING: Final[bool] = False
+SIMULATION_TIME: Final[float] = 15.0
+
 #######################
-# $1 DEFINE CAR CLASS #
+# $2 DEFINE CAR CLASS #
 #######################
 
 
@@ -81,19 +98,19 @@ class Car:
 
 if __name__ == "__main__":
     #################################
-    # $2 INITIALIZE EVENT SCHEDULER #
+    # $3 INITIALIZE EVENT SCHEDULER #
     #################################
 
     scheduler = EventScheduler()
 
     ##############################
-    # $3 INITIALIZE CAR INSTANCE #
+    # $4 INITIALIZE CAR INSTANCE #
     ##############################
 
     _ = Car(scheduler)
 
     #####################
-    # $4 RUN SIMULATION #
+    # $5 RUN SIMULATION #
     #####################
 
-    _ = scheduler.run_until_max_time(15, logging=False)
+    _ = scheduler.run_until_max_time(SIMULATION_TIME, logging=LOGGING)

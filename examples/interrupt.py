@@ -1,4 +1,7 @@
-"""```yaml
+"""Examples of event interruptions."""
+
+COMMENT_SECTIONS = """
+```yaml
 contents:
     - 0. Imports
     - 1. Interrupt by Deactivation
