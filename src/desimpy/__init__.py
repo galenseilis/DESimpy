@@ -30,11 +30,12 @@ if TYPE_CHECKING:
 # CONFIGURATION #
 #################
 
-__all__ = ["Event", "EventScheduler"] # pragma: nocover
+__all__ = ["Event", "EventScheduler"]  # pragma: nocover
 
 ####################
 # EVENT DEFINITION #
 ####################
+
 
 class EventStatus(Enum):
     INACTIVE = auto()
@@ -123,9 +124,11 @@ class Event:
     def __lt__(self, other: Self):
         return self.time < other.time
 
+
 ##############################
 # EVENT SCHEDULER DEFINITION #
 ##############################
+
 
 class EventSchedulerStatus(Enum):
     INACTIVE = auto()
