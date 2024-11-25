@@ -328,7 +328,11 @@ class EventScheduler:
     def cancel_all_events_by_condition(
         self, condition: Callable[[Self, Event], bool]
     ) -> None:
-        """Remove all events by a given condtion."""
+        """Remove all events by a given condtion.
+
+        Args:
+        condition (Callable[[Self, Event], bool]): Callable that decides whether an event should be cancelled.
+        """
         targets: list[Event] = []
         for _, event in self.event_queue:
             if condition(self, event):

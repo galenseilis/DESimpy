@@ -21,7 +21,9 @@ def test_deactivate_all_events_single_inactive_event():
 
     scheduler.deactivate_all_events()
 
-    assert event.status == EventStatus.INACTIVE, "The single event should be deactivated."
+    assert (
+        event.status == EventStatus.INACTIVE
+    ), "The single event should be deactivated."
 
 
 def test_deactivate_all_events_multiple_inactive_events():
@@ -37,8 +39,12 @@ def test_deactivate_all_events_multiple_inactive_events():
 
     scheduler.deactivate_all_events()
 
-    assert event1.status == EventStatus.INACTIVE, "The first event should be deactivated."
-    assert event2.status == EventStatus.INACTIVE, "The second event should be deactivated."
+    assert (
+        event1.status == EventStatus.INACTIVE
+    ), "The first event should be deactivated."
+    assert (
+        event2.status == EventStatus.INACTIVE
+    ), "The second event should be deactivated."
 
 
 def test_deactivate_all_events_mixed_event_status():
@@ -126,9 +132,15 @@ def test_deactivate_all_events_with_specific_timing():
 
     scheduler.deactivate_all_events()
 
-    assert event1.status == EventStatus.INACTIVE, "Event at time 10 should be inactivated."
-    assert event2.status == EventStatus.INACTIVE, "Event at time 20 should be inactivated."
-    assert event3.status == EventStatus.INACTIVE, "Event at time 30 should be inactivated."
+    assert (
+        event1.status == EventStatus.INACTIVE
+    ), "Event at time 10 should be inactivated."
+    assert (
+        event2.status == EventStatus.INACTIVE
+    ), "Event at time 20 should be inactivated."
+    assert (
+        event3.status == EventStatus.INACTIVE
+    ), "Event at time 30 should be inactivated."
 
 
 def test_deactivate_all_events_with_already_scheduled_and_unscheduled_events():
@@ -185,5 +197,7 @@ def test_deactivate_all_events_complex_mixed_events():
     scheduler.deactivate_all_events()
 
     assert event1.status == EventStatus.INACTIVE, "Inactive event1 should be inactive."
-    assert event2.status == EventStatus.INACTIVE, "Active event2 should remain inactive."
+    assert (
+        event2.status == EventStatus.INACTIVE
+    ), "Active event2 should remain inactive."
     assert event3.status == EventStatus.INACTIVE, "Inactive event3 should be inactive."
