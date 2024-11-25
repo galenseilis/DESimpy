@@ -1,5 +1,5 @@
-from typing import Any
 from collections.abc import Callable
+from typing import Any
 
 from simdist import dists
 
@@ -111,4 +111,4 @@ if __name__ == "__main__":
 
     event_log = simulation.run()
     for event in event_log:
-        print(event)
+        print(event.time, event.context)
