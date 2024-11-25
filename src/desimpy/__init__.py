@@ -12,15 +12,29 @@
 #                                                          |  $$$$$$/
 #                                                           \______/
 
+###########
+# IMPORTS #
+###########
+
 from __future__ import annotations
 
-import heapq
+import heapq  # pragma: nocover
 from enum import Enum, auto
-from typing import Any, Self
-from collections.abc import Callable
+from typing import TYPE_CHECKING  # pragma: nocover
 
-__all__ = ["Event", "EventScheduler"]
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from typing import Any, Self
 
+#################
+# CONFIGURATION #
+#################
+
+__all__ = ["Event", "EventScheduler"] # pragma: nocover
+
+####################
+# EVENT DEFINITION #
+####################
 
 class EventStatus(Enum):
     INACTIVE = auto()
@@ -109,6 +123,9 @@ class Event:
     def __lt__(self, other: Self):
         return self.time < other.time
 
+##############################
+# EVENT SCHEDULER DEFINITION #
+##############################
 
 class EventSchedulerStatus(Enum):
     INACTIVE = auto()

@@ -81,7 +81,7 @@ def test_int_action():
     non_re_str = "action=2018 must be a callable or None."
     re_pattern = re.escape(non_re_str)
     with pytest.raises(TypeError, match=re_pattern):
-        event = Event(2018, action=2018)
+        Event(2018, action=2018)
 
 
 def test_float_action():
