@@ -79,11 +79,12 @@ class Event:
         action: Callable[[], Any] | None = None,
         context: dict[Any, Any] | None = None,
     ) -> None:
+        """Create instance of an event."""
         # OPTIMIZE: Validation checks that are removed when run in optimized mode.
         if __debug__:
             # INFO: The checks below are considered unreachable by PyRight,
             # but they are.
-            if not isinstance(time, (int, float)):
+            if not isinstance(time, int | float):
                 raise TypeError(f"{time=} must be a number.")
             if not (isinstance(context, dict) or context is None):
                 raise TypeError(f"{context=} must be a dictionary or None.")
@@ -119,9 +120,11 @@ class Event:
             self.result: Any = self.action()
 
     def __le__(self, other: Self):
+        """Evaluate if this event is less-than-or-equal to another in time."""
         return self.time <= other.time
 
     def __lt__(self, other: Self):
+        """Evaluate if this event is less than another in time."""
         return self.time < other.time
 
 
@@ -136,9 +139,10 @@ class EventSchedulerStatus(Enum):
 
 
 class EventScheduler:
-    """Run discrete event simulations."""
+    """Runner for discrete event simulations."""
 
     def __init__(self) -> None:
+        """Create an event scheduler."""
         self.current_time: float | int = 0
         self.event_queue: list[tuple[float, Event]] = []
         self.event_log: list[Event] = []
@@ -264,8 +268,7 @@ class EventScheduler:
 
         Every event on the event queue will be activated.
         """
-        func: Callable[[Event], None] = lambda event: event.activate()
-        self.apply_to_all_events(func)
+        self.apply_to_all_events(_activate_event)
 
     def activate_all_events_by_condition(
         self, condition: Callable[[Self, Event], bool]
@@ -275,8 +278,7 @@ class EventScheduler:
         Every event that satisfies the given condition
         will be activated.
         """
-        func: Callable[[Event], None] = lambda event: event.activate()
-        self.apply_to_events_by_condition(func, condition)
+        self.apply_to_events_by_condition(_activate_event, condition)
 
     def deactivate_next_event(self) -> None:
         """Deactive the next event in the event queue."""
@@ -296,14 +298,13 @@ class EventScheduler:
 
     def deactivate_all_events(self) -> None:
         """Deactivate all future events."""
-        self.apply_to_all_events(lambda event: event.deactivate())
+        self.apply_to_all_events(_deactivate_event)
 
     def deactivate_all_events_by_condition(
         self, condition: Callable[[Self, Event], bool]
     ) -> None:
         """Deactivate future events by condition."""
-        func: Callable[[Event], None] = lambda event: event.deactivate()
-        self.apply_to_events_by_condition(func, condition)
+        self.apply_to_events_by_condition(_deactivate_event, condition)
 
     def cancel_next_event(self) -> None:
         """Removes next event from the event schedule."""
@@ -413,13 +414,15 @@ class EventScheduler:
         method so that simulating until a maximum is assumed
         as the stop condition.
         """
-        # TODO: Evaluate if stop should be defined elsewhere for testability.
-        stop: Callable[[Self], bool] = lambda scheduler: (
-            scheduler.current_time >= max_time
-            or not scheduler.event_queue
-            or heapq.nsmallest(1, scheduler.event_queue)[0][0] >= max_time
-        )
-        results = self.run(stop, logging)
+
+        def stop_at_max_time(scheduler: EventScheduler) -> bool:
+            return (
+                scheduler.current_time >= max_time
+                or not scheduler.event_queue
+                or heapq.nsmallest(1, scheduler.event_queue)[0][0] >= max_time
+            )
+
+        results = self.run(stop_at_max_time, logging)
         self.current_time = max_time
         return results
 
@@ -432,9 +435,11 @@ class EventScheduler:
         method so that simulating until an event is elapsed is
         assumed as the stop condition.
         """
-        stop: Callable[[Self], bool] = lambda scheduler: (event in scheduler.event_log)
 
-        return self.run(stop, logging)
+        def stop_at_target_event(scheduler: EventScheduler) -> bool:
+            return event in scheduler.event_log
+
+        return self.run(stop_at_target_event, logging)
 
     def _activate(self) -> None:
         """Set the simulation status to "active"."""
@@ -443,3 +448,16 @@ class EventScheduler:
     def _deactivate(self) -> None:
         """Set the simulation status to "inactive"."""
         self.status: EventSchedulerStatus = EventSchedulerStatus.INACTIVE
+
+
+######################
+# HELPER DEFINITIONS #
+######################
+
+
+def _activate_event(event: Event) -> None:
+    event.activate()
+
+
+def _deactivate_event(event: Event) -> None:
+    event.deactivate()
