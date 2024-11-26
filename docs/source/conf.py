@@ -22,5 +22,12 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "alabaster"
+html_theme = "sphinx_material"
+html_title = project
+html_theme_options = {
+    'color_primary': 'green',
+    'color_accent': 'light-green',
+    'repo_url': 'https://github.com/galenseilis/DESimpy/',
+    'repo_name': project,
+}
 html_static_path = ["_static"]
