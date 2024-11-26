@@ -331,7 +331,8 @@ class EventScheduler:
         """Remove all events by a given condtion.
 
         Args:
-        condition (Callable[[Self, Event], bool]): Callable that decides whether an event should be cancelled.
+        condition (Callable[[Self, Event], bool]): Callable that decides whether an 
+            event should be cancelled.
         """
         targets: list[Event] = []
         for _, event in self.event_queue:
