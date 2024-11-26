@@ -3,21 +3,24 @@ from desimpy import Event, EventScheduler
 
 def test_no_action():
     event = Event(2018)
-    result = event.run()
-    assert result is None
+    returned_result = event.run()
+    assert event.result is None
+    assert returned_result is None
 
 
 def test_lambda_none():
     event = Event(2018, action=lambda: None)
     result = event.run()
     assert result is None
+    assert event.result is None
 
 
 def test_action_returns_literal():
-    value = "foo"
+    value: str = "foo"
     event = Event(2018, action=lambda: value)
-    event.run()
+    returned_result = event.run()
     assert event.result == value
+    assert returned_result is None
 
 
 def test_event_timeout_event():
