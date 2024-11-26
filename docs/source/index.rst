@@ -3,10 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-DESimpy documentation
-=====================
+DESimpy
+=======
 
-DESimPy provides the core components of DES.
+.. note::
+
+   This project is under active development.
+
+DESimPy provides the core components of discrete event simulation.
 
 Processes in DESimPy are defined by methods owned by Python objects inherited from the Event abstract base class. These processes can be used to model system-level or component level changes in a modelled system. Such systems might include customers or patients flowing through services, vehicles in traffic, or agents competing in games.
 
