@@ -317,9 +317,7 @@ class EventScheduler:
         # TODO: https://github.com/dry-python/returns?tab=readme-ov-file#maybe-container
         option_event = self.next_event_by_condition(condition)
         if option_event is not None:
-            self.event_queue.remove(
-                (option_event.time, option_event)
-            )
+            self.event_queue.remove((option_event.time, option_event))
 
     def cancel_all_events(self) -> None:
         """Removes all events from the event schedule."""
@@ -331,7 +329,7 @@ class EventScheduler:
         """Remove all events by a given condtion.
 
         Args:
-        condition (Callable[[Self, Event], bool]): Callable that decides whether an 
+        condition (Callable[[Self, Event], bool]): Callable that decides whether an
             event should be cancelled.
         """
         targets: list[Event] = []
