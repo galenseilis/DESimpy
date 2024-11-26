@@ -38,6 +38,8 @@ __all__ = ["Event", "EventScheduler"]  # pragma: nocover
 
 
 class EventStatus(Enum):
+    """The status of an event."""
+
     INACTIVE = auto()
     ACTIVE = auto()
 
@@ -134,6 +136,8 @@ class Event:
 
 
 class EventSchedulerStatus(Enum):
+    """The status of an event scheduler."""
+
     INACTIVE = auto()
     ACTIVE = auto()
 
