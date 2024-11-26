@@ -13,7 +13,7 @@ def scheduler() -> EventScheduler:
 
 def test_step_processes_one_event(scheduler: EventScheduler) -> None:
     """Test that step processes the next event and removes it from the queue."""
-    processed_events = []
+    processed_events: list[int] = []
 
     # Schedule an event with an action
     scheduler.schedule(
