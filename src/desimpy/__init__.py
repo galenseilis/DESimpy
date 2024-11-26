@@ -319,7 +319,7 @@ class EventScheduler:
         if option_event is not None:
             self.event_queue.remove(
                 (option_event.time, option_event)
-            )  # TODO: Check that this works.
+            )
 
     def cancel_all_events(self) -> None:
         """Removes all events from the event schedule."""
