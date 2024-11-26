@@ -31,7 +31,7 @@ jobs:
       # Build the documentation
       - name: Build the documentation
         run: |
-          sphinx-build -b html . _build/html
+          sphinx-build -b html docs _build/html
 
       # Upload documentation as an artifact (optional)
       - name: Upload documentation artifact
@@ -39,4 +39,3 @@ jobs:
         with:
           name: html-docs
           path: _build/html
-
