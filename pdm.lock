@@ -5,7 +5,7 @@
 groups = ["default", "dev", "docs", "test"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:6226f2e0a525286fd4b333ffba6d72a2dfc73cf71dd43e3fb1182e158032e17c"
+content_hash = "sha256:857cdab3c0d950b7a70af326ae6a8914f35c53c25a94b8cac0e86cb57cee223e"
 
 [[metadata.targets]]
 requires_python = ">=3.10"
@@ -710,6 +710,18 @@ dependencies = [
 files = [
     {file = "simdist-0.1.1-py3-none-any.whl", hash = "sha256:074c65aa07153b8a9f6c4faeecd8741e0f31bd076400462fee7fae3add2c1cc9"},
     {file = "simdist-0.1.1.tar.gz", hash = "sha256:63fe2efbb8e0e5a71ae7188c35526943e0ff0bb2a9de7bcc9645839460936ea3"},
+]
+
+[[package]]
+name = "simpy"
+version = "4.1.1"
+requires_python = ">=3.8"
+summary = "Event discrete, process based simulation for Python."
+groups = ["dev", "test"]
+marker = "python_version >= \"3.10\""
+files = [
+    {file = "simpy-4.1.1-py3-none-any.whl", hash = "sha256:7c5ae380240fd2238671160e4830956f8055830a8317edf5c05e495b3823cd88"},
+    {file = "simpy-4.1.1.tar.gz", hash = "sha256:06d0750a7884b11e0e8e20ce0bc7c6d4ed5f1743d456695340d13fdff95001a6"},
 ]
 
 [[package]]
