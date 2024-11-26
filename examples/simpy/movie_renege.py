@@ -4,15 +4,12 @@
 
 import random
 import heapq
-import warnings
 
 from desimpy import Event, EventScheduler
 
 ####################
 # $1 CONFIGURATION #
 ####################
-
-warnings.warn("This example has not been validated. Results may be incorrect.")
 
 RANDOM_SEED = 42
 TICKETS = 50  # Number of tickets per movie
