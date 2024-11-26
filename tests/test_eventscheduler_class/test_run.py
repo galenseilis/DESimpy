@@ -28,13 +28,16 @@ def test_run_no_events(scheduler: EventScheduler) -> None:
 
 def test_run_stops_based_on_stop_condition(scheduler: EventScheduler) -> None:
     """Test that run stops when the stop condition is met."""
+
     def action() -> None:
         pass
 
     scheduler.schedule(Event(time=5, context={}, action=action))
     scheduler.schedule(Event(time=10, context={}, action=action))
 
-    stop: Callable[[EventScheduler], bool] = lambda sched: sched.current_time >= 5  # Stop after first event
+    stop: Callable[[EventScheduler], bool] = (
+        lambda sched: sched.current_time >= 5
+    )  # Stop after first event
     result = scheduler.run(stop)
 
     assert scheduler.current_time == 5  # Scheduler stops at the correct time
@@ -67,6 +70,7 @@ def test_run_processes_all_events(scheduler: EventScheduler) -> None:
 
 def test_run_logging_disabled(scheduler: EventScheduler) -> None:
     """Test that run does not log events if logging is disabled."""
+
     def action() -> None:
         pass
 
@@ -82,6 +86,7 @@ def test_run_logging_disabled(scheduler: EventScheduler) -> None:
 
 def test_run_filtered_logging(scheduler: EventScheduler) -> None:
     """Test that run logs only events that pass the logging filter."""
+
     def action_1() -> None:
         pass
 
@@ -92,7 +97,9 @@ def test_run_filtered_logging(scheduler: EventScheduler) -> None:
     scheduler.schedule(Event(time=10, context={"type": "normal"}, action=action_2))
 
     stop: Callable[[EventScheduler], bool] = lambda sched: False  # Never stop
-    log_filter: Callable[[Event], bool] = lambda event: event.context.get("type") == "important"  # Log only "important" events
+    log_filter: Callable[[Event], bool] = (
+        lambda event: event.context.get("type") == "important"
+    )  # Log only "important" events
     result = scheduler.run(stop, logging=log_filter)
 
     assert scheduler.current_time == 10  # Scheduler processes all events
@@ -102,6 +109,7 @@ def test_run_filtered_logging(scheduler: EventScheduler) -> None:
 
 def test_run_handles_exceptions(scheduler: EventScheduler) -> None:
     """Test that run propagates exceptions raised by event actions."""
+
     def faulty_action() -> None:
         raise ValueError("Intentional error")
 
@@ -112,7 +120,9 @@ def test_run_handles_exceptions(scheduler: EventScheduler) -> None:
     with pytest.raises(ValueError, match="Intentional error"):
         _: list[Event] = scheduler.run(stop)
 
-    assert scheduler.current_time == 5  # Scheduler stops at the time of the faulty event
+    assert (
+        scheduler.current_time == 5
+    )  # Scheduler stops at the time of the faulty event
     assert len(scheduler.event_queue) == 0  # Event queue is cleared
 
 
@@ -129,11 +139,12 @@ def test_run_stops_midway_due_to_stop_condition(scheduler: EventScheduler) -> No
     scheduler.schedule(Event(time=5, context={}, action=action_1))
     scheduler.schedule(Event(time=10, context={}, action=action_2))
 
-    stop: Callable[[EventScheduler], bool] = lambda sched: sched.current_time >= 5  # Stop after processing the first event
+    stop: Callable[[EventScheduler], bool] = (
+        lambda sched: sched.current_time >= 5
+    )  # Stop after processing the first event
     result = scheduler.run(stop)
 
     assert scheduler.current_time == 5  # Scheduler stops after the first event
     assert len(actions_triggered) == 1  # Only the first action was executed
     assert len(result) == 1  # Only the first event was logged
     assert len(scheduler.event_queue) == 1  # Second event remains in the queue
-
