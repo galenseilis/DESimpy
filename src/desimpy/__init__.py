@@ -81,7 +81,7 @@ class Event:
     ) -> None:
         # OPTIMIZE: Validation checks that are removed when run in optimized mode.
         if __debug__:
-            # INFO: Some of the checks below are considered unreachable by the type checker,
+            # INFO: The checks below are considered unreachable by PyRight,
             # but they are.
             if not isinstance(time, (int, float)):
                 raise TypeError(f"{time=} must be a number.")
