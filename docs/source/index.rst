@@ -14,3 +14,6 @@ Processes in DESimPy are defined by methods owned by Python objects inherited fr
    :maxdepth: 2
    :caption: Contents:
 
+   installation
+   tutorial
+
