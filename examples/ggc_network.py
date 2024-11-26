@@ -112,7 +112,7 @@ class Node:
         customer.departure_time = self.scheduler.current_time
         self.servers[server_id] = None  # Free the server
 
-        wait_time = customer.service_start_time - customer.arrival_time
+        wait_time: float = customer.service_start_time - customer.arrival_time
 
         if self.queue:
             next_customer = self.queue.pop(0)

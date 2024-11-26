@@ -25,9 +25,9 @@ exclude_patterns = []
 html_theme = "sphinx_material"
 html_title = project
 html_theme_options = {
-    'color_primary': 'green',
-    'color_accent': 'light-green',
-    'repo_url': 'https://github.com/galenseilis/DESimpy/',
-    'repo_name': project,
+    "color_primary": "green",
+    "color_accent": "light-green",
+    "repo_url": "https://github.com/galenseilis/DESimpy/",
+    "repo_name": project,
 }
 html_static_path = ["_static"]

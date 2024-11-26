@@ -15,6 +15,7 @@ license = {text = "Apache 2.0"}
 dev = [
     "simdist>=0.1.1",
     "simpy>=4.1.1",
+    "ruff>=0.8.0",
 ]
 docs = [
     "sphinx>=8.1.3",

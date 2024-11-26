@@ -1,29 +1,65 @@
-from collections.abc import Callable
-from typing import Any
+###########
+# IMPORTS #
+###########
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from typing import Any
 
 from simdist import dists
 
 from desimpy import EventScheduler
+
+#########################
+# DEFINE CUSTOMER CLASS #
+#########################
 
 
 class Customer:
     """Class representing a customer in the queueing system."""
 
     def __init__(self, customer_id: int, arrival_time: float):
+        """
+        Initialize a new Customer instance.
+
+        Args:
+            customer_id (int): Unique identifier for the customer.
+            arrival_time (float): Time at which the customer arrives.
+        """
         self.customer_id: int = customer_id
         self.arrival_time: float = arrival_time
         self.service_start_time: float | None = None
         self.departure_time: float | None = None
 
 
+#############################
+# DEFINE G/G/c Queue System #
+#############################
+
+
 class GGcQueue:
+    """Simulation of a G/G/c queueing system."""
+
     def __init__(
         self,
         arrival_dist: dists.Distribution,
         service_dist: dists.Distribution,
         num_servers: int,
         max_time: float,
-    ):
+    ) -> None:
+        """
+        Initialize a G/G/c queueing system.
+
+        Args:
+            arrival_dist (dists.Distribution): Distribution for inter-arrival times.
+            service_dist (dists.Distribution): Distribution for service times.
+            num_servers (int): Number of servers.
+            max_time (float): Maximum simulation time.
+        """
         self.arrival_dist: dists.Distribution = arrival_dist
         self.service_dist: dists.Distribution = service_dist
         self.num_servers: int = num_servers  # c (number of servers)
@@ -37,6 +73,10 @@ class GGcQueue:
         self.total_wait_time: float = 0.0  # Accumulated wait time
 
     def schedule_arrival(self):
+        """Schedule the next customer arrival.
+
+        The time until the next arrival is sampled from the arrival distribution.
+        """
         """Schedule the next customer arrival."""
         inter_arrival_time: float = self.arrival_dist.sample()
         action = lambda: self.handle_arrival()
@@ -44,7 +84,11 @@ class GGcQueue:
         self.scheduler.timeout(inter_arrival_time, action, context=context)
 
     def handle_arrival(self):
-        """Handle a customer arrival."""
+        """Handle a customer arrival event.
+
+        If a server is available, the customer immediately begins service.
+        Otherwise, they join the queue. The next arrival is also scheduled.
+        """
         customer: Customer = Customer(self.total_customers, self.scheduler.current_time)
         self.total_customers += 1
 
@@ -58,14 +102,23 @@ class GGcQueue:
         self.schedule_arrival()  # Schedule the next arrival
 
     def find_free_server(self):
-        """Find an available server."""
+        """Find an available server.
+
+        Returns:
+            int | None: The index of a free server, or None if all servers are busy.
+        """
         for i in range(self.num_servers):
             if self.servers[i] is None:
                 return i
         return None
 
     def start_service(self, customer: Customer, server_id: int):
-        """Start service for a customer at a given server."""
+        """Start service for a customer at a specific server.
+
+        Args:
+            customer (Customer): The customer to serve.
+            server_id (int): The index of the server that will serve the customer.
+        """
         service_time: float = self.service_dist.sample()
         customer.service_start_time = self.scheduler.current_time
         self.servers[server_id] = customer  # Mark the server as busy
@@ -82,8 +135,15 @@ class GGcQueue:
         self.scheduler.timeout(service_time, action=action, context=context)
 
     def handle_departure(self, server_id: int) -> None:
+        """Handle the departure of a customer from a server.
+
+        Frees the server and starts service for the next customer in the queue if one exists.
+
+        Args:
+            server_id (int): The index of the server where the departure occurred.
+        """
         """Handle the departure of a customer from a given server."""
-        customer = self.servers[server_id]
+        customer: Customer = self.servers[server_id]
         customer.departure_time = self.scheduler.current_time
         self.servers[server_id] = None  # Free the server
 
@@ -95,20 +155,41 @@ class GGcQueue:
             self.start_service(next_customer, server_id)
 
     def run(self):
-        """Run the G/G/c queue simulation."""
+        """Run the G/G/c queue simulation.
+
+        Returns:
+            list[Event]: A log of events that occurred during the simulation.
+        """
         self.schedule_arrival()  # Schedule the first arrival
         return self.scheduler.run_until_max_time(self.max_time)  # Run until max_time
 
 
 # Example usage of the simulation
 if __name__ == "__main__":
+    ########################
+    # CONFIGURE SIMULATION #
+    ########################
+
     arrival_dist = dists.Gamma(1, 2)
     service_dist = dists.Gamma(2, 1)
     num_servers = 2  # Number of servers
     max_time = 100.0  # Maximum simulation time
 
+    #########################
+    # INITIALIZE SIMULATION #
+    #########################
+
     simulation = GGcQueue(arrival_dist, service_dist, num_servers, max_time)
 
+    ##################
+    # RUN SIMULATION #
+    ##################
+
     event_log = simulation.run()
+
+    ###################
+    # PRINT EVENT LOG #
+    ###################
+
     for event in event_log:
         print(event.time, event.context)
