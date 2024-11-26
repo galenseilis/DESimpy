@@ -8,6 +8,7 @@ def scheduler() -> EventScheduler:
     """Fixture to create a fresh EventScheduler instance for each test."""
     return EventScheduler()
 
+
 def test_run_until_max_time_no_events(scheduler: EventScheduler) -> None:
     """Test that run_until_max_time handles an empty event queue gracefully."""
     result = scheduler.run_until_max_time(max_time=10)
@@ -61,8 +62,11 @@ def test_run_until_max_time_stops_at_max_time(scheduler: EventScheduler) -> None
     assert len(scheduler.event_queue) == 1  # Second event remains in the queue
 
 
-def test_run_until_max_time_handles_empty_queue_early_stop(scheduler: EventScheduler) -> None:
+def test_run_until_max_time_handles_empty_queue_early_stop(
+    scheduler: EventScheduler,
+) -> None:
     """Test that run_until_max_time stops if the event queue becomes empty before max_time."""
+
     def action() -> None:
         pass
 
@@ -77,6 +81,7 @@ def test_run_until_max_time_handles_empty_queue_early_stop(scheduler: EventSched
 
 def test_run_until_max_time_logging_disabled(scheduler: EventScheduler) -> None:
     """Test that run_until_max_time does not log events if logging is disabled."""
+
     def action() -> None:
         pass
 
@@ -91,6 +96,7 @@ def test_run_until_max_time_logging_disabled(scheduler: EventScheduler) -> None:
 
 def test_run_until_max_time_filtered_logging(scheduler: EventScheduler) -> None:
     """Test that run_until_max_time logs only events that pass the logging filter."""
+
     def action_1() -> None:
         pass
 
@@ -100,7 +106,9 @@ def test_run_until_max_time_filtered_logging(scheduler: EventScheduler) -> None:
     scheduler.schedule(Event(time=5, context={"type": "important"}, action=action_1))
     scheduler.schedule(Event(time=10, context={"type": "normal"}, action=action_2))
 
-    log_filter = lambda event: event.context.get("type") == "important"  # Log only "important" events
+    log_filter = (
+        lambda event: event.context.get("type") == "important"
+    )  # Log only "important" events
     result = scheduler.run_until_max_time(max_time=15, logging=log_filter)
 
     assert scheduler.current_time == 15  # Scheduler processes all events
@@ -110,6 +118,7 @@ def test_run_until_max_time_filtered_logging(scheduler: EventScheduler) -> None:
 
 def test_run_until_max_time_handles_exceptions(scheduler: EventScheduler) -> None:
     """Test that run_until_max_time propagates exceptions raised by event actions."""
+
     def faulty_action() -> None:
         raise ValueError("Intentional error")
 
@@ -118,6 +127,7 @@ def test_run_until_max_time_handles_exceptions(scheduler: EventScheduler) -> Non
     with pytest.raises(ValueError, match="Intentional error"):
         scheduler.run_until_max_time(max_time=10)
 
-    assert scheduler.current_time == 5  # Scheduler stops at the time of the faulty event
+    assert (
+        scheduler.current_time == 5
+    )  # Scheduler stops at the time of the faulty event
     assert len(scheduler.event_queue) == 0  # Event queue is cleared
-
