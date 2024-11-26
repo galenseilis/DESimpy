@@ -419,7 +419,9 @@ class EventScheduler:
             or not scheduler.event_queue
             or heapq.nsmallest(1, scheduler.event_queue)[0][0] >= max_time
         )
-        return self.run(stop, logging)
+        results = self.run(stop, logging)
+        self.current_time = max_time
+        return results
 
     def run_until_given_event(
         self, event: Event, logging: Callable[[Self], bool] | bool = True

@@ -54,11 +54,11 @@ def test_now_stops_at_max_time(scheduler: EventScheduler):
     # Run until max time of 5
     _ = scheduler.run_until_max_time(5)
     assert (
-        scheduler.now == 3
+        scheduler.now == 5
     ), "Simulation should stop at the first event time before reaching max time 5."
 
     # Run until max time of 8
     _ = scheduler.run_until_max_time(8)
     assert (
-        scheduler.now == 7
+        scheduler.now == 8
     ), "Simulation should stop at the time of the second event before reaching max time 8."
