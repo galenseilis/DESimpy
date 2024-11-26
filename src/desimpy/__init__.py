@@ -107,7 +107,7 @@ class Event:
         """Deactivate event."""
         self.status = EventStatus.INACTIVE
 
-    def run(self):
+    def run(self) -> None:
         """Apply event's state transitions.
 
         The state transition will only occur if the
