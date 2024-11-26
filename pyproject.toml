@@ -1,6 +1,6 @@
 [project]
 name = "DESimpy"
-version = "0.47.0"
+version = "0.48.0"
 description = "Discrete event simulation in using synchronous Python."
 authors = [
     { name = "galenseilis", email = "galen.seilis@seilis.ca" },
