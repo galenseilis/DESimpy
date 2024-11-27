@@ -3,21 +3,18 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-DESimpy
-=======
+Welcome to DESimpy's Documentation!
+===================================
 
-.. note::
-
-   This project is under active development.
-
-DESimPy provides the core components of discrete event simulation.
-
-Processes in DESimPy are defined by methods owned by Python objects inherited from the Event abstract base class. These processes can be used to model system-level or component level changes in a modelled system. Such systems might include customers or patients flowing through services, vehicles in traffic, or agents competing in games.
+DESimPy is a Python library that provides the a minimalist set of components for developing discrete event simulations on top of it.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-   installation
-   tutorial
+   installation.rst
+   Tutorial/index.rst
+   Guides/index.rst
+   Reference/index.rst
+   Explanation/index.rst
 
