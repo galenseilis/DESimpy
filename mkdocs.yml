@@ -38,8 +38,10 @@ extra:
 
 nav:
   - Overview: index.md
-  - Methodology: methodology.md
-  - Examples: examples.md
+  - Tutorials: tutorial.md
+  - Guides: guide.md
+  - Reference: reference.md
+  - Explanation: explanation.md
 
 plugins:
   - search
