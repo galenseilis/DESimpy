@@ -28,6 +28,7 @@ DESimpy was made with certain goals and non-goals in mind. It isn't meant to be 
 ### Goals
 
 - Provide minimal components for handling times and schedules.
+    - Keep it simple.
 - Provide a built-in, but optional, event logging system.
 - Follow [Diátaxis framework](https://www.diataxis.fr/) in developing and maintaining this documentation.
 
@@ -36,3 +37,4 @@ DESimpy was made with certain goals and non-goals in mind. It isn't meant to be 
 - Provide batteries-included discrete event simulation tools. DESimpy provides the bricks; you must imagine cathedrals.
 - Use coroutines to improve readability or provide asychronous input/output with data sources.
 - Provide pseudorandom number generators.
+- Have events be scheduled in any order other than the time that they elapse.

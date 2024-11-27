@@ -38,7 +38,7 @@ extra:
 
 nav:
   - Overview: index.md
-  - Tutorials: tutorial.md
+  - Tutorial: tutorial.md
   - Guides: guide.md
   - Reference: reference.md
   - Explanation: explanation.md
