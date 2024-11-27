@@ -4,8 +4,7 @@ Setup
 Installation
 ------------
 
-We can install DESimpy using pip:
+The simplest way to install DESimpy is:
 
 `pip install desimpy`
 
-That's it.
