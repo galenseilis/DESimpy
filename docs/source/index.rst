@@ -17,4 +17,3 @@ DESimPy is a Python library that provides the a minimalist set of components for
    Guides/index.rst
    Reference/index.rst
    Explanation/index.rst
-

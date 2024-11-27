@@ -1,5 +1,6 @@
 # Configuration file for the Sphinx documentation builder.
-#
+import sys
+from pathlib import Path
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
@@ -13,7 +14,10 @@ author = "Galen Seilis"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+]
 
 templates_path = ["_templates"]
 exclude_patterns = []
@@ -31,3 +35,8 @@ html_theme_options = {
     "repo_name": project,
 }
 html_static_path = ["_static"]
+
+##############
+# PATCH PATH #
+##############
+sys.path.insert(0, str(Path('..', 'src').resolve()))
