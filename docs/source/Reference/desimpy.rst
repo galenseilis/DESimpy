@@ -1,19 +1,5 @@
-desimpy package
-===============
-
-Submodules
-----------
-
-desimpy.core module
--------------------
-
-.. automodule:: desimpy.core
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
+API Documentation
+=================
 
 .. automodule:: desimpy
    :members:
