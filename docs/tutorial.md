@@ -8,7 +8,7 @@ In this section we're going to go through events in DESimpy.
 
 ### Creating Events
 
-Events can be created explicitly. We will see later that we don't always have to make them explicit, but we should know that this is something that can do when needed.
+Events can be created explicitly using the `Event` class. We will see later that we don't always have to make them explicit, but we should know that this is something that can do when needed.
 
 Events only require being given the time that they should occur in a simulation. Below we initialize a single event.
 
