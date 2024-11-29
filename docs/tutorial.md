@@ -100,5 +100,4 @@ There is an important difference between using `schedule` and `timeout`. The `sc
 from desimpy import Event, EventScheduler
 
 
-
 ```
