@@ -101,5 +101,3 @@ from desimpy import Event, EventScheduler
 
 
 ```
-
-foo
