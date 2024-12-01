@@ -19,7 +19,7 @@
 from __future__ import annotations
 
 import heapq  # pragma: nocover
-from enum import Enum, auto
+from enum import StrEnum, auto
 from typing import TYPE_CHECKING  # pragma: nocover
 
 if TYPE_CHECKING:
@@ -37,7 +37,7 @@ __all__ = ["Event", "EventScheduler"]  # pragma: nocover
 ####################
 
 
-class EventStatus(Enum):
+class EventStatus(StrEnum):
     """The status of an event."""
 
     INACTIVE = auto()
@@ -135,7 +135,7 @@ class Event:
 ##############################
 
 
-class EventSchedulerStatus(Enum):
+class EventSchedulerStatus(StrEnum):
     """The status of an event scheduler."""
 
     INACTIVE = auto()

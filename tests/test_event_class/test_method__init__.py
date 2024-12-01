@@ -2,7 +2,7 @@ import re
 
 import pytest
 
-from desimpy import Event, EventStatus
+from desimpy.core import Event, EventStatus
 
 
 def test_event_initialization_default():

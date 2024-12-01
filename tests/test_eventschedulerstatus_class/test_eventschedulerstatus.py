@@ -1,22 +1,11 @@
-from desimpy import EventSchedulerStatus
-
-
-def test_event_scheduler_status_members():
-    """Ensure the EventSchedulerStatus enum contains the correct members."""
-    assert hasattr(
-        EventSchedulerStatus, "INACTIVE"
-    ), "INACTIVE should be a member of EventSchedulerStatus."
-    assert hasattr(
-        EventSchedulerStatus, "ACTIVE"
-    ), "ACTIVE should be a member of EventSchedulerStatus."
-
+from desimpy.core import EventSchedulerStatus
 
 def test_event_scheduler_status_auto_values():
     """Verify the auto-assigned values for the EventSchedulerStatus enum."""
     assert (
-        EventSchedulerStatus.INACTIVE.value == 1
-    ), "INACTIVE should have a value of 1."
-    assert EventSchedulerStatus.ACTIVE.value == 2, "ACTIVE should have a value of 2."
+        EventSchedulerStatus.INACTIVE.value == "inactive"
+    ), "INACTIVE should have a value of inactive."
+    assert EventSchedulerStatus.ACTIVE.value == "active", "ACTIVE should have a value of active."
 
 
 def test_event_scheduler_status_distinction():
@@ -48,8 +37,8 @@ def test_event_scheduler_status_names():
 def test_event_scheduler_status_str_representation():
     """Ensure the string representation of EventSchedulerStatus members is correct."""
     assert (
-        str(EventSchedulerStatus.INACTIVE) == "EventSchedulerStatus.INACTIVE"
+        str(EventSchedulerStatus.INACTIVE) == "inactive"
     ), "String representation of INACTIVE is incorrect."
     assert (
-        str(EventSchedulerStatus.ACTIVE) == "EventSchedulerStatus.ACTIVE"
+        str(EventSchedulerStatus.ACTIVE) == "active"
     ), "String representation of ACTIVE is incorrect."

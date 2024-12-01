@@ -1,4 +1,4 @@
-from desimpy import Event, EventScheduler, EventStatus
+from desimpy.core import Event, EventScheduler, EventStatus
 
 
 def test_activate_all_events_no_events():

@@ -1,4 +1,4 @@
-from desimpy import Event, EventScheduler, EventStatus
+from desimpy.core import Event, EventScheduler, EventStatus
 
 
 def test_activate_next_event_by_condition_single_event_true():

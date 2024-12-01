@@ -1,4 +1,4 @@
-from desimpy import Event, EventScheduler, EventStatus
+from desimpy.core import Event, EventScheduler, EventStatus
 
 # Test Suite for deactivate_next_event_by_condition
 

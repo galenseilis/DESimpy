@@ -3,7 +3,7 @@ from collections.abc import Callable
 
 import pytest
 
-from desimpy import Event, EventScheduler, EventStatus
+from desimpy.core import Event, EventScheduler, EventStatus
 
 
 @pytest.fixture
