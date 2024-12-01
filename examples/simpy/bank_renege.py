@@ -67,9 +67,9 @@ class Counter:
         self.env: EventScheduler = env
         self.capacity: int = capacity
         self.available: int = capacity
-        self.queue = []
+        self.queue: list[Customer] = []
 
-    def request(self, customer):
+    def request(self, customer: Customer) -> None:
         """Request service for a customer. If there's space, they will be served immediately,
         otherwise, they join the queue.
         """
@@ -80,7 +80,7 @@ class Counter:
             self.queue.append(customer)
             print(f"{customer.name} is waiting at {self.env.current_time}")
 
-    def release(self):
+    def release(self) -> None:
         """Release a spot when a customer finishes service. If there are customers in the queue,
         schedule the next one to be served.
         """
@@ -108,13 +108,13 @@ class Customer:
 
     def __init__(
         self, env: EventScheduler, name: str, counter: Counter, time_in_bank: float
-    ):
-        self.env = env
-        self.name = name
-        self.counter = counter
-        self.patience = random.uniform(MIN_PATIENCE, MAX_PATIENCE)
-        self.time_in_bank = time_in_bank
-        self.arrive_time = self.env.current_time
+    ) -> None:
+        self.env: EventScheduler = env
+        self.name: str = name
+        self.counter: Counter = counter
+        self.patience: float = random.uniform(MIN_PATIENCE, MAX_PATIENCE)
+        self.time_in_bank: float = time_in_bank
+        self.arrive_time: float = self.env.current_time
         print(f"{self.arrive_time:.4f} {self.name}: Here I am")
         self.env.schedule(Event(self.arrive_time, self.check_patience))
 
