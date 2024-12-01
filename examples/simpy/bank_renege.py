@@ -22,7 +22,7 @@ from desimpy import Event, EventScheduler
 # $1 CONFIGURATION #
 ####################
 
-COMMENT_SECTIONS = """
+COMMENT_SECTIONS: Final[str] = """
 ```yaml
 contents:
     - 0. Imports
