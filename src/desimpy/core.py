@@ -229,7 +229,13 @@ class EventScheduler:
 
         return float("inf")
 
-    # TODO: Implement `peek_by_condition`.
+    def peek_by_condition(
+        self, condition: Callable[[Self, Event], bool]
+    ) -> float | None:
+        """Return time of next event meeting condition."""
+        option_next_event = self.next_event_by_condition(condition)
+        if option_next_event:
+            return option_next_event.time
 
     def apply_to_all_events(self, func: Callable[[Event], Any]) -> None:
         """Apply a function to all events in schedule."""
