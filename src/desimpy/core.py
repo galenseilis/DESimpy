@@ -246,7 +246,6 @@ class EventScheduler:
 
     def activate_next_event(self) -> None:
         """Activate the next scheduled event."""
-        # TODO: https://github.com/dry-python/returns?tab=readme-ov-file#maybe-container
         option_next_event = self.next_event()
         if option_next_event:
             option_next_event.activate()
@@ -262,7 +261,6 @@ class EventScheduler:
         This function has no effect on schedule state if the next event
         meeting the condition is already active.
         """
-        # TODO: https://github.com/dry-python/returns?tab=readme-ov-file#maybe-container
         option_event = self.next_event_by_condition(condition)
         if option_event is not None:
             option_event.activate()
@@ -286,7 +284,6 @@ class EventScheduler:
 
     def deactivate_next_event(self) -> None:
         """Deactive the next event in the event queue."""
-        # TODO: https://github.com/dry-python/returns?tab=readme-ov-file#maybe-container
         option_next_event = self.next_event()
         if option_next_event:
             option_next_event.deactivate()
@@ -295,7 +292,6 @@ class EventScheduler:
         self, condition: Callable[[Self, Event], bool]
     ) -> None:
         """Deactivate the next event that satisfies the given condition."""
-        # TODO: https://github.com/dry-python/returns?tab=readme-ov-file#maybe-container
         option_event = self.next_event_by_condition(condition)
         if option_event is not None:
             option_event.deactivate()
@@ -319,7 +315,6 @@ class EventScheduler:
         self, condition: Callable[[Self, Event], bool]
     ) -> None:
         """Cancel the next event that satisfies a given condition."""
-        # TODO: https://github.com/dry-python/returns?tab=readme-ov-file#maybe-container
         option_event = self.next_event_by_condition(condition)
         if option_event is not None:
             self.event_queue.remove((option_event.time, option_event))
