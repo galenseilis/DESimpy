@@ -1,4 +1,14 @@
-"""```yaml
+##############
+# $0 IMPORTS #
+##############
+
+from desimpy import Event, EventScheduler
+
+####################
+# $1 CONFIGURATION #
+####################
+
+COMMENT_SECTIONS: str = """```yaml
 contents:
     - 0. Imports
     - 1. Define Battery Charging Station
@@ -10,14 +20,8 @@ contents:
 ```
 """
 
-##############
-# $0 IMPORTS #
-##############
-
-from desimpy import Event, EventScheduler
-
 ######################################
-# $1 DEFINE BATTERY CHARGING STATION #
+# $2 DEFINE BATTERY CHARGING STATION #
 ######################################
 
 
@@ -77,7 +81,7 @@ class BatteryChargingStation:
 
 
 #######################
-# $2 DEFINE CAR CLASS #
+# $3 DEFINE CAR CLASS #
 #######################
 
 
@@ -163,26 +167,26 @@ class Car:
 
 if __name__ == "__main__":
     #################################
-    # $3 INITIALIZE EVENT SCHEDULER #
+    # $4 INITIALIZE EVENT SCHEDULER #
     #################################
 
     scheduler = EventScheduler()
 
     ##########################################
-    # $4 INITIALIZE BATTERY CHARGING STATION #
+    # $5 INITIALIZE BATTERY CHARGING STATION #
     ##########################################
 
     bcs = BatteryChargingStation(scheduler, capacity=2)
 
     ###################################
-    # $5 REGISTER CARS WITH SCHEDULER #
+    # $6 REGISTER CARS WITH SCHEDULER #
     ###################################
 
     for i in range(4):
         Car(scheduler, name=f"Car {i}", bcs=bcs, driving_time=i * 2, charge_duration=5)
 
     #####################
-    # $6 RUN SIMULATION #
+    # $7 RUN SIMULATION #
     #####################
 
     scheduler.run_until_max_time(20, logging=False)

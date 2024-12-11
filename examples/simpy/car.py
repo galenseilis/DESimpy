@@ -3,6 +3,23 @@ simulation (DES) framework. It closely follows the basic SimPy example where a c
 and driving. The script schedules and executes events, showing how the car switches states after specific
 time intervals.
 
+"""
+
+##############
+# $0 IMPORTS #
+##############
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from typing import Final
+from desimpy import EventScheduler
+
+####################
+# $1 CONFIGURATION #
+####################
+
+COMMENT_SECTIONS: Final[str] = """
 ```yaml
 contents:
     - 0. Imports
@@ -14,14 +31,8 @@ source: https://simpy.readthedocs.io/en/stable/simpy_intro/basic_concepts.html
 ```
 """
 
-##############
-# $0 IMPORTS #
-##############
-
-from desimpy import EventScheduler
-
 #########################
-# $1 DEFINE CAR PROCESS #
+# $2 DEFINE CAR PROCESS #
 #########################
 
 
@@ -51,19 +62,19 @@ def car(env: EventScheduler) -> None:
 
 if __name__ == "__main__":
     #################################
-    # $2 INITIALIZE EVENT SCHEDULER #
+    # $3 INITIALIZE EVENT SCHEDULER #
     #################################
 
     scheduler = EventScheduler()
 
     ###########################
-    # $3 SCHEDULE CAR PROCESS #
+    # $4 SCHEDULE CAR PROCESS #
     ###########################
 
     scheduler.timeout(0, action=lambda: car(scheduler))
 
     #####################
-    # $4 RUN SIMULATION #
+    # $5 RUN SIMULATION #
     #####################
 
     _ = scheduler.run_until_max_time(15, logging=False)

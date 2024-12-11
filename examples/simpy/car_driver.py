@@ -1,6 +1,27 @@
-"""```yaml
+"""
 description: Simulate a driver process interrupting a car charging process.
 source: https://simpy.readthedocs.io/en/latest/simpy_intro/process_interaction.html#interrupting-another-process
+"""
+
+##############
+# $0 IMPORTS #
+##############
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing import Final
+
+from desimpy import Event, EventScheduler
+
+####################
+# $1 CONFIGURATION #
+####################
+
+COMMENT_SECTIONS: Final[str] = """
+```yaml
 contents:
     - 0. Imports.
     - 1. Define Car Class.
@@ -11,14 +32,8 @@ contents:
 ```
 """
 
-##############
-# $0 IMPORTS #
-##############
-
-from desimpy import Event, EventScheduler
-
 #######################
-# $1 DEFINE CAR CLASS #
+# $2 DEFINE CAR CLASS #
 #######################
 
 
@@ -48,7 +63,7 @@ class Car:
 
 
 ############################
-# $2 DEFINE DRIVER PROCESS #
+# $3 DEFINE DRIVER PROCESS #
 ############################
 
 
@@ -74,20 +89,20 @@ def driver(env: EventScheduler, car: Car) -> None:
 
 if __name__ == "__main__":
     #################################
-    # $3 INITIALIZE EVENT SCHEDULER #
+    # $4 INITIALIZE EVENT SCHEDULER #
     #################################
 
     scheduler = EventScheduler()
 
     #########################
-    # $4 REGISTER PROCESSES #
+    # $5 REGISTER PROCESSES #
     #########################
 
     car = Car(scheduler)
     driver(scheduler, car)
 
     #####################
-    # $5 RUN SIMULATION #
+    # $6 RUN SIMULATION #
     #####################
 
     _ = scheduler.run_until_max_time(15, logging=False)
