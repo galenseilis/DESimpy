@@ -28,13 +28,3 @@ allow-direct-references = true
 [tool.hatch.build.targets.wheel]
 packages = ["src/desimpy"]
 
-[tool.pdm]
-distribution = true
-
-
-[dependency-groups]
-test = [
-    "pytest>=8.3.3",
-    "pytest-cov>=6.0.0",
-    "simpy>=4.1.1",
-]
