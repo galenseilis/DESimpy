@@ -1,7 +1,6 @@
 from collections.abc import Callable
 from typing import Self
 
-# TODO: Pull in simdist package for distributions.
 from simdist import dists
 
 from desimpy import EventScheduler
