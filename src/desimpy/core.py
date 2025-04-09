@@ -49,7 +49,7 @@ class Event:
 
     Represents a state transition that can be scheduled by the event scheduler.
 
-    The purpose of context is to provide information for two purposes.
+    The context variable is to provide information for two purposes.
 
     The first is provides a general way for events to store "properties" that are
     specific to the simulation without the implementation of the DES components
