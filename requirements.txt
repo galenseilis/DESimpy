@@ -5,8 +5,8 @@ click==8.1.7
 colorama==0.4.6
 emojidb==0.0.3
 ghp-import==2.1.0
-idna==3.6
-Jinja2==3.1.4
+idna==3.7
+Jinja2==3.1.6
 Markdown==3.5.2
 markdown-extensions==0.0.1
 MarkupSafe==2.1.5
