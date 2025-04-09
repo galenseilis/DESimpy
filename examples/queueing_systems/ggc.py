@@ -23,8 +23,7 @@ class Customer:
     """Class representing a customer in the queueing system."""
 
     def __init__(self, customer_id: int, arrival_time: float):
-        """
-        Initialize a new Customer instance.
+        """Initialize a new Customer instance.
 
         Args:
             customer_id (int): Unique identifier for the customer.
@@ -51,8 +50,7 @@ class GGcQueue:
         num_servers: int,
         max_time: float,
     ) -> None:
-        """
-        Initialize a G/G/c queueing system.
+        """Initialize a G/G/c queueing system.
 
         Args:
             arrival_dist (dists.Distribution): Distribution for inter-arrival times.
@@ -67,7 +65,7 @@ class GGcQueue:
         self.scheduler: EventScheduler = EventScheduler()  # Event scheduler
         self.queue: list[Customer] = []  # Queue for customers
         self.servers: list[Customer | None] = [
-            None
+            None,
         ] * self.num_servers  # Track server status
         self.total_customers: int = 0  # Total customers processed
         self.total_wait_time: float = 0.0  # Accumulated wait time

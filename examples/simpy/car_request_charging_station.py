@@ -149,7 +149,7 @@ class Car:
         print(f"{self.name} starting to charge at {self.env.current_time}")
         # Schedule the car to leave after charging is done
         self.env.schedule(
-            Event(self.env.current_time + self.charge_duration, self.leave)
+            Event(self.env.current_time + self.charge_duration, self.leave),
         )
 
     def leave(self) -> None:

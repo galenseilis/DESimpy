@@ -2,8 +2,8 @@
 # $0 IMPORTS #
 ##############
 
-import random
 import heapq
+import random
 
 from desimpy import Event, EventScheduler
 
@@ -27,10 +27,10 @@ class Theater:
         self.env = env
         self.counter = TicketAgent(env, self)
         self.movies = movies
-        self.available = {movie: tickets for movie in movies}
-        self.sold_out = {movie: False for movie in movies}
-        self.when_sold_out = {movie: None for movie in movies}
-        self.num_renegers = {movie: 0 for movie in movies}
+        self.available = dict.fromkeys(movies, tickets)
+        self.sold_out = dict.fromkeys(movies, False)
+        self.when_sold_out = dict.fromkeys(movies)
+        self.num_renegers = dict.fromkeys(movies, 0)
 
 
 #######################
@@ -164,10 +164,10 @@ if __name__ == "__main__":
             num_renegers = theater.num_renegers[movie]
             print(
                 f'Movie "{movie}" sold out {sellout_time:.1f} minutes '
-                f"after ticket counter opening."
+                f"after ticket counter opening.",
             )
             print(
-                f"  Number of people leaving queue when film sold out: {num_renegers}"
+                f"  Number of people leaving queue when film sold out: {num_renegers}",
             )
         else:
             print(theater.available[movie])

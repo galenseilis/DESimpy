@@ -23,7 +23,7 @@ def sample_events() -> list[Event]:
 
 
 def test_cancel_all_events_by_condition_removes_matching_events(
-    scheduler: EventScheduler, sample_events: list[Event]
+    scheduler: EventScheduler, sample_events: list[Event],
 ) -> None:
     """Test that events matching the condition are removed."""
     for event in sample_events:
@@ -33,7 +33,7 @@ def test_cancel_all_events_by_condition_removes_matching_events(
 
     # Remove events of type 'A'
     scheduler.cancel_all_events_by_condition(
-        lambda _, event: event.context.get("type") == "A"
+        lambda _, event: event.context.get("type") == "A",
     )
     remaining_events = [event for _, event in scheduler.event_queue]
     assert len(remaining_events) == 2
@@ -41,7 +41,7 @@ def test_cancel_all_events_by_condition_removes_matching_events(
 
 
 def test_cancel_all_events_by_condition_no_match(
-    scheduler: EventScheduler, sample_events: list[Event]
+    scheduler: EventScheduler, sample_events: list[Event],
 ) -> None:
     """Test that no events are removed if none match the condition."""
     for event in sample_events:
@@ -51,7 +51,7 @@ def test_cancel_all_events_by_condition_no_match(
 
     # Try removing events with a non-existent type
     scheduler.cancel_all_events_by_condition(
-        lambda _, event: event.context.get("type") == "D"
+        lambda _, event: event.context.get("type") == "D",
     )
     remaining_events = [event for _, event in scheduler.event_queue]
     assert len(remaining_events) == 4
@@ -62,13 +62,13 @@ def test_cancel_all_events_by_condition_empty_queue(scheduler: EventScheduler) -
     assert len(scheduler.event_queue) == 0
 
     scheduler.cancel_all_events_by_condition(
-        lambda _, event: event.context.get("type") == "A"
+        lambda _, event: event.context.get("type") == "A",
     )
     assert len(scheduler.event_queue) == 0
 
 
 def test_cancel_all_events_by_condition_partial_match(
-    scheduler: EventScheduler, sample_events: list[Event]
+    scheduler: EventScheduler, sample_events: list[Event],
 ) -> None:
     """Test that only events matching the condition are removed."""
     for event in sample_events:
@@ -98,6 +98,6 @@ def test_cancel_all_events_by_condition_duplicate_context(
 
     # Remove all events of type 'A'
     scheduler.cancel_all_events_by_condition(
-        lambda _, event: event.context.get("type") == "A"
+        lambda _, event: event.context.get("type") == "A",
     )
     assert len(scheduler.event_queue) == 0

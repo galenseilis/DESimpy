@@ -17,14 +17,14 @@ def test_next_by_time():
     assert env.peek_by_condition(lambda env, event: event.time <= -1) == -1
     assert env.peek_by_condition(lambda env, event: event.time == -1) == -1
     assert env.peek_by_condition(lambda env, event: event.time >= -1) == -1
-    assert env.peek_by_condition(lambda env, event: event.time > -1) is 0
+    assert env.peek_by_condition(lambda env, event: event.time > -1) == 0
 
     # NOTE: Cases related to t=0
     assert env.peek_by_condition(lambda env, event: event.time < 0) is -1
     assert env.peek_by_condition(lambda env, event: event.time <= 0) == -1
     assert env.peek_by_condition(lambda env, event: event.time == 0) == 0
     assert env.peek_by_condition(lambda env, event: event.time >= 0) == 0
-    assert env.peek_by_condition(lambda env, event: event.time > 0) is 1
+    assert env.peek_by_condition(lambda env, event: event.time > 0) == 1
 
     # NOTE: Cases related to t=1
     assert env.peek_by_condition(lambda env, event: event.time < 1) is -1

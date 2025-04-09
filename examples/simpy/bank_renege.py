@@ -107,7 +107,7 @@ class Customer:
     """
 
     def __init__(
-        self, env: EventScheduler, name: str, counter: Counter, time_in_bank: float
+        self, env: EventScheduler, name: str, counter: Counter, time_in_bank: float,
     ) -> None:
         self.env: EventScheduler = env
         self.name: str = name
@@ -130,7 +130,7 @@ class Customer:
         print(f"{self.env.current_time:.4f} {self.name}: Waited {wait_time:.3f}")
         service_time = random.expovariate(1.0 / self.time_in_bank)
         self.env.schedule(
-            Event(self.env.current_time + service_time, self.finish_service)
+            Event(self.env.current_time + service_time, self.finish_service),
         )
 
     def finish_service(self):
@@ -144,7 +144,7 @@ class Customer:
             self.counter.queue.remove(self)
             wait_time: float = self.env.current_time - self.arrive_time
             print(
-                f"{self.env.current_time:.4f} {self.name}: RENEGED after {wait_time:.3f}"
+                f"{self.env.current_time:.4f} {self.name}: RENEGED after {wait_time:.3f}",
             )
 
 
@@ -162,7 +162,7 @@ class Bank:
         self.counter: Counter = counter
 
     def generate_customers(
-        self, num_customers: int, interval: float, time_in_bank: float
+        self, num_customers: int, interval: float, time_in_bank: float,
     ):
         """Generate customers at random intervals."""
         for i in range(num_customers):
@@ -171,9 +171,9 @@ class Bank:
                 Event(
                     self.env.current_time + arrival_time,
                     lambda i=i: Customer(
-                        self.env, f"Customer{i:02d}", self.counter, time_in_bank
+                        self.env, f"Customer{i:02d}", self.counter, time_in_bank,
                     ),
-                )
+                ),
             )
 
 
@@ -196,7 +196,7 @@ if __name__ == "__main__":
 
     bank = Bank(scheduler, counter)
     bank.generate_customers(
-        NEW_CUSTOMERS, INTERVAL_CUSTOMERS, time_in_bank=TIME_IN_BANK
+        NEW_CUSTOMERS, INTERVAL_CUSTOMERS, time_in_bank=TIME_IN_BANK,
     )
 
     #####################

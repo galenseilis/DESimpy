@@ -17,7 +17,7 @@ def test_step_processes_one_event(scheduler: EventScheduler) -> None:
 
     # Schedule an event with an action
     scheduler.schedule(
-        Event(time=5, context={"id": 1}, action=lambda: processed_events.append(1))
+        Event(time=5, context={"id": 1}, action=lambda: processed_events.append(1)),
     )
     scheduler.schedule(Event(time=10, context={"id": 2}))
 
@@ -82,13 +82,13 @@ def test_step_with_multiple_events(scheduler: EventScheduler) -> None:
     result: list[int] = []
 
     scheduler.schedule(
-        Event(time=20, context={"id": 1}, action=lambda: result.append(1))
+        Event(time=20, context={"id": 1}, action=lambda: result.append(1)),
     )
     scheduler.schedule(
-        Event(time=10, context={"id": 2}, action=lambda: result.append(2))
+        Event(time=10, context={"id": 2}, action=lambda: result.append(2)),
     )
     scheduler.schedule(
-        Event(time=15, context={"id": 3}, action=lambda: result.append(3))
+        Event(time=15, context={"id": 3}, action=lambda: result.append(3)),
     )
 
     # Perform multiple steps
@@ -127,13 +127,13 @@ def test_step_multiple_steps(scheduler: EventScheduler):
     result: list[int] = []
 
     scheduler.schedule(
-        Event(time=5, context={"id": 1}, action=lambda: result.append(1))
+        Event(time=5, context={"id": 1}, action=lambda: result.append(1)),
     )
     scheduler.schedule(
-        Event(time=15, context={"id": 2}, action=lambda: result.append(2))
+        Event(time=15, context={"id": 2}, action=lambda: result.append(2)),
     )
     scheduler.schedule(
-        Event(time=10, context={"id": 3}, action=lambda: result.append(3))
+        Event(time=10, context={"id": 3}, action=lambda: result.append(3)),
     )
 
     # Perform all steps

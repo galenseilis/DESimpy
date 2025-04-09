@@ -118,7 +118,7 @@ def test_activate_next_event_by_condition_empty_queue():
     scheduler = EventScheduler()
 
     scheduler.activate_next_event_by_condition(
-        lambda s, e: e.time == 1
+        lambda s, e: e.time == 1,
     )  # No events in the queue
 
     assert scheduler.event_queue == [], (
@@ -141,7 +141,7 @@ def test_activate_next_event_by_condition_multiple_conditions():
     scheduler.schedule(event3)
 
     scheduler.activate_next_event_by_condition(
-        lambda s, e: e.context.get("type") == "A" and e.time == 3
+        lambda s, e: e.context.get("type") == "A" and e.time == 3,
     )
 
     assert event1.status == EventStatus.INACTIVE, (
@@ -167,7 +167,7 @@ def test_activate_next_event_by_condition_with_no_match_in_complex_condition():
     scheduler.schedule(event2)
 
     scheduler.activate_next_event_by_condition(
-        lambda s, e: e.context.get("type") == "C"
+        lambda s, e: e.context.get("type") == "C",
     )
 
     assert event1.status == EventStatus.INACTIVE, (

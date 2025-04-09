@@ -207,12 +207,11 @@ class Repairman:
         """
         if self.current_job is None:
             self.schedule_job(requestor, request_priority)
+        elif self.will_preempt(request_priority):
+            self.interrupt_job()
+            self.schedule_job(requestor, request_priority)
         else:
-            if self.will_preempt(request_priority):
-                self.interrupt_job()
-                self.schedule_job(requestor, request_priority)
-            else:
-                self.schedule_request(requestor, request_priority)
+            self.schedule_request(requestor, request_priority)
 
     def schedule_job(self, requestor: Any, priority: int) -> None:
         """Schedule a new job for the repairman.
@@ -344,7 +343,7 @@ class Repairman:
             priority (int): The priority of the job request. Lower values indicate higher priority.
         """
         heapq.heappush(
-            self.requestor_queue, (priority, self.env.current_time, requestor)
+            self.requestor_queue, (priority, self.env.current_time, requestor),
         )
 
 

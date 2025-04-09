@@ -57,8 +57,8 @@ class Carwash:
             print(f"{self.env.current_time:.2f} {car} enters the carwash.")
             self.env.schedule(
                 Event(
-                    self.env.current_time + self.washtime, lambda: self.finish_wash(car)
-                )
+                    self.env.current_time + self.washtime, lambda: self.finish_wash(car),
+                ),
             )
         else:
             print(f"{self.env.current_time:.2f} {car} waits in the queue.")
@@ -70,7 +70,7 @@ class Carwash:
         """
         pct_dirt = random.randint(50, 99)
         print(
-            f"{self.env.current_time:.2f} Carwash removed {pct_dirt}% of {car}'s dirt."
+            f"{self.env.current_time:.2f} Carwash removed {pct_dirt}% of {car}'s dirt.",
         )
         print(f"{self.env.current_time:.2f} {car} leaves the carwash.")
 
@@ -121,7 +121,7 @@ def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
     def generate_car():
         next_arrival_time = random.randint(t_inter - 2, t_inter + 2)
         env.schedule(
-            Event(env.current_time + next_arrival_time, lambda: create_new_car())
+            Event(env.current_time + next_arrival_time, lambda: create_new_car()),
         )
 
     # Create new car and schedule next one

@@ -38,7 +38,7 @@ def run_desimpy():
         delay = 1
         value = 42
         action: Callable[[], None] = lambda: results.append(
-            f"now={env.current_time}, {value=}"
+            f"now={env.current_time}, {value=}",
         )
         env.timeout(delay, action)
 

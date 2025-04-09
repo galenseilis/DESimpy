@@ -1,5 +1,5 @@
-from typing import Self
 from collections.abc import Callable
+from typing import Self
 
 # TODO: Pull in simdist package for distributions.
 from simdist import dists
@@ -40,7 +40,7 @@ class Node:
         )
         self.queue: list[Customer] = []  # Queue for customers
         self.servers: list[Customer | None] = [
-            None
+            None,
         ] * self.num_servers  # Track server status
         self.total_customers: int = (
             0  # FIX: Total number of customers should be tracked by Network.
@@ -67,7 +67,7 @@ class Node:
     def handle_arrival(self):  # FIX: Pass optional customer
         """Handle a customer arrival."""
         customer = Customer(
-            self.total_customers, self.scheduler.current_time
+            self.total_customers, self.scheduler.current_time,
         )  # FIX: Create customer only if not provided.
         self.total_customers += 1
         customer.current_node = self.queue_id  # Track the customer's current queue
@@ -123,7 +123,7 @@ class Node:
         if next_node is not None:
             # Route the customer to the next node in the network
             next_node.schedule_arrival(  # FIX: Pass customer to be reused.
-                inter_arrival_time=self.depart_dist.sample()  # FIX: Pass customer and self to sample
+                inter_arrival_time=self.depart_dist.sample(),  # FIX: Pass customer and self to sample
             )
 
 
@@ -150,10 +150,9 @@ class Network:
 def round_robin_routing(queue: Node) -> Node | None:
     if queue.queue_id == 0:
         return network.queues[1]
-    elif queue.queue_id == 1:
+    if queue.queue_id == 1:
         return network.queues[0]
-    else:
-        return None  # No further routing after the second queue
+    return None  # No further routing after the second queue
 
 
 # Example usage of the network simulation

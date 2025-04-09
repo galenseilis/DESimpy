@@ -30,7 +30,7 @@ class MMcQueueSimulation:
         self.scheduler: EventScheduler = EventScheduler()  # Event scheduler
         self.queue: list[Customer] = []  # Queue for customers
         self.servers: list[Customer | None] = [
-            None
+            None,
         ] * self.num_servers  # Track server status
         self.total_customers: int = 0  # Total customers processed
         self.total_wait_time: float = 0.0  # Accumulated wait time

@@ -1,5 +1,4 @@
-"""
-description: Simulate a driver process interrupting a car charging process.
+"""description: Simulate a driver process interrupting a car charging process.
 source: https://simpy.readthedocs.io/en/latest/simpy_intro/process_interaction.html#interrupting-another-process
 """
 
@@ -79,7 +78,7 @@ def driver(env: EventScheduler, car: Car) -> None:
     def interrupt_action():
         print("Was interrupted. Hope, the battery is full enough ...")
         env.deactivate_next_event_by_condition(
-            condition=deactivate_next_charge_condition
+            condition=deactivate_next_charge_condition,
         )
         event = Event(env.current_time, car.schedule_drive)
         env.schedule(event)

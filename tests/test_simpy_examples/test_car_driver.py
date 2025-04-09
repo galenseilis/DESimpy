@@ -26,7 +26,7 @@ def run_simpy() -> list[str]:
                     yield self.env.process(self.charge(charge_duration))
                 except simpy.Interrupt:
                     results.append(
-                        "Was interrupted. Hope, the battery is full enough ..."
+                        "Was interrupted. Hope, the battery is full enough ...",
                     )
 
                 results.append("Start driving at %d" % self.env.now)

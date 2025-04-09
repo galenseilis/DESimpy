@@ -36,7 +36,7 @@ def test_peek_single_event(scheduler: EventScheduler, event: Callable[[float], E
 
 
 def test_peek_multiple_events_ordered(
-    scheduler: EventScheduler, event: Callable[[float], Event]
+    scheduler: EventScheduler, event: Callable[[float], Event],
 ):
     """Test that peek returns the earliest event time with multiple events in chronological order."""
     event1 = event(5.0)
@@ -47,7 +47,7 @@ def test_peek_multiple_events_ordered(
 
 
 def test_peek_multiple_events_unordered(
-    scheduler: EventScheduler, event: Callable[[float], Event]
+    scheduler: EventScheduler, event: Callable[[float], Event],
 ):
     """Test that peek returns the earliest event time even if events are added out of order."""
     event1 = event(10.0)
@@ -60,7 +60,7 @@ def test_peek_multiple_events_unordered(
 
 
 def test_peek_after_event_removal(
-    scheduler: EventScheduler, event: Callable[[float], Event]
+    scheduler: EventScheduler, event: Callable[[float], Event],
 ):
     """Test that peek correctly updates after removing the next event."""
     event1 = event(3.0)
@@ -77,7 +77,7 @@ def test_peek_after_event_removal(
 
 
 def test_peek_prescheduling_negative_time(
-    scheduler: EventScheduler, event: Callable[[float], Event]
+    scheduler: EventScheduler, event: Callable[[float], Event],
 ):
     """Test that peek allows negative event times if prescheduled."""
     event1 = event(-5.0)
@@ -86,7 +86,7 @@ def test_peek_prescheduling_negative_time(
 
 
 def test_peek_after_all_events_canceled(
-    scheduler: EventScheduler, event: Callable[[float], Event]
+    scheduler: EventScheduler, event: Callable[[float], Event],
 ):
     """Test that peek returns infinity after all events are canceled."""
     event1 = event(4.0)
@@ -100,7 +100,7 @@ def test_peek_after_all_events_canceled(
 
 
 def test_peek_with_active_status(
-    scheduler: EventScheduler, event: Callable[[float], Event]
+    scheduler: EventScheduler, event: Callable[[float], Event],
 ):
     """Test that peek still returns the correct time when the scheduler is active."""
     # WARN: Using private name `_activate`.
