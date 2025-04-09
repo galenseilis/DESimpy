@@ -68,9 +68,9 @@ def test_cancel_next_event_by_condition_single_matching_event():
     scheduler.cancel_next_event_by_condition(condition)
 
     # Ensure event1 is removed and event2 remains
-    assert (
-        len(scheduler.event_queue) == 1
-    ), "The event queue should have one event remaining."
+    assert len(scheduler.event_queue) == 1, (
+        "The event queue should have one event remaining."
+    )
     assert (
         event2.time,
         event2,
@@ -102,9 +102,9 @@ def test_cancel_next_event_by_condition_multiple_matching_events():
     scheduler.cancel_next_event_by_condition(condition)
 
     # Ensure one of the events with time 5 is removed and the others remain
-    assert (
-        len(scheduler.event_queue) == 2
-    ), "The event queue should have two events remaining."
+    assert len(scheduler.event_queue) == 2, (
+        "The event queue should have two events remaining."
+    )
     assert (
         event3.time,
         event3,
@@ -139,9 +139,9 @@ def test_cancel_next_event_by_condition_multiple_events_different_times():
     scheduler.cancel_next_event_by_condition(condition)
 
     # Ensure event2 is removed and event1 and event3 remain
-    assert (
-        len(scheduler.event_queue) == 2
-    ), "The event queue should have two events remaining."
+    assert len(scheduler.event_queue) == 2, (
+        "The event queue should have two events remaining."
+    )
     assert (
         event1.time,
         event1,
@@ -176,9 +176,9 @@ def test_cancel_next_event_by_condition_condition_with_multiple_parameters():
     scheduler.cancel_next_event_by_condition(condition)
 
     # Ensure event2 is removed and event1 remains
-    assert (
-        len(scheduler.event_queue) == 1
-    ), "The event queue should have one event remaining."
+    assert len(scheduler.event_queue) == 1, (
+        "The event queue should have one event remaining."
+    )
     assert (
         event1.time,
         event1,
@@ -238,9 +238,9 @@ def test_cancel_next_event_by_condition_with_condition_having_edge_case():
     scheduler.cancel_next_event_by_condition(condition)
 
     # Ensure event1 is removed and event2 remains
-    assert (
-        len(scheduler.event_queue) == 1
-    ), "The event queue should have one event remaining."
+    assert len(scheduler.event_queue) == 1, (
+        "The event queue should have one event remaining."
+    )
     assert (
         event2.time,
         event2,

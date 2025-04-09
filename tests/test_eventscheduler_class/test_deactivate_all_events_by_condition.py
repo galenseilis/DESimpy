@@ -39,9 +39,9 @@ def test_deactivate_all_events_by_condition_no_events():
 
     scheduler.deactivate_all_events_by_condition(always_true_condition)
 
-    assert (
-        scheduler.event_queue == []
-    ), "The event queue should remain empty when there are no events to activate."
+    assert scheduler.event_queue == [], (
+        "The event queue should remain empty when there are no events to activate."
+    )
 
 
 def test_deactivate_all_events_by_condition_always_true():
@@ -87,15 +87,15 @@ def test_deactivate_all_events_by_condition_time_less_than_20():
 
     scheduler.deactivate_all_events_by_condition(time_less_than_20_condition)
 
-    assert (
-        event1.status == EventStatus.INACTIVE
-    ), "Event with time 10 should be deactivated."
-    assert (
-        event2.status == EventStatus.ACTIVE
-    ), "Event with time 25 should remain active."
-    assert (
-        event3.status == EventStatus.INACTIVE
-    ), "Event with time 15 should be deactivated."
+    assert event1.status == EventStatus.INACTIVE, (
+        "Event with time 10 should be deactivated."
+    )
+    assert event2.status == EventStatus.ACTIVE, (
+        "Event with time 25 should remain active."
+    )
+    assert event3.status == EventStatus.INACTIVE, (
+        "Event with time 15 should be deactivated."
+    )
 
 
 def test_deactivate_all_events_by_condition_high_priority():
@@ -111,15 +111,15 @@ def test_deactivate_all_events_by_condition_high_priority():
 
     scheduler.deactivate_all_events_by_condition(has_high_priority_condition)
 
-    assert (
-        event1.status == EventStatus.INACTIVE
-    ), "High priority event1 should be deactivated."
-    assert (
-        event2.status == EventStatus.ACTIVE
-    ), "Low priority event2 should remain active."
-    assert (
-        event3.status == EventStatus.INACTIVE
-    ), "High priority event3 should be deactivated."
+    assert event1.status == EventStatus.INACTIVE, (
+        "High priority event1 should be deactivated."
+    )
+    assert event2.status == EventStatus.ACTIVE, (
+        "Low priority event2 should remain active."
+    )
+    assert event3.status == EventStatus.INACTIVE, (
+        "High priority event3 should be deactivated."
+    )
 
 
 def test_deactivate_all_events_by_condition_mixed_conditions():
@@ -141,18 +141,18 @@ def test_deactivate_all_events_by_condition_mixed_conditions():
 
     scheduler.deactivate_all_events_by_condition(has_high_priority_condition)
 
-    assert (
-        event1.status == EventStatus.INACTIVE
-    ), "High priority event1 should be deactivated."
-    assert (
-        event2.status == EventStatus.ACTIVE
-    ), "Low priority event2 should remain active."
-    assert (
-        event3.status == EventStatus.ACTIVE
-    ), "Medium priority event3 should remain active."
-    assert (
-        event4.status == EventStatus.INACTIVE
-    ), "High priority event4 should be deactivated."
+    assert event1.status == EventStatus.INACTIVE, (
+        "High priority event1 should be deactivated."
+    )
+    assert event2.status == EventStatus.ACTIVE, (
+        "Low priority event2 should remain active."
+    )
+    assert event3.status == EventStatus.ACTIVE, (
+        "Medium priority event3 should remain active."
+    )
+    assert event4.status == EventStatus.INACTIVE, (
+        "High priority event4 should be deactivated."
+    )
 
 
 def test_deactivate_all_events_by_condition_partial_activation():
@@ -178,15 +178,15 @@ def test_deactivate_all_events_by_condition_partial_activation():
 
     scheduler.deactivate_all_events_by_condition(has_high_priority_condition)
 
-    assert (
-        event1.status == EventStatus.ACTIVE
-    ), "Low priority event1 should remain active."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "High priority event2 should be deactivated."
-    assert (
-        event3.status == EventStatus.INACTIVE
-    ), "High priority event3 should be deactivated."
-    assert (
-        event4.status == EventStatus.ACTIVE
-    ), "Low priority event4 should remain active."
+    assert event1.status == EventStatus.ACTIVE, (
+        "Low priority event1 should remain active."
+    )
+    assert event2.status == EventStatus.INACTIVE, (
+        "High priority event2 should be deactivated."
+    )
+    assert event3.status == EventStatus.INACTIVE, (
+        "High priority event3 should be deactivated."
+    )
+    assert event4.status == EventStatus.ACTIVE, (
+        "Low priority event4 should remain active."
+    )

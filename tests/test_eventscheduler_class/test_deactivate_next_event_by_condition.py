@@ -31,9 +31,9 @@ def test_deactivate_next_event_by_condition_single_event_no_match():
     scheduler.deactivate_next_event_by_condition(condition_example)
 
     # Ensure event1 is still active
-    assert (
-        event1.status == EventStatus.ACTIVE
-    ), "Event1 should remain active as it doesn't meet the condition."
+    assert event1.status == EventStatus.ACTIVE, (
+        "Event1 should remain active as it doesn't meet the condition."
+    )
 
 
 def test_deactivate_next_event_by_condition_single_event_match():
@@ -48,9 +48,9 @@ def test_deactivate_next_event_by_condition_single_event_match():
     scheduler.deactivate_next_event_by_condition(condition_example)
 
     # Ensure event1 is deactivated
-    assert (
-        event1.status == EventStatus.INACTIVE
-    ), "Event1 should be deactivated as it meets the condition."
+    assert event1.status == EventStatus.INACTIVE, (
+        "Event1 should be deactivated as it meets the condition."
+    )
 
 
 def test_deactivate_next_event_by_condition_multiple_events_some_match():

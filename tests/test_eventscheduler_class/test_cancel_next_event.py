@@ -26,9 +26,9 @@ def test_cancel_next_event_single_event():
     scheduler.cancel_next_event()
 
     # The event should be removed from the queue
-    assert (
-        len(scheduler.event_queue) == 0
-    ), "The event queue should be empty after cancellation."
+    assert len(scheduler.event_queue) == 0, (
+        "The event queue should be empty after cancellation."
+    )
 
 
 def test_cancel_next_event_multiple_events():
@@ -47,9 +47,9 @@ def test_cancel_next_event_multiple_events():
     scheduler.cancel_next_event()
 
     # Ensure event1 is removed and the other events remain scheduled
-    assert (
-        len(scheduler.event_queue) == 2
-    ), "The event queue should have two events remaining."
+    assert len(scheduler.event_queue) == 2, (
+        "The event queue should have two events remaining."
+    )
     assert (
         event2.time,
         event2,
@@ -81,9 +81,9 @@ def test_cancel_next_event_no_events_remaining():
     scheduler.cancel_next_event()
 
     # The queue should be empty
-    assert (
-        len(scheduler.event_queue) == 0
-    ), "The event queue should be empty after cancellation of all events."
+    assert len(scheduler.event_queue) == 0, (
+        "The event queue should be empty after cancellation of all events."
+    )
 
 
 def test_cancel_next_event_queue_ordering():
@@ -104,9 +104,9 @@ def test_cancel_next_event_queue_ordering():
     # Ensure that the remaining events are in the correct order
     assert scheduler.event_queue[0][1] == event2, "Event2 should now be the next event."
     assert scheduler.event_queue[1][1] == event3, "Event3 should remain the last event."
-    assert (
-        (event1.time, event1) not in scheduler.event_queue
-    ), "Event1 should be cancelled and removed from the queue."
+    assert (event1.time, event1) not in scheduler.event_queue, (
+        "Event1 should be cancelled and removed from the queue."
+    )
 
 
 def test_cancel_next_event_no_next_event():
@@ -137,9 +137,9 @@ def test_cancel_next_event_already_cancelled_event():
     scheduler.cancel_next_event()  # Now cancel event2
 
     # Ensure the queue is empty
-    assert (
-        len(scheduler.event_queue) == 0
-    ), "The event queue should be empty after cancelling both events."
+    assert len(scheduler.event_queue) == 0, (
+        "The event queue should be empty after cancelling both events."
+    )
 
 
 def test_cancel_next_event_event_with_multiple_actions():
@@ -158,12 +158,12 @@ def test_cancel_next_event_event_with_multiple_actions():
     scheduler.cancel_next_event()
 
     # Ensure event1 is removed and no actions are executed
-    assert (
-        len(scheduler.event_queue) == 1
-    ), "The event queue should have one event remaining."
-    assert (
-        (event1.time, event1) not in scheduler.event_queue
-    ), "Event1 should be cancelled and removed from the queue."
+    assert len(scheduler.event_queue) == 1, (
+        "The event queue should have one event remaining."
+    )
+    assert (event1.time, event1) not in scheduler.event_queue, (
+        "Event1 should be cancelled and removed from the queue."
+    )
     assert (
         event2.time,
         event2,

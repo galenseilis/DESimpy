@@ -10,9 +10,9 @@ def test_activate_next_event_by_condition_single_event_true():
 
     scheduler.activate_next_event_by_condition(lambda s, e: e.time == 1)
 
-    assert (
-        event.status == EventStatus.ACTIVE
-    ), "The event should be activated as it meets the condition."
+    assert event.status == EventStatus.ACTIVE, (
+        "The event should be activated as it meets the condition."
+    )
 
 
 def test_activate_next_event_by_condition_single_event_false():
@@ -24,9 +24,9 @@ def test_activate_next_event_by_condition_single_event_false():
 
     scheduler.activate_next_event_by_condition(lambda s, e: e.time == 2)
 
-    assert (
-        event.status == EventStatus.INACTIVE
-    ), "The event should remain inactive as it does not meet the condition."
+    assert event.status == EventStatus.INACTIVE, (
+        "The event should remain inactive as it does not meet the condition."
+    )
 
 
 def test_activate_next_event_by_condition_multiple_events_first_meets_condition():
@@ -42,12 +42,12 @@ def test_activate_next_event_by_condition_multiple_events_first_meets_condition(
 
     scheduler.activate_next_event_by_condition(lambda s, e: e.time == 1)
 
-    assert (
-        event1.status == EventStatus.ACTIVE
-    ), "The first event should be activated as it meets the condition."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "The second event should remain inactive as it does not meet the condition."
+    assert event1.status == EventStatus.ACTIVE, (
+        "The first event should be activated as it meets the condition."
+    )
+    assert event2.status == EventStatus.INACTIVE, (
+        "The second event should remain inactive as it does not meet the condition."
+    )
 
 
 def test_activate_next_event_by_condition_multiple_events_second_meets_condition():
@@ -63,12 +63,12 @@ def test_activate_next_event_by_condition_multiple_events_second_meets_condition
 
     scheduler.activate_next_event_by_condition(lambda s, e: e.time == 2)
 
-    assert (
-        event1.status == EventStatus.INACTIVE
-    ), "The first event should remain inactive as it does not meet the condition."
-    assert (
-        event2.status == EventStatus.ACTIVE
-    ), "The second event should be activated as it meets the condition."
+    assert event1.status == EventStatus.INACTIVE, (
+        "The first event should remain inactive as it does not meet the condition."
+    )
+    assert event2.status == EventStatus.ACTIVE, (
+        "The second event should be activated as it meets the condition."
+    )
 
 
 def test_activate_next_event_by_condition_no_events_meet_condition():
@@ -84,12 +84,12 @@ def test_activate_next_event_by_condition_no_events_meet_condition():
 
     scheduler.activate_next_event_by_condition(lambda s, e: e.time == 3)
 
-    assert (
-        event1.status == EventStatus.INACTIVE
-    ), "The first event should remain inactive as it does not meet the condition."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "The second event should remain inactive as it does not meet the condition."
+    assert event1.status == EventStatus.INACTIVE, (
+        "The first event should remain inactive as it does not meet the condition."
+    )
+    assert event2.status == EventStatus.INACTIVE, (
+        "The second event should remain inactive as it does not meet the condition."
+    )
 
 
 def test_activate_next_event_by_condition_first_match_only():
@@ -105,12 +105,12 @@ def test_activate_next_event_by_condition_first_match_only():
 
     scheduler.activate_next_event_by_condition(lambda s, e: e.time == 1)
 
-    assert (
-        event1.status == EventStatus.ACTIVE
-    ), "The first event matching the condition should be activated."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "The second event with the same time should remain inactive."
+    assert event1.status == EventStatus.ACTIVE, (
+        "The first event matching the condition should be activated."
+    )
+    assert event2.status == EventStatus.INACTIVE, (
+        "The second event with the same time should remain inactive."
+    )
 
 
 def test_activate_next_event_by_condition_empty_queue():
@@ -121,9 +121,9 @@ def test_activate_next_event_by_condition_empty_queue():
         lambda s, e: e.time == 1
     )  # No events in the queue
 
-    assert (
-        scheduler.event_queue == []
-    ), "Queue should remain empty when no events are scheduled."
+    assert scheduler.event_queue == [], (
+        "Queue should remain empty when no events are scheduled."
+    )
 
 
 def test_activate_next_event_by_condition_multiple_conditions():
@@ -144,15 +144,15 @@ def test_activate_next_event_by_condition_multiple_conditions():
         lambda s, e: e.context.get("type") == "A" and e.time == 3
     )
 
-    assert (
-        event1.status == EventStatus.INACTIVE
-    ), "The first event should remain inactive as it does not meet all conditions."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "The second event should remain inactive as it does not meet the conditions."
-    assert (
-        event3.status == EventStatus.ACTIVE
-    ), "The third event should be activated as it meets all conditions."
+    assert event1.status == EventStatus.INACTIVE, (
+        "The first event should remain inactive as it does not meet all conditions."
+    )
+    assert event2.status == EventStatus.INACTIVE, (
+        "The second event should remain inactive as it does not meet the conditions."
+    )
+    assert event3.status == EventStatus.ACTIVE, (
+        "The third event should be activated as it meets all conditions."
+    )
 
 
 def test_activate_next_event_by_condition_with_no_match_in_complex_condition():
@@ -170,9 +170,9 @@ def test_activate_next_event_by_condition_with_no_match_in_complex_condition():
         lambda s, e: e.context.get("type") == "C"
     )
 
-    assert (
-        event1.status == EventStatus.INACTIVE
-    ), "The first event should remain inactive as it does not meet the condition."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "The second event should remain inactive as it does not meet the condition."
+    assert event1.status == EventStatus.INACTIVE, (
+        "The first event should remain inactive as it does not meet the condition."
+    )
+    assert event2.status == EventStatus.INACTIVE, (
+        "The second event should remain inactive as it does not meet the condition."
+    )

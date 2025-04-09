@@ -25,9 +25,9 @@ def test_deactivate_next_event_single_event():
     scheduler.deactivate_next_event()
 
     # Ensure the event was deactivated
-    assert (
-        event1.status == EventStatus.INACTIVE
-    ), "Event1 should be deactivated after calling deactivate_next_event."
+    assert event1.status == EventStatus.INACTIVE, (
+        "Event1 should be deactivated after calling deactivate_next_event."
+    )
 
 
 def test_deactivate_next_event_multiple_events():
@@ -50,12 +50,12 @@ def test_deactivate_next_event_multiple_events():
 
     # Ensure the first event (event1) is deactivated, others remain active
     assert event1.status == EventStatus.INACTIVE, "Event1 should be deactivated."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "Event2 should remain inactive as it's not the next event."
-    assert (
-        event3.status == EventStatus.INACTIVE
-    ), "Event3 should remain inactive as it's not the next event."
+    assert event2.status == EventStatus.INACTIVE, (
+        "Event2 should remain inactive as it's not the next event."
+    )
+    assert event3.status == EventStatus.INACTIVE, (
+        "Event3 should remain inactive as it's not the next event."
+    )
 
 
 def test_deactivate_next_event_with_already_inactive_event():
@@ -75,9 +75,9 @@ def test_deactivate_next_event_with_already_inactive_event():
 
     # Ensure event1 stays inactive and event2 becomes inactive as it's the next event to deactivate
     assert event1.status == EventStatus.INACTIVE, "Event1 should remain inactive."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "Event2 should become inactive after calling deactivate_next_event."
+    assert event2.status == EventStatus.INACTIVE, (
+        "Event2 should become inactive after calling deactivate_next_event."
+    )
 
 
 def test_deactivate_next_event_multiple_deactivations():
@@ -145,9 +145,9 @@ def test_deactivate_next_event_after_event_activation():
     scheduler.deactivate_next_event()
 
     # Ensure event1 is deactivated
-    assert (
-        event1.status == EventStatus.INACTIVE
-    ), "Event1 should be deactivated after calling deactivate_next_event."
+    assert event1.status == EventStatus.INACTIVE, (
+        "Event1 should be deactivated after calling deactivate_next_event."
+    )
 
 
 def test_deactivate_next_event_with_unactivated_events():

@@ -26,9 +26,9 @@ def test_cancel_all_events_single_event():
     scheduler.cancel_all_events()
 
     # The queue should be empty
-    assert (
-        len(scheduler.event_queue) == 0
-    ), "The event queue should be empty after canceling all events."
+    assert len(scheduler.event_queue) == 0, (
+        "The event queue should be empty after canceling all events."
+    )
     assert (
         event1.time,
         event1,
@@ -51,9 +51,9 @@ def test_cancel_all_events_multiple_events():
     scheduler.cancel_all_events()
 
     # The queue should be empty
-    assert (
-        len(scheduler.event_queue) == 0
-    ), "The event queue should be empty after canceling all events."
+    assert len(scheduler.event_queue) == 0, (
+        "The event queue should be empty after canceling all events."
+    )
     assert (
         event1.time,
         event1,
@@ -84,9 +84,9 @@ def test_cancel_all_events_with_condition_on_event_attributes():
     scheduler.cancel_all_events()
 
     # The queue should be empty after cancellation
-    assert (
-        len(scheduler.event_queue) == 0
-    ), "The event queue should be empty after canceling all events."
+    assert len(scheduler.event_queue) == 0, (
+        "The event queue should be empty after canceling all events."
+    )
     assert (
         event1.time,
         event1,
@@ -117,9 +117,9 @@ def test_cancel_all_events_with_condition_on_time():
     scheduler.cancel_all_events()
 
     # The queue should be empty
-    assert (
-        len(scheduler.event_queue) == 0
-    ), "The event queue should be empty after canceling all events."
+    assert len(scheduler.event_queue) == 0, (
+        "The event queue should be empty after canceling all events."
+    )
     assert (
         event1.time,
         event1,
@@ -154,9 +154,9 @@ def test_cancel_all_events_after_some_cancellations():
     scheduler.cancel_all_events()
 
     # The queue should be empty
-    assert (
-        len(scheduler.event_queue) == 0
-    ), "The event queue should be empty after canceling all events."
+    assert len(scheduler.event_queue) == 0, (
+        "The event queue should be empty after canceling all events."
+    )
     assert (
         event1.time,
         event1,
@@ -191,9 +191,9 @@ def test_cancel_all_events_after_rescheduling():
     scheduler.cancel_all_events()
 
     # The queue should be empty
-    assert (
-        len(scheduler.event_queue) == 0
-    ), "The event queue should be empty after canceling all events."
+    assert len(scheduler.event_queue) == 0, (
+        "The event queue should be empty after canceling all events."
+    )
     assert (
         event1.time,
         event1,
@@ -224,9 +224,9 @@ def test_cancel_all_events_with_edge_case():
     scheduler.cancel_all_events()
 
     # The queue should be empty after cancellation
-    assert (
-        len(scheduler.event_queue) == 0
-    ), "The event queue should be empty after canceling all events."
+    assert len(scheduler.event_queue) == 0, (
+        "The event queue should be empty after canceling all events."
+    )
     assert (
         event1.time,
         event1,

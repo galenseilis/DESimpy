@@ -7,9 +7,9 @@ def test_activate_all_events_no_events():
 
     scheduler.activate_all_events()  # No events in the queue
 
-    assert (
-        scheduler.event_queue == []
-    ), "The event queue should remain empty when there are no events to activate."
+    assert scheduler.event_queue == [], (
+        "The event queue should remain empty when there are no events to activate."
+    )
 
 
 def test_activate_all_events_single_inactive_event():
@@ -98,15 +98,15 @@ def test_activate_all_events_with_context_conditions():
 
     scheduler.activate_all_events()
 
-    assert (
-        event1.status == EventStatus.ACTIVE
-    ), "The first event with high priority should be activated."
-    assert (
-        event2.status == EventStatus.ACTIVE
-    ), "The low priority event should be activated."
-    assert (
-        event3.status == EventStatus.ACTIVE
-    ), "The second high priority event should be activated."
+    assert event1.status == EventStatus.ACTIVE, (
+        "The first event with high priority should be activated."
+    )
+    assert event2.status == EventStatus.ACTIVE, (
+        "The low priority event should be activated."
+    )
+    assert event3.status == EventStatus.ACTIVE, (
+        "The second high priority event should be activated."
+    )
 
 
 def test_activate_all_events_with_specific_timing():
@@ -144,12 +144,12 @@ def test_activate_all_events_with_already_scheduled_and_unscheduled_events():
     # Only event1 is scheduled, event2 remains unscheduled
     scheduler.activate_all_events()
 
-    assert (
-        event1.status == EventStatus.ACTIVE
-    ), "The scheduled event should be activated."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "The unscheduled event should remain inactive."
+    assert event1.status == EventStatus.ACTIVE, (
+        "The scheduled event should be activated."
+    )
+    assert event2.status == EventStatus.INACTIVE, (
+        "The unscheduled event should remain inactive."
+    )
 
 
 def test_activate_all_events_empty_context():
@@ -162,9 +162,9 @@ def test_activate_all_events_empty_context():
 
     scheduler.activate_all_events()
 
-    assert (
-        event.status == EventStatus.ACTIVE
-    ), "Event with empty context should still be activated."
+    assert event.status == EventStatus.ACTIVE, (
+        "Event with empty context should still be activated."
+    )
 
 
 def test_activate_all_events_complex_mixed_events():

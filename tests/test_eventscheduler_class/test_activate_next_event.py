@@ -15,9 +15,9 @@ def scheduler() -> EventScheduler:
 
 
 @pytest.fixture
-def event_factory() -> (
-    Callable[[float, Callable[[], Any], dict[Any, Any] | None], Event]
-):
+def event_factory() -> Callable[
+    [float, Callable[[], Any], dict[Any, Any] | None], Event
+]:
     """Factory fixture to create events at a specified time with an optional action."""
 
     def _create_event(
@@ -58,12 +58,12 @@ def test_activate_next_event_multiple_events(scheduler: EventScheduler):
 
     scheduler.activate_next_event()
 
-    assert (
-        event1.status == EventStatus.ACTIVE
-    ), "The earliest event should be activated."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "The later event should remain inactive."
+    assert event1.status == EventStatus.ACTIVE, (
+        "The earliest event should be activated."
+    )
+    assert event2.status == EventStatus.INACTIVE, (
+        "The later event should remain inactive."
+    )
 
 
 def test_activate_next_event_with_active_event(scheduler: EventScheduler):
@@ -74,17 +74,17 @@ def test_activate_next_event_with_active_event(scheduler: EventScheduler):
     scheduler.activate_next_event()  # First activation call
     scheduler.activate_next_event()  # Second activation should have no effect
 
-    assert (
-        event.status == EventStatus.ACTIVE
-    ), "Event should remain active after reactivation."
+    assert event.status == EventStatus.ACTIVE, (
+        "Event should remain active after reactivation."
+    )
 
 
 def test_activate_next_event_empty_queue(scheduler: EventScheduler):
     """Test `activate_next_event` with an empty event queue."""
     scheduler.activate_next_event()  # Should have no effect, no exception should occur
-    assert (
-        scheduler.event_queue == []
-    ), "Queue should remain empty when no events are scheduled."
+    assert scheduler.event_queue == [], (
+        "Queue should remain empty when no events are scheduled."
+    )
 
 
 def test_activate_next_event_does_not_alter_later_events(scheduler: EventScheduler):
@@ -100,9 +100,9 @@ def test_activate_next_event_does_not_alter_later_events(scheduler: EventSchedul
     scheduler.activate_next_event()
 
     assert event1.status == EventStatus.ACTIVE, "The first event should be activated."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "The second event should remain inactive."
+    assert event2.status == EventStatus.INACTIVE, (
+        "The second event should remain inactive."
+    )
 
 
 def test_activate_next_event_only_affects_next(scheduler: EventScheduler):
@@ -117,9 +117,9 @@ def test_activate_next_event_only_affects_next(scheduler: EventScheduler):
 
     scheduler.activate_next_event()
 
-    assert (
-        event1.status == EventStatus.ACTIVE
-    ), "Only the earliest event should be activated."
-    assert (
-        event2.status == EventStatus.INACTIVE
-    ), "Subsequent events should remain inactive."
+    assert event1.status == EventStatus.ACTIVE, (
+        "Only the earliest event should be activated."
+    )
+    assert event2.status == EventStatus.INACTIVE, (
+        "Subsequent events should remain inactive."
+    )
