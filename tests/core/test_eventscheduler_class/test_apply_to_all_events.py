@@ -37,7 +37,8 @@ def test_apply_to_all_events_empty_queue(scheduler: EventScheduler):
 
 
 def test_apply_to_all_events_increment_time(
-    scheduler: EventScheduler, event: Callable[[float], Event],
+    scheduler: EventScheduler,
+    event: Callable[[float], Event],
 ):
     """Test that apply_to_all_events correctly increments the time of each event."""
     event1 = event(10.0)
@@ -58,7 +59,8 @@ def test_apply_to_all_events_increment_time(
 
 
 def test_apply_to_all_events_double_time(
-    scheduler: EventScheduler, event: Callable[[float], Event],
+    scheduler: EventScheduler,
+    event: Callable[[float], Event],
 ):
     """Test that apply_to_all_events doubles the time of each event."""
     event1 = event(2.0)
@@ -77,7 +79,8 @@ def test_apply_to_all_events_double_time(
 
 
 def test_apply_to_all_events_custom_attribute_change(
-    scheduler: EventScheduler, event: Callable[[float], Event],
+    scheduler: EventScheduler,
+    event: Callable[[float], Event],
 ):
     """Test that apply_to_all_events can modify a custom attribute of each event."""
     event1 = event(5.0)
@@ -104,7 +107,8 @@ def test_apply_to_all_events_custom_attribute_change(
 
 
 def test_apply_to_all_events_no_change(
-    scheduler: EventScheduler, event: Callable[[float], Event],
+    scheduler: EventScheduler,
+    event: Callable[[float], Event],
 ):
     """Test that apply_to_all_events makes no changes if the function is a no-op."""
     event1 = event(7.0)
@@ -124,7 +128,8 @@ def test_apply_to_all_events_no_change(
 
 
 def test_apply_to_all_events_negative_time(
-    scheduler: EventScheduler, event: Callable[[float], Event],
+    scheduler: EventScheduler,
+    event: Callable[[float], Event],
 ):
     """Test that apply_to_all_events allows setting negative times for events."""
     event1 = event(3.0)

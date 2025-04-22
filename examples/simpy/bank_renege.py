@@ -61,6 +61,7 @@ class Counter:
         capacity (int): Number of concurrent customers the counter can serve.
         available (int): Number of available spots at the counter.
         queue (list): Queue of customers waiting to be served.
+
     """
 
     def __init__(self, env: EventScheduler, capacity: int) -> None:
@@ -104,10 +105,15 @@ class Customer:
         counter (Counter): The bank counter.
         patience (float): Maximum time the customer is willing to wait.
         time_in_bank (float): Time the customer needs for service.
+
     """
 
     def __init__(
-        self, env: EventScheduler, name: str, counter: Counter, time_in_bank: float,
+        self,
+        env: EventScheduler,
+        name: str,
+        counter: Counter,
+        time_in_bank: float,
     ) -> None:
         self.env: EventScheduler = env
         self.name: str = name
@@ -162,7 +168,10 @@ class Bank:
         self.counter: Counter = counter
 
     def generate_customers(
-        self, num_customers: int, interval: float, time_in_bank: float,
+        self,
+        num_customers: int,
+        interval: float,
+        time_in_bank: float,
     ):
         """Generate customers at random intervals."""
         for i in range(num_customers):
@@ -171,7 +180,10 @@ class Bank:
                 Event(
                     self.env.current_time + arrival_time,
                     lambda i=i: Customer(
-                        self.env, f"Customer{i:02d}", self.counter, time_in_bank,
+                        self.env,
+                        f"Customer{i:02d}",
+                        self.counter,
+                        time_in_bank,
                     ),
                 ),
             )
@@ -196,7 +208,9 @@ if __name__ == "__main__":
 
     bank = Bank(scheduler, counter)
     bank.generate_customers(
-        NEW_CUSTOMERS, INTERVAL_CUSTOMERS, time_in_bank=TIME_IN_BANK,
+        NEW_CUSTOMERS,
+        INTERVAL_CUSTOMERS,
+        time_in_bank=TIME_IN_BANK,
     )
 
     #####################

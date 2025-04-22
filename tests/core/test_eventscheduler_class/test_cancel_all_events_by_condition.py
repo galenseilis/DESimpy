@@ -23,7 +23,8 @@ def sample_events() -> list[Event]:
 
 
 def test_cancel_all_events_by_condition_removes_matching_events(
-    scheduler: EventScheduler, sample_events: list[Event],
+    scheduler: EventScheduler,
+    sample_events: list[Event],
 ) -> None:
     """Test that events matching the condition are removed."""
     for event in sample_events:
@@ -41,7 +42,8 @@ def test_cancel_all_events_by_condition_removes_matching_events(
 
 
 def test_cancel_all_events_by_condition_no_match(
-    scheduler: EventScheduler, sample_events: list[Event],
+    scheduler: EventScheduler,
+    sample_events: list[Event],
 ) -> None:
     """Test that no events are removed if none match the condition."""
     for event in sample_events:
@@ -68,7 +70,8 @@ def test_cancel_all_events_by_condition_empty_queue(scheduler: EventScheduler) -
 
 
 def test_cancel_all_events_by_condition_partial_match(
-    scheduler: EventScheduler, sample_events: list[Event],
+    scheduler: EventScheduler,
+    sample_events: list[Event],
 ) -> None:
     """Test that only events matching the condition are removed."""
     for event in sample_events:

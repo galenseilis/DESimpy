@@ -28,6 +28,7 @@ class Customer:
         Args:
             customer_id (int): Unique identifier for the customer.
             arrival_time (float): Time at which the customer arrives.
+
         """
         self.customer_id: int = customer_id
         self.arrival_time: float = arrival_time
@@ -57,6 +58,7 @@ class GGcQueue:
             service_dist (dists.Distribution): Distribution for service times.
             num_servers (int): Number of servers.
             max_time (float): Maximum simulation time.
+
         """
         self.arrival_dist: dists.Distribution = arrival_dist
         self.service_dist: dists.Distribution = service_dist
@@ -104,6 +106,7 @@ class GGcQueue:
 
         Returns:
             int | None: The index of a free server, or None if all servers are busy.
+
         """
         for i in range(self.num_servers):
             if self.servers[i] is None:
@@ -116,6 +119,7 @@ class GGcQueue:
         Args:
             customer (Customer): The customer to serve.
             server_id (int): The index of the server that will serve the customer.
+
         """
         service_time: float = self.service_dist.sample()
         customer.service_start_time = self.scheduler.current_time
@@ -139,6 +143,7 @@ class GGcQueue:
 
         Args:
             server_id (int): The index of the server where the departure occurred.
+
         """
         """Handle the departure of a customer from a given server."""
         customer: Customer = self.servers[server_id]
@@ -157,6 +162,7 @@ class GGcQueue:
 
         Returns:
             list[Event]: A log of events that occurred during the simulation.
+
         """
         self.schedule_arrival()  # Schedule the first arrival
         return self.scheduler.run_until_max_time(self.max_time)  # Run until max_time

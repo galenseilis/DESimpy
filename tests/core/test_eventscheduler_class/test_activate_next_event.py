@@ -16,7 +16,8 @@ def scheduler() -> EventScheduler:
 
 @pytest.fixture
 def event_factory() -> Callable[
-    [float, Callable[[], Any], dict[Any, Any] | None], Event,
+    [float, Callable[[], Any], dict[Any, Any] | None],
+    Event,
 ]:
     """Factory fixture to create events at a specified time with an optional action."""
 
@@ -31,7 +32,8 @@ def event_factory() -> Callable[
 
 
 EVENT_FACTORY_TYPE = Callable[
-    [], Callable[[float, Callable[[], Any], dict[Any, Any] | None], Event],
+    [],
+    Callable[[float, Callable[[], Any], dict[Any, Any] | None], Event],
 ]
 
 

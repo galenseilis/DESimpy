@@ -44,6 +44,7 @@ class Car:
 
     Attributes:
         env (EventScheduler): The event scheduler that manages simulation events.
+
     """
 
     def __init__(self, env: EventScheduler) -> None:
@@ -51,6 +52,7 @@ class Car:
 
         Args:
             env (EventScheduler): The simulation's event scheduler.
+
         """
         self.env: EventScheduler = env
         # Start the run process when an instance is created

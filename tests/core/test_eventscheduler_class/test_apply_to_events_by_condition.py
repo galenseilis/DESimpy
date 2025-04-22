@@ -23,7 +23,8 @@ def event() -> Callable[[float], Event]:
 
 
 def test_apply_to_events_by_condition_no_matching_events(
-    scheduler: EventScheduler, event: Callable[[float], Event],
+    scheduler: EventScheduler,
+    event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition does nothing when no events match the condition."""
     event1 = event(10.0)
@@ -46,7 +47,8 @@ def test_apply_to_events_by_condition_no_matching_events(
 
 
 def test_apply_to_events_by_condition_matching_events(
-    scheduler: EventScheduler, event: Callable[[float], Event],
+    scheduler: EventScheduler,
+    event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition modifies only the events that match the condition."""
     event1 = event(5.0)
@@ -72,7 +74,8 @@ def test_apply_to_events_by_condition_matching_events(
 
 
 def test_apply_to_events_by_condition_toggle_attribute(
-    scheduler: EventScheduler, event: Callable[[float], Event],
+    scheduler: EventScheduler,
+    event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition can toggle an attribute based on a condition."""
     event1 = event(5.0)
@@ -103,7 +106,8 @@ def test_apply_to_events_by_condition_toggle_attribute(
 
 
 def test_apply_to_events_by_condition_reset_time(
-    scheduler: EventScheduler, event: Callable[[float], Event],
+    scheduler: EventScheduler,
+    event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition can reset the time of matched events."""
     event1 = event(3.0)
@@ -129,7 +133,8 @@ def test_apply_to_events_by_condition_reset_time(
 
 
 def test_apply_to_events_by_condition_no_op(
-    scheduler: EventScheduler, event: Callable[[float], Event],
+    scheduler: EventScheduler,
+    event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition makes no changes if the function is a no-op."""
     event1 = event(7.0)
@@ -152,7 +157,8 @@ def test_apply_to_events_by_condition_no_op(
 
 
 def test_apply_to_events_by_condition_negative_time(
-    scheduler: EventScheduler, event: Callable[[float], Event],
+    scheduler: EventScheduler,
+    event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition allows setting negative times for matched events."""
     event1 = event(5.0)

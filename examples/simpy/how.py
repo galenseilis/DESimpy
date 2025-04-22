@@ -34,6 +34,7 @@ def example(env: EventScheduler) -> None:
 
     Returns:
         None: This function does not return a value, it schedules an event.
+
     """
     delay = 1
     value = 42

@@ -208,7 +208,8 @@ class EventScheduler:
         return None
 
     def next_event_by_condition(
-        self, condition: Callable[[Self, Event], bool],
+        self,
+        condition: Callable[[Self, Event], bool],
     ) -> Event | None:
         """Return a reference to the next event that satisfies a given condition."""
         for _, event in self.event_queue:
@@ -230,7 +231,8 @@ class EventScheduler:
         return float("inf")
 
     def peek_by_condition(
-        self, condition: Callable[[Self, Event], bool],
+        self,
+        condition: Callable[[Self, Event], bool],
     ) -> float | None:
         """Return time of next event meeting condition."""
         option_next_event = self.next_event_by_condition(condition)
@@ -243,7 +245,9 @@ class EventScheduler:
             func(event)
 
     def apply_to_events_by_condition(
-        self, func: Callable[[Event], Any], condition: Callable[[Self, Event], bool],
+        self,
+        func: Callable[[Event], Any],
+        condition: Callable[[Self, Event], bool],
     ) -> None:
         """Apply a function to any events in queue that satisfy condition."""
         for _, event in self.event_queue:
@@ -257,7 +261,8 @@ class EventScheduler:
             option_next_event.activate()
 
     def activate_next_event_by_condition(
-        self, condition: Callable[[Self, Event], bool],
+        self,
+        condition: Callable[[Self, Event], bool],
     ) -> None:
         """The next event satisfying a condition becomes activated.
 
@@ -279,7 +284,8 @@ class EventScheduler:
         self.apply_to_all_events(_activate_event)
 
     def activate_all_events_by_condition(
-        self, condition: Callable[[Self, Event], bool],
+        self,
+        condition: Callable[[Self, Event], bool],
     ) -> None:
         """Activate future events by condition.
 
@@ -295,7 +301,8 @@ class EventScheduler:
             option_next_event.deactivate()
 
     def deactivate_next_event_by_condition(
-        self, condition: Callable[[Self, Event], bool],
+        self,
+        condition: Callable[[Self, Event], bool],
     ) -> None:
         """Deactivate the next event that satisfies the given condition."""
         option_event = self.next_event_by_condition(condition)
@@ -307,7 +314,8 @@ class EventScheduler:
         self.apply_to_all_events(_deactivate_event)
 
     def deactivate_all_events_by_condition(
-        self, condition: Callable[[Self, Event], bool],
+        self,
+        condition: Callable[[Self, Event], bool],
     ) -> None:
         """Deactivate future events by condition."""
         self.apply_to_events_by_condition(_deactivate_event, condition)
@@ -318,7 +326,8 @@ class EventScheduler:
             _ = heapq.heappop(self.event_queue)
 
     def cancel_next_event_by_condition(
-        self, condition: Callable[[Self, Event], bool],
+        self,
+        condition: Callable[[Self, Event], bool],
     ) -> None:
         """Cancel the next event that satisfies a given condition."""
         option_event = self.next_event_by_condition(condition)
@@ -330,12 +339,14 @@ class EventScheduler:
         self.event_queue = []
 
     def cancel_all_events_by_condition(
-        self, condition: Callable[[Self, Event], bool],
+        self,
+        condition: Callable[[Self, Event], bool],
     ) -> None:
         """Remove all events by a given condtion.
 
         Args:
         condition (Callable[[Self, Event], bool]): Callable that decides whether an event should be cancelled.
+
         """
         targets: list[Event] = []
         for _, event in self.event_queue:
@@ -345,7 +356,9 @@ class EventScheduler:
             self.event_queue.remove((event.time, event))
 
     def run(
-        self, stop: Callable[[Self], bool], logging: Callable[[Any], bool] | bool = True,
+        self,
+        stop: Callable[[Self], bool],
+        logging: Callable[[Any], bool] | bool = True,
     ) -> list[Event]:
         """Run the discrete event simulation.
 
@@ -396,7 +409,9 @@ class EventScheduler:
         return self.event_log
 
     def _run_filtered_logging(
-        self, stop: Callable[[Self], bool], log_filter: Callable[[Event], bool],
+        self,
+        stop: Callable[[Self], bool],
+        log_filter: Callable[[Event], bool],
     ) -> list[Event]:
         self._activate()
         while not stop(self):
@@ -409,7 +424,9 @@ class EventScheduler:
         return self.event_log
 
     def run_until_max_time(
-        self, max_time: float, logging: Callable[[Self], bool] | bool = True,
+        self,
+        max_time: float,
+        logging: Callable[[Self], bool] | bool = True,
     ) -> list[Event]:
         """Simulate until a maximum time is reached.
 
@@ -430,7 +447,9 @@ class EventScheduler:
         return results
 
     def run_until_given_event(
-        self, event: Event, logging: Callable[[Self], bool] | bool = True,
+        self,
+        event: Event,
+        logging: Callable[[Self], bool] | bool = True,
     ) -> list[Event]:
         """Simulate until a given event has elapsed.
 

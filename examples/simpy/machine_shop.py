@@ -51,6 +51,7 @@ def time_per_part() -> float:
 
     Returns:
         float: The sampled time for completing a part.
+
     """
     t = random.normalvariate(PT_MEAN, PT_SIGMA)
     while t <= 0:
@@ -66,6 +67,7 @@ def time_to_failure() -> float:
 
     Returns:
         float: The sampled time to the next machine failure.
+
     """
     return random.expovariate(BREAK_MEAN)
 
@@ -90,6 +92,7 @@ class Machine:
         part_start_time (float): The start time of the current part.
         current_job (Event): The currently scheduled job (either part processing or repair).
         repairman (Repairman): The repairman responsible for fixing the machine when it breaks.
+
     """
 
     def __init__(self, env, name: Any, repairman) -> None:
@@ -99,6 +102,7 @@ class Machine:
             env (EventScheduler): The event scheduler for handling events.
             name (str): The identifier or name of the machine.
             repairman (Repairman): The repairman responsible for repairs.
+
         """
         self.env = env
         self.name = name
@@ -121,6 +125,7 @@ class Machine:
 
         Args:
             back_to_work (bool): Indicates whether the machine is resuming work after a breakdown.
+
         """
         self.time_to_part = (
             time_per_part() if not self.time_to_part else self.time_to_part
@@ -182,6 +187,7 @@ class Repairman:
         requestor_queue (list): The priority queue of repair requests.
         current_priority (float): The priority of the currently active job.
         current_job (Event): The currently assigned repair job.
+
     """
 
     def __init__(self, env: EventScheduler) -> None:
@@ -189,6 +195,7 @@ class Repairman:
 
         Args:
             env (EventScheduler): The event scheduler managing simulation events.
+
         """
         self.env = env
         self.requestor_queue = []
@@ -204,6 +211,7 @@ class Repairman:
         Args:
             requestor (Machine or callable): The machine or job requesting service.
             request_priority (int): The priority of the request (lower value is higher priority).
+
         """
         if self.current_job is None:
             self.schedule_job(requestor, request_priority)
@@ -224,6 +232,7 @@ class Repairman:
             requestor (Machine or Callable): The entity requesting the job, either a
             machine that needs repair or another process.
             priority (int): The priority of the job request. Lower values indicate higher priority.
+
         """
         job = self.create_job(requestor, priority)
         self.assign_current_job(job, priority)
@@ -238,6 +247,7 @@ class Repairman:
         Args:
             job (Event): The job event to assign as the current job.
             job_priority (int): The priority of the assigned job.
+
         """
         self.current_job = job
         self.current_priority = job_priority
@@ -255,6 +265,7 @@ class Repairman:
 
         Returns:
             Event: A new event representing the scheduled job with its assigned time and context.
+
         """
         service_time = self.job_time(requestor)
         time = self.env.current_time + service_time
@@ -297,6 +308,7 @@ class Repairman:
 
         Returns:
             float: The time (in minutes) required to complete the job.
+
         """
         if request_priority == 1:
             delay = REPAIR_TIME
@@ -316,6 +328,7 @@ class Repairman:
 
         Returns:
             bool: True if the new request should preempt the current job, False otherwise.
+
         """
         return priority < self.current_priority
 
@@ -341,9 +354,11 @@ class Repairman:
             requestor (Machine or Callable): The entity requesting the job, either a
             machine or another process.
             priority (int): The priority of the job request. Lower values indicate higher priority.
+
         """
         heapq.heappush(
-            self.requestor_queue, (priority, self.env.current_time, requestor),
+            self.requestor_queue,
+            (priority, self.env.current_time, requestor),
         )
 
 
@@ -360,6 +375,7 @@ def other_jobs(repairman: Repairman):
 
     Args:
         repairman (Repairman): The repairman responsible for handling the job.
+
     """
     repairman.request(other_jobs, 2)
 

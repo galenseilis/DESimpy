@@ -66,7 +66,8 @@ class Node:
     def handle_arrival(self):  # FIX: Pass optional customer
         """Handle a customer arrival."""
         customer = Customer(
-            self.total_customers, self.scheduler.current_time,
+            self.total_customers,
+            self.scheduler.current_time,
         )  # FIX: Create customer only if not provided.
         self.total_customers += 1
         customer.current_node = self.queue_id  # Track the customer's current queue

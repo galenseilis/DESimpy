@@ -57,7 +57,8 @@ class Carwash:
             print(f"{self.env.current_time:.2f} {car} enters the carwash.")
             self.env.schedule(
                 Event(
-                    self.env.current_time + self.washtime, lambda: self.finish_wash(car),
+                    self.env.current_time + self.washtime,
+                    lambda: self.finish_wash(car),
                 ),
             )
         else:

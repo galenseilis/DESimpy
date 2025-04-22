@@ -36,6 +36,7 @@ class BatteryChargingStation:
         capacity (int): The total number of available charging spots.
         available_spots (int): The number of charging spots currently available.
         waiting_queue (list): A queue for cars waiting for a charging spot.
+
     """
 
     def __init__(self, env: EventScheduler, capacity: int) -> None:
@@ -44,6 +45,7 @@ class BatteryChargingStation:
         Args:
             env (EventScheduler): The simulation's event scheduler.
             capacity (int): The total number of charging spots in the station.
+
         """
         self.env = env
         self.capacity = capacity
@@ -59,6 +61,7 @@ class BatteryChargingStation:
 
         Args:
             car: The car requesting a charging spot.
+
         """
         if self.available_spots > 0:
             self.available_spots -= 1
@@ -98,6 +101,7 @@ class Car:
         bcs (BatteryChargingStation): The battery charging station where the car charges.
         driving_time (float): The amount of time the car spends driving before reaching the station.
         charge_duration (float): The duration for which the car will charge once a spot is available.
+
     """
 
     def __init__(
@@ -116,6 +120,7 @@ class Car:
             bcs (BatteryChargingStation): The battery charging station to use.
             driving_time (float): Time in the simulation before the car arrives at the station.
             charge_duration (float): The amount of time the car will spend charging.
+
         """
         self.env = env
         self.name = name

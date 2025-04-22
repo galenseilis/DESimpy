@@ -126,12 +126,14 @@ def test_deactivate_all_events_by_condition_mixed_conditions():
     """Test `deactivate_all_events_by_condition` with events of mixed times and contexts."""
     scheduler = EventScheduler()
     event1 = Event(
-        time=5, context={"priority": "high"},
+        time=5,
+        context={"priority": "high"},
     )  # Should be activated (high priority)
     event2 = Event(time=25, context={"priority": "low"})  # Should remain inactive
     event3 = Event(time=15, context={"priority": "medium"})  # Should remain inactive
     event4 = Event(
-        time=10, context={"priority": "high"},
+        time=10,
+        context={"priority": "high"},
     )  # Should be activated (high priority)
 
     scheduler.schedule(event1)
@@ -159,16 +161,20 @@ def test_deactivate_all_events_by_condition_partial_activation():
     """Test `deactivate_all_events_by_condition` with events of mixed priorities and times."""
     scheduler = EventScheduler()
     event1 = Event(
-        time=5, context={"priority": "low"},
+        time=5,
+        context={"priority": "low"},
     )  # Should remain inactive (low priority)
     event2 = Event(
-        time=10, context={"priority": "high"},
+        time=10,
+        context={"priority": "high"},
     )  # Should be activated (high priority)
     event3 = Event(
-        time=25, context={"priority": "high"},
+        time=25,
+        context={"priority": "high"},
     )  # Should be activated (high priority)
     event4 = Event(
-        time=30, context={"priority": "low"},
+        time=30,
+        context={"priority": "low"},
     )  # Should remain inactive (low priority)
 
     scheduler.schedule(event1)
