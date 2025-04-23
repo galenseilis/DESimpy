@@ -4,9 +4,9 @@ source: https://simpy.readthedocs.io/en/stable/examples/bank_renege.html
 """
 
 
-##############
-# $0 IMPORTS #
-##############
+#############
+# $ IMPORTS #
+#############
 
 from __future__ import annotations
 
@@ -18,24 +18,9 @@ if TYPE_CHECKING:
 
 from desimpy import Event, EventScheduler
 
-####################
-# $1 CONFIGURATION #
-####################
-
-COMMENT_SECTIONS: Final[str] = """
-```yaml
-contents:
-    - 0. Imports
-    - 1. Configuration
-    - 2. Define Counter Resource
-    - 3. Define Customer Class
-    - 4. Define Bank Class
-    - 5. Initialize Event Scheduler
-    - 6. Initialize Counter
-    - 7. Register Processes
-    - 8. Run Simulation
-```
-"""
+###################
+# $ CONFIGURATION #
+###################
 
 RANDOM_SEED: Final[int] = 42
 NEW_CUSTOMERS: Final[int] = 5  # Total number of customers
@@ -48,9 +33,9 @@ COUNTER_CAPACITY: Final[int] = 1  # Num. customers that can be served in paralle
 TIME_IN_BANK: Final[float] = 12.0  # Time spent in bank
 random.seed(RANDOM_SEED)
 
-##############################
-# $2 DEFINE COUNTER RESOURCE #
-##############################
+#############################
+# $ DEFINE COUNTER RESOURCE #
+#############################
 
 
 class Counter:
@@ -91,9 +76,9 @@ class Counter:
             self.request(next_customer)
 
 
-############################
-# $3 DEFINE CUSTOMER CLASS #
-############################
+###########################
+# $ DEFINE CUSTOMER CLASS #
+###########################
 
 
 class Customer:
@@ -154,9 +139,9 @@ class Customer:
             )
 
 
-########################
-# $4 DEFINE BANK CLASS #
-########################
+#######################
+# $ DEFINE BANK CLASS #
+#######################
 
 
 class Bank:
@@ -190,21 +175,21 @@ class Bank:
 
 
 if __name__ == "__main__":
-    #################################
-    # $5 INITIALIZE EVENT SCHEDULER #
-    #################################
+    ################################
+    # $ INITIALIZE EVENT SCHEDULER #
+    ################################
 
     scheduler = EventScheduler()
 
-    #########################
-    # $6 INITIALIZE COUNTER #
-    #########################
+    ########################
+    # $ INITIALIZE COUNTER #
+    ########################
 
     counter = Counter(scheduler, capacity=COUNTER_CAPACITY)
 
-    #########################
-    # $7 REGISTER PROCESSES #
-    #########################
+    ########################
+    # $ REGISTER PROCESSES #
+    ########################
 
     bank = Bank(scheduler, counter)
     bank.generate_customers(
@@ -213,8 +198,8 @@ if __name__ == "__main__":
         time_in_bank=TIME_IN_BANK,
     )
 
-    #####################
-    # $8 RUN SIMULATION #
-    #####################
+    ####################
+    # $ RUN SIMULATION #
+    ####################
 
     _ = scheduler.run_until_max_time(float("inf"), logging=False)

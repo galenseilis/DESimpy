@@ -1,25 +1,18 @@
-"""```yaml
-contents:
-    - 0. Imports
-    - 1. Define Example Process
-    - 2. Intialize Event Scheduler
-    - 3. Schedule Example Process
-    - 4. Run Simulation
+"""
 source: https://simpy.readthedocs.io/en/stable/topical_guides/simpy_basics.html#best-practice-version-of-the-example-above
-```
 """
 
-##############
-# $0 IMPORTS #
-##############
+#############
+# $ IMPORTS #
+#############
 
 from collections.abc import Callable
 
 from desimpy import EventScheduler
 
-#############################
-# $1 DEFINE EXAMPLE PROCESS #
-#############################
+############################
+# $ DEFINE EXAMPLE PROCESS #
+############################
 
 
 def example(env: EventScheduler) -> None:
@@ -43,20 +36,20 @@ def example(env: EventScheduler) -> None:
 
 
 if __name__ == "__main__":
-    #################################
-    # $2 INITIALIZE EVENT SCHEDULER #
-    #################################
+    ################################
+    # $ INITIALIZE EVENT SCHEDULER #
+    ################################
 
     env = EventScheduler()
 
-    ###############################
-    # $3 SCHEDULE EXAMPLE PROCESS #
-    ###############################
+    ##############################
+    # $ SCHEDULE EXAMPLE PROCESS #
+    ##############################
 
     example(env)
 
-    #####################
-    # $4 RUN SIMULATION #
-    #####################
+    ####################
+    # $ RUN SIMULATION #
+    ####################
 
     env.run_until_max_time(float("inf"), logging=False)

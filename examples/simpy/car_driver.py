@@ -2,38 +2,17 @@
 source: https://simpy.readthedocs.io/en/latest/simpy_intro/process_interaction.html#interrupting-another-process
 """
 
-##############
-# $0 IMPORTS #
-##############
+#############
+# $ IMPORTS #
+#############
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from typing import Final
-
 from desimpy import Event, EventScheduler
 
-####################
-# $1 CONFIGURATION #
-####################
-
-COMMENT_SECTIONS: Final[str] = """
-```yaml
-contents:
-    - 0. Imports.
-    - 1. Define Car Class.
-    - 2. Define Driver Process.
-    - 3. Initialize Event Scheduler.
-    - 4. Register Processes.
-    - 5. Run Simulation.
-```
-"""
-
-#######################
-# $2 DEFINE CAR CLASS #
-#######################
+######################
+# $ DEFINE CAR CLASS #
+######################
 
 
 class Car:
@@ -61,9 +40,9 @@ class Car:
         self.env.timeout(5, self.schedule_drive, context={"event_type": "charge"})
 
 
-############################
-# $3 DEFINE DRIVER PROCESS #
-############################
+###########################
+# $ DEFINE DRIVER PROCESS #
+###########################
 
 
 def deactivate_next_charge_condition(env: EventScheduler, event: Event) -> bool:
@@ -87,21 +66,21 @@ def driver(env: EventScheduler, car: Car) -> None:
 
 
 if __name__ == "__main__":
-    #################################
-    # $4 INITIALIZE EVENT SCHEDULER #
-    #################################
+    ################################
+    # $ INITIALIZE EVENT SCHEDULER #
+    ################################
 
     scheduler = EventScheduler()
 
-    #########################
-    # $5 REGISTER PROCESSES #
-    #########################
+    ########################
+    # $ REGISTER PROCESSES #
+    ########################
 
     car = Car(scheduler)
     driver(scheduler, car)
 
-    #####################
-    # $6 RUN SIMULATION #
-    #####################
+    ####################
+    # $ RUN SIMULATION #
+    ####################
 
     _ = scheduler.run_until_max_time(15, logging=False)

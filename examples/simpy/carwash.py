@@ -3,9 +3,9 @@ source: https://simpy.readthedocs.io/en/stable/examples/carwash.html
 ```
 """
 
-##############
-# $0 IMPORTS #
-##############
+#############
+# $ IMPORTS #
+#############
 
 from __future__ import annotations
 
@@ -14,9 +14,9 @@ import random
 
 from desimpy import Event, EventScheduler
 
-####################
-# $1 CONFIGURATION #
-####################
+###################
+# $ CONFIGURATION #
+###################
 
 # Constants
 RANDOM_SEED = 42
@@ -31,9 +31,9 @@ SIM_TIME = 20  # Simulation time in minutes
 
 random.seed(RANDOM_SEED)
 
-#####################
-# $2 DEFINE CARWASH #
-#####################
+####################
+# $ DEFINE CARWASH #
+####################
 
 
 class Carwash:
@@ -82,9 +82,9 @@ class Carwash:
             self.request(next_car)
 
 
-#################
-# $3 DEFINE CAR #
-#################
+################
+# $ DEFINE CAR #
+################
 
 
 class Car:
@@ -102,9 +102,9 @@ class Car:
         self.carwash.request(self.name)
 
 
-############################
-# $4 DEFINE SETUP FUNCTION #
-############################
+###########################
+# $ DEFINE SETUP FUNCTION #
+###########################
 
 
 def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
@@ -135,20 +135,20 @@ def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
 
 
 if __name__ == "__main__":
-    #################################
-    # $5 INITIALIZE EVENT SCHEDULER #
-    #################################
+    ################################
+    # $ INITIALIZE EVENT SCHEDULER #
+    ################################
 
     scheduler = EventScheduler()
 
-    #########################
-    # $6 SCHEDULE PROCESSES #
-    #########################
+    ########################
+    # $ SCHEDULE PROCESSES #
+    ########################
 
     setup(scheduler, NUM_MACHINES, WASHTIME, T_INTER)
 
-    #####################
-    # $7 RUN SIMULATION #
-    #####################
+    ####################
+    # $ RUN SIMULATION #
+    ####################
 
     _ = scheduler.run_until_max_time(SIM_TIME, logging=False)

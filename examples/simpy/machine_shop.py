@@ -1,22 +1,10 @@
-"""```yaml
-contents:
-    - 0. Imports
-    - 1. Configuration
-    - 2. Define General Functions
-    - 3. Define Machine Class
-    - 4. Define Repairman
-    - 5. Define Other Jobs
-    - 6. Initialize Event Scheduler
-    - 7. Register Processes
-    - 8. Run Simulation
-    - 9. Show Results
+"""
 source: https://simpy.readthedocs.io/en/stable/examples/machine_shop.html#machine-shop
-```
 """
 
-##############
-# $0 IMPORTS #
-##############
+#############
+# $ IMPORTS #
+#############
 
 import heapq
 import random
@@ -24,9 +12,9 @@ from typing import Any
 
 from desimpy import Event, EventScheduler
 
-####################
-# $1 CONFIGURATION #
-####################
+###################
+# $ CONFIGURATION #
+###################
 
 RANDOM_SEED = 2018
 PT_MEAN = 10.0
@@ -39,9 +27,9 @@ NUM_MACHINES = 10
 WEEKS = 4
 SIM_TIME = WEEKS * 7 * 24 * 60
 
-###############################
-# $2 DEFINE GENERAL FUNCTIONS #
-###############################
+##############################
+# $ DEFINE GENERAL FUNCTIONS #
+##############################
 
 
 def time_per_part() -> float:
@@ -72,9 +60,9 @@ def time_to_failure() -> float:
     return random.expovariate(BREAK_MEAN)
 
 
-###########################
-# $3 DEFINE MACHINE CLASS #
-###########################
+##########################
+# $ DEFINE MACHINE CLASS #
+##########################
 
 
 class Machine:
@@ -171,9 +159,9 @@ class Machine:
         self.repairman.request(self, 1)
 
 
-#######################
-# $4 DEFINE REPAIRMAN #
-#######################
+######################
+# $ DEFINE REPAIRMAN #
+######################
 
 
 class Repairman:
@@ -362,9 +350,9 @@ class Repairman:
         )
 
 
-########################
-# $5 DEFINE OTHER JOBS #
-########################
+#######################
+# $ DEFINE OTHER JOBS #
+#######################
 
 
 def other_jobs(repairman: Repairman):
@@ -381,29 +369,29 @@ def other_jobs(repairman: Repairman):
 
 
 if __name__ == "__main__":
-    #################################
-    # $6 INITIALIZE EVENT SCHEDULER #
-    #################################
+    ################################
+    # $ INITIALIZE EVENT SCHEDULER #
+    ################################
 
     env = EventScheduler()
 
-    #########################
-    # $7 REGISTER PROCESSES #
-    #########################
+    ########################
+    # $ REGISTER PROCESSES #
+    ########################
 
     repairman = Repairman(env)
     machines = [Machine(env, i, repairman) for i in range(NUM_MACHINES)]
     env.timeout(0, lambda: other_jobs(repairman))
 
-    #####################
-    # $8 RUN SIMULATION #
-    #####################
+    ####################
+    # $ RUN SIMULATION #
+    ####################
 
     env.run_until_max_time(SIM_TIME, logging=False)
 
-    ###################
-    # $9 SHOW RESULTS #
-    ###################
+    ##################
+    # $ SHOW RESULTS #
+    ##################
 
     print("Machine shop")
     print(f"Machine shop results after {WEEKS} weeks")

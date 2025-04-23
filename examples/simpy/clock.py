@@ -1,25 +1,17 @@
 """SimPy Clock Example
 
-```yaml
-contents:
-    - 0. Imports
-    - 1. Define Clock Process
-    - 2. Initialize Event Scheduler
-    - 3. Schedule Initial Events
-    - 4. Run Simulation
 source: https://simpy.readthedocs.io/en/stable/index.html#overview
-```
 """
 
-##############
-# $0 IMPORTS #
-##############
+#############
+# $ IMPORTS #
+#############
 
 from desimpy import EventScheduler
 
-###########################
-# $1 DEFINE CLOCK PROCESS #
-###########################
+##########################
+# $ DEFINE CLOCK PROCESS #
+##########################
 
 
 def clock(env: EventScheduler, name: str, tick: float) -> None:
@@ -49,20 +41,20 @@ def clock(env: EventScheduler, name: str, tick: float) -> None:
 
 
 if __name__ == "__main__":
-    #################################
-    # $2 INITIALIZE EVENT SCHEDULER #
-    #################################
+    ################################
+    # $ INITIALIZE EVENT SCHEDULER #
+    ################################
     env = EventScheduler()
 
-    ##############################
-    # $3 SCHEDULE INITIAL EVENTS #
-    ##############################
+    #############################
+    # $ SCHEDULE INITIAL EVENTS #
+    #############################
 
     clock(env, "fast", 0.5)
     clock(env, "slow", 1)
 
-    #####################
-    # $4 RUN SIMULATION #
-    #####################
+    ####################
+    # $ RUN SIMULATION #
+    ####################
 
     _ = env.run_until_max_time(2, logging=True)

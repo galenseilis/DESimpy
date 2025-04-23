@@ -1,15 +1,15 @@
-##############
-# $0 IMPORTS #
-##############
+#############
+# $ IMPORTS #
+#############
 
 import heapq
 import random
 
 from desimpy import Event, EventScheduler
 
-####################
-# $1 CONFIGURATION #
-####################
+###################
+# $ CONFIGURATION #
+###################
 
 RANDOM_SEED = 42
 TICKETS = 50  # Number of tickets per movie
@@ -17,9 +17,9 @@ SELLOUT_THRESHOLD = 2  # Fewer tickets than this is a sellout
 SIM_TIME = 120  # Simulate until
 MOVIES = ["Python Unchained", "Kill Process", "Pulp Implementation"]
 
-#####################
-# $2 DEFINE THEATER #
-#####################
+####################
+# $ DEFINE THEATER #
+####################
 
 
 class Theater:
@@ -33,18 +33,18 @@ class Theater:
         self.num_renegers = dict.fromkeys(movies, 0)
 
 
-#######################
-# $3 DEFINE MOVIEGOER #
-#######################
+######################
+# $ DEFINE MOVIEGOER #
+######################
 
 
 def moviegoer(movie: str, num_tickets: int, theater):
     theater.counter.request(movie, num_tickets)
 
 
-###############################
-# $4 DEFINE CUSTOMER ARRIVALS #
-###############################
+##############################
+# $ DEFINE CUSTOMER ARRIVALS #
+##############################
 
 
 def customer_arrivals(env: EventScheduler, theater: Theater):

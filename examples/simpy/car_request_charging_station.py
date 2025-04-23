@@ -1,28 +1,12 @@
-##############
-# $0 IMPORTS #
-##############
+#############
+# $ IMPORTS #
+#############
 
 from desimpy import Event, EventScheduler
 
-####################
-# $1 CONFIGURATION #
-####################
-
-COMMENT_SECTIONS: str = """```yaml
-contents:
-    - 0. Imports
-    - 1. Define Battery Charging Station
-    - 2. Define Car Class
-    - 3. Initialize Event Scheduler
-    - 4. Initialize Battery Charging Station
-    - 5. Register Cars with Scheduler
-    - 6. Run Simulation
-```
-"""
-
-######################################
-# $2 DEFINE BATTERY CHARGING STATION #
-######################################
+#####################################
+# $ DEFINE BATTERY CHARGING STATION #
+#####################################
 
 
 class BatteryChargingStation:
@@ -83,9 +67,9 @@ class BatteryChargingStation:
             self.request(next_car)
 
 
-#######################
-# $3 DEFINE CAR CLASS #
-#######################
+######################
+# $ DEFINE CAR CLASS #
+######################
 
 
 class Car:
@@ -171,27 +155,27 @@ class Car:
 
 
 if __name__ == "__main__":
-    #################################
-    # $4 INITIALIZE EVENT SCHEDULER #
-    #################################
+    ################################
+    # $ INITIALIZE EVENT SCHEDULER #
+    ################################
 
     scheduler = EventScheduler()
 
-    ##########################################
-    # $5 INITIALIZE BATTERY CHARGING STATION #
-    ##########################################
+    #########################################
+    # $ INITIALIZE BATTERY CHARGING STATION #
+    #########################################
 
     bcs = BatteryChargingStation(scheduler, capacity=2)
 
-    ###################################
-    # $6 REGISTER CARS WITH SCHEDULER #
-    ###################################
+    ##################################
+    # $ REGISTER CARS WITH SCHEDULER #
+    ##################################
 
     for i in range(4):
         Car(scheduler, name=f"Car {i}", bcs=bcs, driving_time=i * 2, charge_duration=5)
 
-    #####################
-    # $7 RUN SIMULATION #
-    #####################
+    ####################
+    # $ RUN SIMULATION #
+    ####################
 
     scheduler.run_until_max_time(20, logging=False)

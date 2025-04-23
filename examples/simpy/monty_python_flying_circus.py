@@ -1,40 +1,33 @@
-"""```yaml
+"""
 source: https://simpy.readthedocs.io/en/stable/topical_guides/environments.html#simulation-control
-contents:
-    - 0. Imports
-    - 1. Initialize Event Scheduler
-    - 2. Define Event
-    - 3. Register Event
-    - 4. Run Simulation
-```
 """
 
-##############
-# $0 IMPORTS #
-##############
+#############
+# $ IMPORTS #
+#############
 
 from desimpy import Event, EventScheduler
 
-#################################
-# $1 INITIALIZE EVENT SCHEDULER #
-#################################
+################################
+# $ INITIALIZE EVENT SCHEDULER #
+################################
 
 env = EventScheduler()
 
-###################
-# $2 DEFINE EVENT #
-###################
+##################
+# $ DEFINE EVENT #
+##################
 
 my_proc = Event(1, lambda: "Monty Python’s Flying Circus")
 
-#####################
-# $3 REGISTER EVENT #
-#####################
+####################
+# $ REGISTER EVENT #
+####################
 
 env.schedule(my_proc)
 
-#####################
-# $4 RUN SIMULATION #
-#####################
+####################
+# $ RUN SIMULATION #
+####################
 
 _ = env.run_until_given_event(my_proc)

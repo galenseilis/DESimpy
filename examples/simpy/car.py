@@ -5,32 +5,13 @@ time intervals.
 
 """
 
-##############
-# $0 IMPORTS #
-##############
+#############
+# $ IMPORTS #
+#############
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from typing import Final
 from desimpy import EventScheduler
-
-####################
-# $1 CONFIGURATION #
-####################
-
-COMMENT_SECTIONS: Final[str] = """
-```yaml
-contents:
-    - 0. Imports
-    - 1. Define Car Process
-    - 2. Initialize Event Scheduler
-    - 3. Schedule Car Process
-    - 4. Run Simulation
-source: https://simpy.readthedocs.io/en/stable/simpy_intro/basic_concepts.html
-```
-"""
 
 #########################
 # $2 DEFINE CAR PROCESS #
