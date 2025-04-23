@@ -1,24 +1,15 @@
 """Examples of event interruptions."""
 
-COMMENT_SECTIONS = """
-```yaml
-contents:
-    - 0. Imports
-    - 1. Interrupt by Deactivation
-    - 2. Interrupt by Cancellation
-```
-"""
-
-##############
-# $0 IMPORTS #
-##############
+#############
+# $ IMPORTS #
+#############
 
 from desimpy import EventScheduler
 
 if __name__ == "__main__":
-    ################################
-    # $1 INTERRUPT BY DEACTIVATION #
-    ################################
+    ###############################
+    # $ INTERRUPT BY DEACTIVATION #
+    ###############################
 
     print("INTERRUPT BY DEACTIVATION")
     env = EventScheduler()
@@ -32,9 +23,9 @@ if __name__ == "__main__":
     for event in results:
         print(event.time, event.result, event.context, event.status)
 
-    ################################
-    # $2 INTERRUPT BY CANCELLATION #
-    ################################
+    ###############################
+    # $ INTERRUPT BY CANCELLATION #
+    ###############################
 
     print("\nINTERRUPT BY CANCELLATION")
 
