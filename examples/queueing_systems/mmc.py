@@ -6,6 +6,7 @@ from desimpy import EventScheduler, Event
 
 from typing import Final
 
+
 class Customer:
     """Class representing a customer in the queueing system."""
 
@@ -111,7 +112,9 @@ if __name__ == "__main__":
     num_servers: Final[int] = 2  # Number of servers
     max_time: Final[float] = 100.0  # Maximum simulation time
 
-    simulation: MMcQueueSimulation = MMcQueueSimulation(arrival_rate, service_rate, num_servers, max_time)
+    simulation: MMcQueueSimulation = MMcQueueSimulation(
+        arrival_rate, service_rate, num_servers, max_time
+    )
 
     results: list[Event] = simulation.run()
     for result in results:

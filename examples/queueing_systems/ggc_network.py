@@ -26,7 +26,7 @@ class Node:
         arrival_dist: dists.Distribution,
         service_dist: dists.Distribution,
         num_servers: int,
-        routing_func: Callable[[], Self],
+        routing_func: Callable[[Self], Self],
         depart_dist: dists.Distribution,
         scheduler: EventScheduler,  # FIX: Provide instance of Network instead, which will have access to scheduler.
     ):
@@ -44,7 +44,7 @@ class Node:
         self.total_customers: int = (
             0  # FIX: Total number of customers should be tracked by Network.
         )
-        self.routing_func: Callable[[], Self] = (
+        self.routing_func: Callable[[Self], Self] = (
             routing_func  # Function to route customers to other queues
         )
         self.depart_dist: dists.Distribution = depart_dist
