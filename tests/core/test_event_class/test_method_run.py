@@ -1,4 +1,5 @@
 from desimpy import Event, EventScheduler
+from desimpy.core import Simulation
 
 
 def test_no_action():
@@ -24,14 +25,14 @@ def test_action_returns_literal():
 
 
 def test_event_timeout_event():
-    env = EventScheduler()
+    simulation = Simulation()
 
     time1 = 2
-    action1 = lambda: env.timeout(30)
+    action1 = lambda: simulation.scheduler.timeout(30)
     event1 = Event(time1, action1)
 
-    env.schedule(event1)
-    event_log = env.run_until_max_time(100)
+    simulation.scheduler.schedule(event1)
+    event_log = simulation.run_until_max_time(100)
     assert len(event_log) == 2
     assert event_log[0] == event1
     assert event1.result == None
