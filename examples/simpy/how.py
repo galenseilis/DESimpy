@@ -1,10 +1,10 @@
-"""
-source: https://simpy.readthedocs.io/en/stable/topical_guides/simpy_basics.html#best-practice-version-of-the-example-above
+"""source: https://simpy.readthedocs.io/en/stable/topical_guides/simpy_basics.html#best-practice-version-of-the-example-above
 """
 
 from collections.abc import Callable
 
 from desimpy import EventScheduler
+
 
 def example(env: EventScheduler) -> None:
     """Example function that schedules an action in a simulation environment.

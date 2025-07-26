@@ -5,6 +5,7 @@ source: https://simpy.readthedocs.io/en/stable/index.html#overview
 
 from desimpy import EventScheduler
 
+
 def clock(env: EventScheduler, name: str, tick: float) -> None:
     """Simulates a clock process that prints the current simulation time at regular intervals.
 

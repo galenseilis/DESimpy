@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import random
-
-from desimpy import EventScheduler, Event
-
 from typing import Final
+
+from desimpy import Event, EventScheduler
 
 
 class Customer:
@@ -113,7 +112,7 @@ if __name__ == "__main__":
     max_time: Final[float] = 100.0  # Maximum simulation time
 
     simulation: MMcQueueSimulation = MMcQueueSimulation(
-        arrival_rate, service_rate, num_servers, max_time
+        arrival_rate, service_rate, num_servers, max_time,
     )
 
     results: list[Event] = simulation.run()

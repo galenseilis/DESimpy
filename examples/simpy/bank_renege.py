@@ -62,6 +62,7 @@ class Counter:
             next_customer = self.queue.pop(0)
             self.request(next_customer)
 
+
 class Customer:
     """Represents a customer arriving at the bank, with a limited patience.
 
@@ -118,6 +119,7 @@ class Customer:
             print(
                 f"{self.env.current_time:.4f} {self.name}: RENEGED after {wait_time:.3f}",
             )
+
 
 class Bank:
     """Simulate the bank, generating customers at random intervals and handling their service."""

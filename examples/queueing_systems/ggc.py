@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 from simdist import dists
 
-from desimpy import EventScheduler, Event
+from desimpy import Event, EventScheduler
 
 #########################
 # DEFINE CUSTOMER CLASS #

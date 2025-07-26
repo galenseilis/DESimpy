@@ -9,6 +9,7 @@ SELLOUT_THRESHOLD = 2  # Fewer tickets than this is a sellout
 SIM_TIME = 120  # Simulate until
 MOVIES = ["Python Unchained", "Kill Process", "Pulp Implementation"]
 
+
 class Theater:
     def __init__(self, env, tickets, movies):
         self.env = env
@@ -19,8 +20,10 @@ class Theater:
         self.when_sold_out = dict.fromkeys(movies)
         self.num_renegers = dict.fromkeys(movies, 0)
 
+
 def moviegoer(movie: str, num_tickets: int, theater):
     theater.counter.request(movie, num_tickets)
+
 
 def customer_arrivals(env: EventScheduler, theater: Theater):
     delay = random.expovariate(1 / 0.5)
@@ -33,6 +36,7 @@ def customer_arrivals(env: EventScheduler, theater: Theater):
         customer_arrivals(env, theater)
 
     env.timeout(delay, action=action)
+
 
 class TicketAgent:
     def __init__(self, env, theater):

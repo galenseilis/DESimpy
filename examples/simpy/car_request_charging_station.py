@@ -1,5 +1,6 @@
 from desimpy import Event, EventScheduler
 
+
 class BatteryChargingStation:
     """A resource representing a battery charging station with a limited number of charging spots.
 
@@ -56,6 +57,7 @@ class BatteryChargingStation:
         if self.waiting_queue:
             next_car = self.waiting_queue.pop(0)
             self.request(next_car)
+
 
 class Car:
     """A car that uses a battery charging station within a simulation environment.

@@ -12,6 +12,7 @@ from desimpy import EventScheduler
 LOGGING: Final[bool] = False
 SIMULATION_TIME: Final[float] = 15.0
 
+
 class Car:
     """A car that alternates between parking/charging and driving in a loop within a simulation environment.
 

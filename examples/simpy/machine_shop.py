@@ -1,5 +1,4 @@
-"""
-source: https://simpy.readthedocs.io/en/stable/examples/machine_shop.html#machine-shop
+"""source: https://simpy.readthedocs.io/en/stable/examples/machine_shop.html#machine-shop
 """
 
 import heapq
@@ -18,6 +17,7 @@ JOB_DURATION = 30.0
 NUM_MACHINES = 10
 WEEKS = 4
 SIM_TIME = WEEKS * 7 * 24 * 60
+
 
 def time_per_part() -> float:
     """Samples the duration of time required to complete a part.
@@ -45,6 +45,7 @@ def time_to_failure() -> float:
 
     """
     return random.expovariate(BREAK_MEAN)
+
 
 class Machine:
     """Represents a machine in the shop that processes parts and can break down.
@@ -138,6 +139,7 @@ class Machine:
         self.time_to_part = self.current_job.time - self.env.current_time
 
         self.repairman.request(self, 1)
+
 
 class Repairman:
     """Manages the repair and handling of machine breakdowns.
@@ -323,6 +325,7 @@ class Repairman:
             self.requestor_queue,
             (priority, self.env.current_time, requestor),
         )
+
 
 def other_jobs(repairman: Repairman):
     """Generates other miscellaneous tasks for the repairman to handle.

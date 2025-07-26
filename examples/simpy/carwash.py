@@ -18,6 +18,7 @@ SIM_TIME = 20  # Simulation time in minutes
 
 random.seed(RANDOM_SEED)
 
+
 class Carwash:
     """A carwash that has a limited number of washing machines (NUM_MACHINES).
     It cleans cars in parallel, subject to availability of machines.
@@ -63,6 +64,7 @@ class Carwash:
             next_car = self.queue.pop(0)
             self.request(next_car)
 
+
 class Car:
     """A car that arrives at the carwash and waits to be cleaned."""
 
@@ -76,6 +78,7 @@ class Car:
     def enter_carwash(self):
         """Enter the carwash and request a machine for cleaning."""
         self.carwash.request(self.name)
+
 
 def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
     """Set up the carwash simulation, starting with an initial set of cars and

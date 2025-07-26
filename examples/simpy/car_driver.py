@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from desimpy import Event, EventScheduler
 
+
 class Car:
     def __init__(self, env: EventScheduler) -> None:
         self.env: EventScheduler = env
