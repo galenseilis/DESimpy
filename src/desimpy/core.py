@@ -1,21 +1,5 @@
 """Core components of a discrete event simulation (DES)."""
 
-# /$$$$$$$  /$$$$$$$$  /$$$$$$  /$$               /$$$$$$$
-# | $$__  $$| $$_____/ /$$__  $$|__/              | $$__  $$
-# | $$  \ $$| $$      | $$  \__/ /$$ /$$$$$$/$$$$ | $$  \ $$ /$$   /$$
-# | $$  | $$| $$$$$   |  $$$$$$ | $$| $$_  $$_  $$| $$$$$$$/| $$  | $$
-# | $$  | $$| $$__/    \____  $$| $$| $$ \ $$ \ $$| $$____/ | $$  | $$
-# | $$  | $$| $$       /$$  \ $$| $$| $$ | $$ | $$| $$      | $$  | $$
-# | $$$$$$$/| $$$$$$$$|  $$$$$$/| $$| $$ | $$ | $$| $$      |  $$$$$$$
-# |_______/ |________/ \______/ |__/|__/ |__/ |__/|__/       \____  $$
-#                                                           /$$  | $$
-#                                                          |  $$$$$$/
-#                                                           \______/
-
-###########
-# IMPORTS #
-###########
-
 from __future__ import annotations
 
 import heapq  # pragma: nocover
@@ -26,15 +10,7 @@ if TYPE_CHECKING:
     from collections.abc import Callable
     from typing import Any, Self
 
-#################
-# CONFIGURATION #
-#################
-
 __all__ = ["Event", "EventScheduler"]  # pragma: nocover
-
-####################
-# EVENT DEFINITION #
-####################
 
 
 class EventStatus(StrEnum):
@@ -130,12 +106,8 @@ class Event:
         return self.time < other.time
 
 
-##############################
-# EVENT SCHEDULER DEFINITION #
-##############################
 
-
-class EventSchedulerStatus(StrEnum):
+class SimulationStatus(StrEnum):
     """The status of an event scheduler."""
 
     INACTIVE = auto()
@@ -147,19 +119,9 @@ class EventScheduler:
 
     def __init__(self) -> None:
         """Create an event scheduler."""
-        self.current_time: float | int = 0
         self.event_queue: list[tuple[float, Event]] = []
         self.event_log: list[Event] = []
-        self.status: EventSchedulerStatus = EventSchedulerStatus.INACTIVE
 
-    @property
-    def now(self) -> float:
-        """Return current time.
-
-        This property method concisely provides the
-        current time in the simulation.
-        """
-        return self.current_time
 
     def schedule(self, event: Event) -> None:
         """Schedule an event on the event queue.
@@ -355,6 +317,48 @@ class EventScheduler:
         for event in targets:
             self.event_queue.remove((event.time, event))
 
+def _activate_event(event: Event) -> None:
+    event.activate()
+
+
+def _deactivate_event(event: Event) -> None:
+    event.deactivate()
+
+class Simulation:
+
+    def __init__(self, scheduler: EventScheduler | None = None):
+        """Initialize a simulation.
+
+        Args:
+            scheduler (EventScheduler): A user-defined event scheduler.
+        """
+        if scheduler is None:
+            self.scheduler = EventScheduler()
+        elif not isinstance(scheduler, EventScheduler):
+            raise ValueError("Parameter `scheduler` must be an instance of `EventScheduler`")
+        else:
+            self.scheduler = scheduler
+
+        self.current_time: float | int = 0
+        self.status: SimulationStatus = SimulationStatus.INACTIVE
+
+    @property
+    def now(self) -> float:
+        """Return current time.
+
+        This property method concisely provides the
+        current time in the simulation.
+        """
+        return self.current_time
+
+    def _activate(self) -> None:
+        """Set the simulation status to "active"."""
+        self.status: SimulationStatus= SimulationStatus.ACTIVE
+
+    def _deactivate(self) -> None:
+        """Set the simulation status to "inactive"."""
+        self.status: SimulationStatus = SimulationStatus.INACTIVE
+
     def run(
         self,
         stop: Callable[[Self], bool],
@@ -370,8 +374,8 @@ class EventScheduler:
         event itself (e.g. checking what is in context) as well as the result of the
         event (i.e. `event_result`).
 
-        Running this function will activate, and subsequently deactivate, a the simulation
-        according to a binary variable, `EventScheduler.status`. This attribute will ensure
+        Running this function will activate, and subsequently deactivate, the simulation
+        according to a binary variable, `Simulation.status`. This attribute will ensure
         consistent scheduling of variables in temporal order during simulations provided
         that Python's `__debug__ == True`.
         """
@@ -384,7 +388,7 @@ class EventScheduler:
 
     def step(self) -> Event:
         """Step the simulation forward one event."""
-        event_time, event = heapq.heappop(self.event_queue)
+        event_time, event = heapq.heappop(self.scheduler.event_queue)
         self.current_time = event_time
         event.run()
         return event
@@ -392,21 +396,21 @@ class EventScheduler:
     def _run_without_logging(self, stop: Callable[[Self], bool]) -> list[Event]:
         self._activate()
         while not stop(self):
-            if not self.event_queue:  # Always stop if there are no more events.
+            if not self.scheduler.event_queue:  # Always stop if there are no more events.
                 break
             _ = self.step()
         self._deactivate()
-        return self.event_log
+        return self.scheduler.event_log
 
     def _run_always_logging(self, stop: Callable[[Self], bool]) -> list[Event]:
         self._activate()
         while not stop(self):
-            if not self.event_queue:  # Always stop if there are no more events.
+            if not self.scheduler.event_queue:  # Always stop if there are no more events.
                 break
             event = self.step()
-            self.event_log.append(event)
+            self.scheduler.event_log.append(event)
         self._deactivate()
-        return self.event_log
+        return self.scheduler.event_log
 
     def _run_filtered_logging(
         self,
@@ -415,13 +419,13 @@ class EventScheduler:
     ) -> list[Event]:
         self._activate()
         while not stop(self):
-            if not self.event_queue:  # Always stop if there are no more events.
+            if not self.scheduler.event_queue:  # Always stop if there are no more events.
                 break
             event = self.step()
             if log_filter(event):
-                self.event_log.append(event)
+                self.scheduler.event_log.append(event)
         self._deactivate()
-        return self.event_log
+        return self.scheduler.event_log
 
     def run_until_max_time(
         self,
@@ -435,11 +439,11 @@ class EventScheduler:
         as the stop condition.
         """
 
-        def stop_at_max_time(scheduler: EventScheduler) -> bool:
+        def stop_at_max_time(simulation: Simulation) -> bool:
             return (
-                scheduler.current_time >= max_time
-                or not scheduler.event_queue
-                or heapq.nsmallest(1, scheduler.event_queue)[0][0] >= max_time
+                simulation.current_time >= max_time
+                or not simulation.scheduler.event_queue
+                or heapq.nsmallest(1, simulation.scheduler.event_queue)[0][0] >= max_time
             )
 
         results = self.run(stop_at_max_time, logging)
@@ -458,28 +462,7 @@ class EventScheduler:
         assumed as the stop condition.
         """
 
-        def stop_at_target_event(scheduler: EventScheduler) -> bool:
-            return event in scheduler.event_log
+        def stop_at_target_event(simulation: Simulation) -> bool:
+            return event in simulation.scheduler.event_log
 
         return self.run(stop_at_target_event, logging)
-
-    def _activate(self) -> None:
-        """Set the simulation status to "active"."""
-        self.status: EventSchedulerStatus = EventSchedulerStatus.ACTIVE
-
-    def _deactivate(self) -> None:
-        """Set the simulation status to "inactive"."""
-        self.status: EventSchedulerStatus = EventSchedulerStatus.INACTIVE
-
-
-######################
-# HELPER DEFINITIONS #
-######################
-
-
-def _activate_event(event: Event) -> None:
-    event.activate()
-
-
-def _deactivate_event(event: Event) -> None:
-    event.deactivate()
