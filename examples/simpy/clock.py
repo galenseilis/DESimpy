@@ -3,16 +3,7 @@
 source: https://simpy.readthedocs.io/en/stable/index.html#overview
 """
 
-#############
-# $ IMPORTS #
-#############
-
 from desimpy import EventScheduler
-
-##########################
-# $ DEFINE CLOCK PROCESS #
-##########################
-
 
 def clock(env: EventScheduler, name: str, tick: float) -> None:
     """Simulates a clock process that prints the current simulation time at regular intervals.
@@ -41,20 +32,7 @@ def clock(env: EventScheduler, name: str, tick: float) -> None:
 
 
 if __name__ == "__main__":
-    ################################
-    # $ INITIALIZE EVENT SCHEDULER #
-    ################################
     env = EventScheduler()
-
-    #############################
-    # $ SCHEDULE INITIAL EVENTS #
-    #############################
-
     clock(env, "fast", 0.5)
     clock(env, "slow", 1)
-
-    ####################
-    # $ RUN SIMULATION #
-    ####################
-
     _ = env.run_until_max_time(2, logging=True)

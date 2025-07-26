@@ -1,26 +1,13 @@
-#############
-# $ IMPORTS #
-#############
-
 import heapq
 import random
 
 from desimpy import Event, EventScheduler
-
-###################
-# $ CONFIGURATION #
-###################
 
 RANDOM_SEED = 42
 TICKETS = 50  # Number of tickets per movie
 SELLOUT_THRESHOLD = 2  # Fewer tickets than this is a sellout
 SIM_TIME = 120  # Simulate until
 MOVIES = ["Python Unchained", "Kill Process", "Pulp Implementation"]
-
-####################
-# $ DEFINE THEATER #
-####################
-
 
 class Theater:
     def __init__(self, env, tickets, movies):
@@ -32,20 +19,8 @@ class Theater:
         self.when_sold_out = dict.fromkeys(movies)
         self.num_renegers = dict.fromkeys(movies, 0)
 
-
-######################
-# $ DEFINE MOVIEGOER #
-######################
-
-
 def moviegoer(movie: str, num_tickets: int, theater):
     theater.counter.request(movie, num_tickets)
-
-
-##############################
-# $ DEFINE CUSTOMER ARRIVALS #
-##############################
-
 
 def customer_arrivals(env: EventScheduler, theater: Theater):
     delay = random.expovariate(1 / 0.5)
@@ -58,12 +33,6 @@ def customer_arrivals(env: EventScheduler, theater: Theater):
         customer_arrivals(env, theater)
 
     env.timeout(delay, action=action)
-
-
-#######################
-# DEFINE TICKET AGENT #
-#######################
-
 
 class TicketAgent:
     def __init__(self, env, theater):
@@ -130,34 +99,10 @@ class TicketAgent:
 
 
 if __name__ == "__main__":
-    ##############################
-    # INITIALIZE EVENT SCHEDULER #
-    ##############################
-
     env = EventScheduler()
-
-    ###########################
-    # CREATE MOVIE THEATER #
-    ###########################
-
     theater = Theater(env, TICKETS, MOVIES)
-
-    ######################
-    # REGISTER PROCESSES #
-    ######################
-
     env.timeout(0, customer_arrivals(env, theater))
-
-    ##################
-    # RUN SIMULATION #
-    ##################
-
     env.run_until_max_time(SIM_TIME, logging=False)
-
-    ####################
-    # ANALYSIS/RESULTS #
-    ####################
-
     for movie in MOVIES:
         if theater.sold_out[movie]:
             sellout_time = theater.when_sold_out[movie]

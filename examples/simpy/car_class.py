@@ -1,8 +1,5 @@
 """Implementation of SimPy's Car example."""
 
-#############
-# $ IMPORTS #
-#############
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -12,17 +9,8 @@ if TYPE_CHECKING:
 
 from desimpy import EventScheduler
 
-###################
-# $ CONFIGURATION #
-###################
-
 LOGGING: Final[bool] = False
 SIMULATION_TIME: Final[float] = 15.0
-
-######################
-# $ DEFINE CAR CLASS #
-######################
-
 
 class Car:
     """A car that alternates between parking/charging and driving in a loop within a simulation environment.
@@ -87,20 +75,6 @@ class Car:
 
 
 if __name__ == "__main__":
-    ################################
-    # $ INITIALIZE EVENT SCHEDULER #
-    ################################
-
     scheduler = EventScheduler()
-
-    #############################
-    # $ INITIALIZE CAR INSTANCE #
-    #############################
-
     _ = Car(scheduler)
-
-    ####################
-    # $ RUN SIMULATION #
-    ####################
-
     _ = scheduler.run_until_max_time(SIMULATION_TIME, logging=LOGGING)

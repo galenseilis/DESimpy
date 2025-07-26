@@ -2,18 +2,9 @@
 source: https://simpy.readthedocs.io/en/stable/topical_guides/simpy_basics.html#best-practice-version-of-the-example-above
 """
 
-#############
-# $ IMPORTS #
-#############
-
 from collections.abc import Callable
 
 from desimpy import EventScheduler
-
-############################
-# $ DEFINE EXAMPLE PROCESS #
-############################
-
 
 def example(env: EventScheduler) -> None:
     """Example function that schedules an action in a simulation environment.
@@ -36,20 +27,6 @@ def example(env: EventScheduler) -> None:
 
 
 if __name__ == "__main__":
-    ################################
-    # $ INITIALIZE EVENT SCHEDULER #
-    ################################
-
     env = EventScheduler()
-
-    ##############################
-    # $ SCHEDULE EXAMPLE PROCESS #
-    ##############################
-
     example(env)
-
-    ####################
-    # $ RUN SIMULATION #
-    ####################
-
     env.run_until_max_time(float("inf"), logging=False)

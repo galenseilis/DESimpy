@@ -2,19 +2,11 @@
 source: https://simpy.readthedocs.io/en/stable/examples/machine_shop.html#machine-shop
 """
 
-#############
-# $ IMPORTS #
-#############
-
 import heapq
 import random
 from typing import Any
 
 from desimpy import Event, EventScheduler
-
-###################
-# $ CONFIGURATION #
-###################
 
 RANDOM_SEED = 2018
 PT_MEAN = 10.0
@@ -26,11 +18,6 @@ JOB_DURATION = 30.0
 NUM_MACHINES = 10
 WEEKS = 4
 SIM_TIME = WEEKS * 7 * 24 * 60
-
-##############################
-# $ DEFINE GENERAL FUNCTIONS #
-##############################
-
 
 def time_per_part() -> float:
     """Samples the duration of time required to complete a part.
@@ -58,12 +45,6 @@ def time_to_failure() -> float:
 
     """
     return random.expovariate(BREAK_MEAN)
-
-
-##########################
-# $ DEFINE MACHINE CLASS #
-##########################
-
 
 class Machine:
     """Represents a machine in the shop that processes parts and can break down.
@@ -157,12 +138,6 @@ class Machine:
         self.time_to_part = self.current_job.time - self.env.current_time
 
         self.repairman.request(self, 1)
-
-
-######################
-# $ DEFINE REPAIRMAN #
-######################
-
 
 class Repairman:
     """Manages the repair and handling of machine breakdowns.
@@ -349,12 +324,6 @@ class Repairman:
             (priority, self.env.current_time, requestor),
         )
 
-
-#######################
-# $ DEFINE OTHER JOBS #
-#######################
-
-
 def other_jobs(repairman: Repairman):
     """Generates other miscellaneous tasks for the repairman to handle.
 
@@ -369,30 +338,11 @@ def other_jobs(repairman: Repairman):
 
 
 if __name__ == "__main__":
-    ################################
-    # $ INITIALIZE EVENT SCHEDULER #
-    ################################
-
     env = EventScheduler()
-
-    ########################
-    # $ REGISTER PROCESSES #
-    ########################
-
     repairman = Repairman(env)
     machines = [Machine(env, i, repairman) for i in range(NUM_MACHINES)]
     env.timeout(0, lambda: other_jobs(repairman))
-
-    ####################
-    # $ RUN SIMULATION #
-    ####################
-
     env.run_until_max_time(SIM_TIME, logging=False)
-
-    ##################
-    # $ SHOW RESULTS #
-    ##################
-
     print("Machine shop")
     print(f"Machine shop results after {WEEKS} weeks")
     for machine in machines:

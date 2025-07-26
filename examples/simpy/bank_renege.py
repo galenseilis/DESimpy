@@ -3,11 +3,6 @@
 source: https://simpy.readthedocs.io/en/stable/examples/bank_renege.html
 """
 
-
-#############
-# $ IMPORTS #
-#############
-
 from __future__ import annotations
 
 import random
@@ -17,10 +12,6 @@ if TYPE_CHECKING:
     from typing import Final
 
 from desimpy import Event, EventScheduler
-
-###################
-# $ CONFIGURATION #
-###################
 
 RANDOM_SEED: Final[int] = 42
 NEW_CUSTOMERS: Final[int] = 5  # Total number of customers
@@ -32,10 +23,6 @@ MAX_PATIENCE: Final[float] = 3.0  # Max. customer patience
 COUNTER_CAPACITY: Final[int] = 1  # Num. customers that can be served in parallel
 TIME_IN_BANK: Final[float] = 12.0  # Time spent in bank
 random.seed(RANDOM_SEED)
-
-#############################
-# $ DEFINE COUNTER RESOURCE #
-#############################
 
 
 class Counter:
@@ -74,12 +61,6 @@ class Counter:
         if self.queue:
             next_customer = self.queue.pop(0)
             self.request(next_customer)
-
-
-###########################
-# $ DEFINE CUSTOMER CLASS #
-###########################
-
 
 class Customer:
     """Represents a customer arriving at the bank, with a limited patience.
@@ -138,12 +119,6 @@ class Customer:
                 f"{self.env.current_time:.4f} {self.name}: RENEGED after {wait_time:.3f}",
             )
 
-
-#######################
-# $ DEFINE BANK CLASS #
-#######################
-
-
 class Bank:
     """Simulate the bank, generating customers at random intervals and handling their service."""
 
@@ -175,31 +150,12 @@ class Bank:
 
 
 if __name__ == "__main__":
-    ################################
-    # $ INITIALIZE EVENT SCHEDULER #
-    ################################
-
     scheduler = EventScheduler()
-
-    ########################
-    # $ INITIALIZE COUNTER #
-    ########################
-
     counter = Counter(scheduler, capacity=COUNTER_CAPACITY)
-
-    ########################
-    # $ REGISTER PROCESSES #
-    ########################
-
     bank = Bank(scheduler, counter)
     bank.generate_customers(
         NEW_CUSTOMERS,
         INTERVAL_CUSTOMERS,
         time_in_bank=TIME_IN_BANK,
     )
-
-    ####################
-    # $ RUN SIMULATION #
-    ####################
-
     _ = scheduler.run_until_max_time(float("inf"), logging=False)

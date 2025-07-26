@@ -3,10 +3,6 @@ source: https://simpy.readthedocs.io/en/stable/examples/carwash.html
 ```
 """
 
-#############
-# $ IMPORTS #
-#############
-
 from __future__ import annotations
 
 import itertools
@@ -14,27 +10,13 @@ import random
 
 from desimpy import Event, EventScheduler
 
-###################
-# $ CONFIGURATION #
-###################
-
-# Constants
 RANDOM_SEED = 42
 NUM_MACHINES = 2  # Number of machines in the carwash
 WASHTIME = 5  # Minutes it takes to clean a car
 T_INTER = 7  # Create a car every ~7 minutes
 SIM_TIME = 20  # Simulation time in minutes
 
-###################
-# SET RANDOM SEED #
-###################
-
 random.seed(RANDOM_SEED)
-
-####################
-# $ DEFINE CARWASH #
-####################
-
 
 class Carwash:
     """A carwash that has a limited number of washing machines (NUM_MACHINES).
@@ -81,12 +63,6 @@ class Carwash:
             next_car = self.queue.pop(0)
             self.request(next_car)
 
-
-################
-# $ DEFINE CAR #
-################
-
-
 class Car:
     """A car that arrives at the carwash and waits to be cleaned."""
 
@@ -100,12 +76,6 @@ class Car:
     def enter_carwash(self):
         """Enter the carwash and request a machine for cleaning."""
         self.carwash.request(self.name)
-
-
-###########################
-# $ DEFINE SETUP FUNCTION #
-###########################
-
 
 def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
     """Set up the carwash simulation, starting with an initial set of cars and
@@ -135,20 +105,6 @@ def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
 
 
 if __name__ == "__main__":
-    ################################
-    # $ INITIALIZE EVENT SCHEDULER #
-    ################################
-
     scheduler = EventScheduler()
-
-    ########################
-    # $ SCHEDULE PROCESSES #
-    ########################
-
     setup(scheduler, NUM_MACHINES, WASHTIME, T_INTER)
-
-    ####################
-    # $ RUN SIMULATION #
-    ####################
-
     _ = scheduler.run_until_max_time(SIM_TIME, logging=False)

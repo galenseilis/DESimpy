@@ -4,19 +4,9 @@ and driving. The script schedules and executes events, showing how the car switc
 time intervals.
 
 """
-
-#############
-# $ IMPORTS #
-#############
-
 from __future__ import annotations
 
 from desimpy import EventScheduler
-
-#########################
-# $2 DEFINE CAR PROCESS #
-#########################
-
 
 def car(env: EventScheduler) -> None:
     """Simulates the car process that alternates between parking and driving.
@@ -43,20 +33,6 @@ def car(env: EventScheduler) -> None:
 
 
 if __name__ == "__main__":
-    #################################
-    # $3 INITIALIZE EVENT SCHEDULER #
-    #################################
-
     scheduler = EventScheduler()
-
-    ###########################
-    # $4 SCHEDULE CAR PROCESS #
-    ###########################
-
     scheduler.timeout(0, action=lambda: car(scheduler))
-
-    #####################
-    # $5 RUN SIMULATION #
-    #####################
-
     _ = scheduler.run_until_max_time(15, logging=False)

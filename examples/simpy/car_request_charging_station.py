@@ -1,13 +1,4 @@
-#############
-# $ IMPORTS #
-#############
-
 from desimpy import Event, EventScheduler
-
-#####################################
-# $ DEFINE BATTERY CHARGING STATION #
-#####################################
-
 
 class BatteryChargingStation:
     """A resource representing a battery charging station with a limited number of charging spots.
@@ -65,12 +56,6 @@ class BatteryChargingStation:
         if self.waiting_queue:
             next_car = self.waiting_queue.pop(0)
             self.request(next_car)
-
-
-######################
-# $ DEFINE CAR CLASS #
-######################
-
 
 class Car:
     """A car that uses a battery charging station within a simulation environment.
@@ -155,27 +140,8 @@ class Car:
 
 
 if __name__ == "__main__":
-    ################################
-    # $ INITIALIZE EVENT SCHEDULER #
-    ################################
-
     scheduler = EventScheduler()
-
-    #########################################
-    # $ INITIALIZE BATTERY CHARGING STATION #
-    #########################################
-
     bcs = BatteryChargingStation(scheduler, capacity=2)
-
-    ##################################
-    # $ REGISTER CARS WITH SCHEDULER #
-    ##################################
-
     for i in range(4):
         Car(scheduler, name=f"Car {i}", bcs=bcs, driving_time=i * 2, charge_duration=5)
-
-    ####################
-    # $ RUN SIMULATION #
-    ####################
-
     scheduler.run_until_max_time(20, logging=False)

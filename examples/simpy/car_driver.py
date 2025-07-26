@@ -2,18 +2,9 @@
 source: https://simpy.readthedocs.io/en/latest/simpy_intro/process_interaction.html#interrupting-another-process
 """
 
-#############
-# $ IMPORTS #
-#############
-
 from __future__ import annotations
 
 from desimpy import Event, EventScheduler
-
-######################
-# $ DEFINE CAR CLASS #
-######################
-
 
 class Car:
     def __init__(self, env: EventScheduler) -> None:
@@ -40,11 +31,6 @@ class Car:
         self.env.timeout(5, self.schedule_drive, context={"event_type": "charge"})
 
 
-###########################
-# $ DEFINE DRIVER PROCESS #
-###########################
-
-
 def deactivate_next_charge_condition(env: EventScheduler, event: Event) -> bool:
     """Deactivate the charging event."""
     _ = env
@@ -66,21 +52,7 @@ def driver(env: EventScheduler, car: Car) -> None:
 
 
 if __name__ == "__main__":
-    ################################
-    # $ INITIALIZE EVENT SCHEDULER #
-    ################################
-
     scheduler = EventScheduler()
-
-    ########################
-    # $ REGISTER PROCESSES #
-    ########################
-
     car = Car(scheduler)
     driver(scheduler, car)
-
-    ####################
-    # $ RUN SIMULATION #
-    ####################
-
     _ = scheduler.run_until_max_time(15, logging=False)
