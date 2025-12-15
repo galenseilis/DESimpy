@@ -1,3 +1,10 @@
+"""Simulate a G/G/c queue.
+
+This implementation has a class for the customers
+which is more computationally demanding than a count
+representation.
+"""
+
 ###########
 # IMPORTS #
 ###########
