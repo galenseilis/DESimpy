@@ -9,7 +9,7 @@ from desimpy import Event, Environment
 
 @pytest.fixture
 def scheduler() -> Environment:
-    """Fixture to create a fresh EventScheduler instance for each test."""
+    """Fixture to create a fresh Environment instance for each test."""
     return Environment()
 
 

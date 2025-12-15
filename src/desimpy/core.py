@@ -373,7 +373,7 @@ class Environment:
         event (i.e. `event_result`).
 
         Running this function will activate, and subsequently deactivate, a the simulation
-        according to a binary variable, `EventScheduler.status`. This attribute will ensure
+        according to a binary variable, `Environment.status`. This attribute will ensure
         consistent scheduling of variables in temporal order during simulations provided
         that Python's `__debug__ == True`.
         """

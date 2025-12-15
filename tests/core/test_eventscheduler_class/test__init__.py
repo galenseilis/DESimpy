@@ -2,7 +2,7 @@ from desimpy import Environment
 
 
 def test_default():
-    """Test that an EventScheduler is correctly initialized."""
+    """Test that an Environment is correctly initialized."""
     scheduler = Environment()
 
     # Test if current_time is set to 0
