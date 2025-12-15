@@ -177,7 +177,9 @@ class Environment:
             # INFO: Type checker may complain that `event` is always instance of `Event`. Ignore.
             if not isinstance(event, Event):
                 # INFO: Type checker may indicate that this code is unreachable, but it is.
-                raise TypeError(f"{event=} must be of type {Event.__qualname__} but got {type(Event)=}.")
+                raise TypeError(
+                    f"{event=} must be of type {Event.__qualname__} but got {type(Event)=}."
+                )
             if not (event.time >= 0 or not self.status == EnvironmentStatus.ACTIVE):
                 raise ValueError(
                     f"{event.time=} must be non-negative once simulation has become active.",
@@ -471,13 +473,15 @@ class Environment:
         """Set the simulation status to "inactive"."""
         self.status: EnvironmentStatus = EnvironmentStatus.INACTIVE
 
+
 ######################
 # HELPER DEFINITIONS #
 ######################
 
+
 def _activate_event(event: Event) -> None:
     event.activate()
 
+
 def _deactivate_event(event: Event) -> None:
     event.deactivate()
-

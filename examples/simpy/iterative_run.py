@@ -1,5 +1,4 @@
-"""source:https://simpy.readthedocs.io/en/stable/topical_guides/environments.html#simulation-control
-"""
+"""source:https://simpy.readthedocs.io/en/stable/topical_guides/environments.html#simulation-control"""
 
 from desimpy import Environment
 

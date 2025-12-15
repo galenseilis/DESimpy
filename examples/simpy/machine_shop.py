@@ -1,5 +1,4 @@
-"""source: https://simpy.readthedocs.io/en/stable/examples/machine_shop.html#machine-shop
-"""
+"""source: https://simpy.readthedocs.io/en/stable/examples/machine_shop.html#machine-shop"""
 
 import heapq
 import random
