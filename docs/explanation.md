@@ -35,7 +35,7 @@ DESimpy was made with certain goals and non-goals in mind. It isn't meant to be 
 ### Non-Goals
 
 - Provide batteries-included discrete event simulation tools. DESimpy provides the bricks; you must imagine cathedrals.
-- Use coroutines to improve readability or provide asychronous input/output with data sources.
+- Use coroutines to improve readability or provide asynchronous input/output with data sources.
 - Provide pseudorandom number generators.
 - Have events be scheduled in any order other than the time that they elapse.
 - Implementing real-time simulations.

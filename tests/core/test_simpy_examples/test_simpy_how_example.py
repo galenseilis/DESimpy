@@ -27,7 +27,7 @@ def run_simpy():
 
 
 def run_desimpy():
-    """DESimpy implementaton."""
+    """DESimpy implementation."""
     from collections.abc import Callable
 
     from desimpy import Environment

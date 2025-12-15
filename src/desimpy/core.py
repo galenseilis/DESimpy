@@ -53,7 +53,7 @@ class Event:
 
     The first is provides a general way for events to store "properties" that are
     specific to the simulation without the implementation of the DES components
-    being strongly coupled to them. That facilites events being part of control
+    being strongly coupled to them. That facilities events being part of control
     flow in other parts of the simulation while also being relatively isolated.
 
     The second purpose for `context` is logging information that was true at the
@@ -62,7 +62,7 @@ class Event:
 
     The output of `action` is also for logging purposes. It should not be used
     for control flow within the system specific details of the simulation, and
-    its role in the core discrete event simulation implemention is to provide
+    its role in the core discrete event simulation implementation is to provide
     additional information to the log filter and be incorporated into the log
     itself. The types of information that are useful to return are details about
     the system being simulated at the time that the event ellapses.
@@ -297,7 +297,7 @@ class Environment:
         self.apply_to_events_by_condition(_activate_event, condition)
 
     def deactivate_next_event(self) -> None:
-        """Deactive the next event in the event queue."""
+        """Deactivate the next event in the event queue."""
         option_next_event = self.next_event()
         if option_next_event:
             option_next_event.deactivate()
@@ -344,7 +344,7 @@ class Environment:
         self,
         condition: Callable[[Self, Event], bool],
     ) -> None:
-        """Remove all events by a given condtion.
+        """Remove all events by a given condition.
 
         Args:
         condition (Callable[[Self, Event], bool]): Callable that decides whether an event should be cancelled.

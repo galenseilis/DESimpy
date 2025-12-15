@@ -21,7 +21,7 @@ def test_is_next_among_other_events():
     """Should actually be the next event even among other events."""
     env = Environment()
 
-    # Define events occuring at different time.
+    # Define events occurring at different time.
     last_event = Event(3)
     second_event = Event(2)
     first_event = Event(1)
@@ -42,7 +42,7 @@ def test_is_next_after_elapsed_time():
     """Next event evolves with simulation."""
     env = Environment()
 
-    # Define events occuring at different time.
+    # Define events occurring at different time.
     last_event = Event(3)
     second_event = Event(2)
     first_event = Event(1)

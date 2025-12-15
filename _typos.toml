@@ -1,0 +1,3 @@
+[default.extend-words]
+simpy = "simpy"
+Simpy = "Simpy"
