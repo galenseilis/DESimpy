@@ -17,7 +17,7 @@ def car(env: Environment) -> None:
     which it returns to parking. This process repeats until the simulation ends.
 
     Args:
-        env (EventScheduler): The simulation environment responsible for
+        env (Environment): The simulation environment responsible for
             scheduling and managing events.
 
     """

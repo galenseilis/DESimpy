@@ -29,7 +29,7 @@ class Counter:
     """A resource representing the bank counter with limited capacity.
 
     Attributes:
-        env (EventScheduler): The event scheduler.
+        env (Environment): The event scheduler.
         capacity (int): Number of concurrent customers the counter can serve.
         available (int): Number of available spots at the counter.
         queue (list): Queue of customers waiting to be served.
@@ -67,7 +67,7 @@ class Customer:
     """Represents a customer arriving at the bank, with a limited patience.
 
     Attributes:
-        env (EventScheduler): The event scheduler.
+        env (Environment): The event scheduler.
         name (str): Name of the customer.
         counter (Counter): The bank counter.
         patience (float): Maximum time the customer is willing to wait.
@@ -160,4 +160,4 @@ if __name__ == "__main__":
         INTERVAL_CUSTOMERS,
         time_in_bank=TIME_IN_BANK,
     )
-    _ = scheduler.run_until_max_time(float("inf"), logging=False)
+    scheduler.run_until_max_time(float("inf"), logging=False)

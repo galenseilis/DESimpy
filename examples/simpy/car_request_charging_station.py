@@ -8,7 +8,7 @@ class BatteryChargingStation:
     charging spots, and if all spots are occupied, they are placed in a waiting queue.
 
     Attributes:
-        env (EventScheduler): The event scheduler that manages simulation events.
+        env (Environment): The event scheduler that manages simulation events.
         capacity (int): The total number of available charging spots.
         available_spots (int): The number of charging spots currently available.
         waiting_queue (list): A queue for cars waiting for a charging spot.
@@ -19,7 +19,7 @@ class BatteryChargingStation:
         """Initialize the BatteryChargingStation with a given capacity.
 
         Args:
-            env (EventScheduler): The simulation's event scheduler.
+            env (Environment): The simulation's event scheduler.
             capacity (int): The total number of charging spots in the station.
 
         """
@@ -67,7 +67,7 @@ class Car:
     starts charging for a specific duration, and then leaves the station.
 
     Attributes:
-        env (EventScheduler): The event scheduler that manages simulation events.
+        env (Environment): The event scheduler that manages simulation events.
         name (str): The name of the car, used for identification in logs.
         bcs (BatteryChargingStation): The battery charging station where the car charges.
         driving_time (float): The amount of time the car spends driving before reaching the station.
@@ -86,7 +86,7 @@ class Car:
         """Initialize the Car object and schedule its arrival at the charging station.
 
         Args:
-            env (EventScheduler): The simulation's event scheduler.
+            env (Environment): The simulation's event scheduler.
             name (str): The name of the car.
             bcs (BatteryChargingStation): The battery charging station to use.
             driving_time (float): Time in the simulation before the car arrives at the station.

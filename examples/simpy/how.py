@@ -14,7 +14,7 @@ def example(env: Environment) -> None:
     timeout of 1 unit of time.
 
     Args:
-        env (desimpy.EventScheduler): The simulation environment in which the action is scheduled.
+        env (desimpy.Environment): The simulation environment in which the action is scheduled.
 
     Returns:
         None: This function does not return a value, it schedules an event.

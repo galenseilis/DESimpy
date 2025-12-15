@@ -54,7 +54,7 @@ class Machine:
     to fix it. The machine class manages the part processing and failure events.
 
     Attributes:
-        env (EventScheduler): The event scheduler managing simulation events.
+        env (Environment): The event scheduler managing simulation events.
         name (str): The name or identifier of the machine.
         parts_made (int): The total number of parts made by the machine.
         broken (bool): The status of the machine (True if broken, False if working).
@@ -69,7 +69,7 @@ class Machine:
         """Initializes a machine instance.
 
         Args:
-            env (EventScheduler): The event scheduler for handling events.
+            env (Environment): The event scheduler for handling events.
             name (str): The identifier or name of the machine.
             repairman (Repairman): The repairman responsible for repairs.
 
@@ -148,7 +148,7 @@ class Repairman:
     to prioritize more urgent tasks. It uses a priority queue to manage job requests.
 
     Attributes:
-        env (EventScheduler): The event scheduler managing simulation events.
+        env (Environment): The event scheduler managing simulation events.
         requestor_queue (list): The priority queue of repair requests.
         current_priority (float): The priority of the currently active job.
         current_job (Event): The currently assigned repair job.
@@ -159,7 +159,7 @@ class Repairman:
         """Initializes a repairman instance.
 
         Args:
-            env (EventScheduler): The event scheduler managing simulation events.
+            env (Environment): The event scheduler managing simulation events.
 
         """
         self.env = env

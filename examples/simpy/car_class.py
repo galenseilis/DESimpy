@@ -20,7 +20,7 @@ class Car:
     After parking and charging, it drives for a fixed time, and then repeats the cycle indefinitely.
 
     Attributes:
-        env (EventScheduler): The event scheduler that manages simulation events.
+        env (Environment): The event scheduler that manages simulation events.
 
     """
 
@@ -28,7 +28,7 @@ class Car:
         """Initialize the Car object and schedule the initial run.
 
         Args:
-            env (EventScheduler): The simulation's event scheduler.
+            env (Environment): The simulation's event scheduler.
 
         """
         self.env: Environment = env

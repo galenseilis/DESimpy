@@ -13,7 +13,7 @@ def clock(env: Environment, name: str, tick: float) -> None:
     current simulation time. This process continues until the simulation ends.
 
     Args:
-        env (EventScheduler): The simulation environment responsible for
+        env (Environment): The simulation environment responsible for
             scheduling and managing events.
         name (str): The name of the clock, which will be printed at each tick.
         tick (float): The interval in time units between each tick of the clock.
