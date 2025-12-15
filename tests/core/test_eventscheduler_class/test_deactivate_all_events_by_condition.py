@@ -1,29 +1,29 @@
-from desimpy.core import Event, EventScheduler, EventStatus
+from desimpy.core import Event, Environment, EventStatus
 
 # Sample condition functions for testing
 
 
-def always_true_condition(scheduler: EventScheduler, event: Event) -> bool:
+def always_true_condition(scheduler: Environment, event: Event) -> bool:
     _ = scheduler
     _ = event
     """Condition that always returns True, activating all events."""
     return True
 
 
-def always_false_condition(scheduler: EventScheduler, event: Event) -> bool:
+def always_false_condition(scheduler: Environment, event: Event) -> bool:
     """Condition that always returns False, activating no events."""
     _ = scheduler
     _ = event
     return False
 
 
-def time_less_than_20_condition(scheduler: EventScheduler, event: Event) -> bool:
+def time_less_than_20_condition(scheduler: Environment, event: Event) -> bool:
     """Condition that activates events with time less than 20."""
     _ = scheduler
     return event.time < 20
 
 
-def has_high_priority_condition(scheduler: EventScheduler, event: Event) -> bool:
+def has_high_priority_condition(scheduler: Environment, event: Event) -> bool:
     """Condition that activates events with high priority in their context."""
     _ = scheduler
     result: bool = event.context.get("priority") == "high"
@@ -35,7 +35,7 @@ def has_high_priority_condition(scheduler: EventScheduler, event: Event) -> bool
 
 def test_deactivate_all_events_by_condition_no_events():
     """Test `deactivate_all_events_by_condition` with an empty event queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
     scheduler.deactivate_all_events_by_condition(always_true_condition)
 
@@ -46,7 +46,7 @@ def test_deactivate_all_events_by_condition_no_events():
 
 def test_deactivate_all_events_by_condition_always_true():
     """Test `deactivate_all_events_by_condition` with a condition that always returns True."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=15)
 
@@ -61,7 +61,7 @@ def test_deactivate_all_events_by_condition_always_true():
 
 def test_deactivate_all_events_by_condition_always_false():
     """Test `deactivate_all_events_by_condition` with a condition that always returns False."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=15)
 
@@ -76,7 +76,7 @@ def test_deactivate_all_events_by_condition_always_false():
 
 def test_deactivate_all_events_by_condition_time_less_than_20():
     """Test `deactivate_all_events_by_condition` with a condition that activates events with time < 20."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=10)  # Should be activated
     event2 = Event(time=25)  # Should remain inactive
     event3 = Event(time=15)  # Should be activated
@@ -100,7 +100,7 @@ def test_deactivate_all_events_by_condition_time_less_than_20():
 
 def test_deactivate_all_events_by_condition_high_priority():
     """Test `deactivate_all_events_by_condition` with a condition that activates events with high priority."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5, context={"priority": "high"})  # Should be activated
     event2 = Event(time=10, context={"priority": "low"})  # Should remain inactive
     event3 = Event(time=15, context={"priority": "high"})  # Should be activated
@@ -124,7 +124,7 @@ def test_deactivate_all_events_by_condition_high_priority():
 
 def test_deactivate_all_events_by_condition_mixed_conditions():
     """Test `deactivate_all_events_by_condition` with events of mixed times and contexts."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(
         time=5,
         context={"priority": "high"},
@@ -159,7 +159,7 @@ def test_deactivate_all_events_by_condition_mixed_conditions():
 
 def test_deactivate_all_events_by_condition_partial_activation():
     """Test `deactivate_all_events_by_condition` with events of mixed priorities and times."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(
         time=5,
         context={"priority": "low"},

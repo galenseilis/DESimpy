@@ -6,6 +6,6 @@ if TYPE_CHECKING:
     from typing import Final
 
 
-from .core import Event, EventScheduler
+from .core import Event, Environment
 
-__all__: Final[list[str]] = ["Event", "EventScheduler"]
+__all__: Final[list[str]] = ["Event", "Environment"]

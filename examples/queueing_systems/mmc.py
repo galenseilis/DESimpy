@@ -3,7 +3,7 @@ from __future__ import annotations
 import random
 from typing import Final
 
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 
 class Customer:
@@ -28,7 +28,7 @@ class MMcQueueSimulation:
         self.service_rate: float = service_rate  # μ (service rate)
         self.num_servers: int = num_servers  # c (number of servers)
         self.max_time: float = max_time  # Max simulation time
-        self.scheduler: EventScheduler = EventScheduler()  # Event scheduler
+        self.scheduler: Environment = Environment()  # Event scheduler
         self.queue: list[Customer] = []  # Queue for customers
         self.servers: list[Customer | None] = [
             None,

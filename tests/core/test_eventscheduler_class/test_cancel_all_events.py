@@ -1,11 +1,11 @@
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 # Test Suite for cancel_all_events
 
 
 def test_cancel_all_events_empty_queue():
     """Test `cancel_all_events` when the event queue is empty."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
     # Call cancel_all_events on an empty scheduler
     scheduler.cancel_all_events()
@@ -16,7 +16,7 @@ def test_cancel_all_events_empty_queue():
 
 def test_cancel_all_events_single_event():
     """Test `cancel_all_events` when there is only one event in the queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
 
     # Schedule the event
@@ -37,7 +37,7 @@ def test_cancel_all_events_single_event():
 
 def test_cancel_all_events_multiple_events():
     """Test `cancel_all_events` when there are multiple events in the queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
     event3 = Event(time=15)
@@ -70,7 +70,7 @@ def test_cancel_all_events_multiple_events():
 
 def test_cancel_all_events_with_condition_on_event_attributes():
     """Test `cancel_all_events` when events have different attributes (e.g., time, priority)."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5, context=dict(priority=1))
     event2 = Event(time=10, context=dict(priority=2))
     event3 = Event(time=15, context=dict(priority=1))
@@ -103,7 +103,7 @@ def test_cancel_all_events_with_condition_on_event_attributes():
 
 def test_cancel_all_events_with_condition_on_time():
     """Test `cancel_all_events` with events having different times and a time-based condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
     event3 = Event(time=15)
@@ -136,7 +136,7 @@ def test_cancel_all_events_with_condition_on_time():
 
 def test_cancel_all_events_after_some_cancellations():
     """Test `cancel_all_events` after some events have already been canceled."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
     event3 = Event(time=15)
@@ -173,7 +173,7 @@ def test_cancel_all_events_after_some_cancellations():
 
 def test_cancel_all_events_after_rescheduling():
     """Test `cancel_all_events` after some events have been rescheduled."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
     event3 = Event(time=15)
@@ -210,7 +210,7 @@ def test_cancel_all_events_after_rescheduling():
 
 def test_cancel_all_events_with_edge_case():
     """Test `cancel_all_events` when the event queue has edge cases, such as identical times."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=5)
     event3 = Event(time=10)

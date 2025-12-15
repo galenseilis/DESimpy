@@ -24,18 +24,18 @@ def run_simpy():
 
 def run_desimpy():
     """DESimpy implementation."""
-    from desimpy import EventScheduler
+    from desimpy import Environment
 
     results: list[tuple[str, float]] = []
 
-    def clock(env: EventScheduler, name: str, tick: float) -> None:
+    def clock(env: Environment, name: str, tick: float) -> None:
         def action() -> None:
             results.append((name, env.current_time))
             env.timeout(tick, action)
 
         env.timeout(0, action=action)
 
-    env = EventScheduler()
+    env = Environment()
     clock(env, "fast", 0.5)
     clock(env, "slow", 1)
     _ = env.run_until_max_time(2, logging=False)

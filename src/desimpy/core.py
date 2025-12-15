@@ -30,7 +30,7 @@ if TYPE_CHECKING:
 # CONFIGURATION #
 #################
 
-__all__ = ["Event", "EventScheduler"]  # pragma: nocover
+__all__ = ["Event", "Environment"]  # pragma: nocover
 
 ####################
 # EVENT DEFINITION #
@@ -130,19 +130,19 @@ class Event:
         return self.time < other.time
 
 
-##############################
-# EVENT SCHEDULER DEFINITION #
-##############################
+#####################################
+# SIMULATION ENVIRONMENT DEFINITION #
+#####################################
 
 
-class EventSchedulerStatus(StrEnum):
+class EnvironmentStatus(StrEnum):
     """The status of an event scheduler."""
 
     INACTIVE = auto()
     ACTIVE = auto()
 
 
-class EventScheduler:
+class Environment:
     """Runner for discrete event simulations."""
 
     def __init__(self) -> None:
@@ -150,7 +150,7 @@ class EventScheduler:
         self.current_time: float | int = 0
         self.event_queue: list[tuple[float, Event]] = []
         self.event_log: list[Event] = []
-        self.status: EventSchedulerStatus = EventSchedulerStatus.INACTIVE
+        self.status: EnvironmentStatus = EnvironmentStatus.INACTIVE
 
     @property
     def now(self) -> float:
@@ -178,7 +178,7 @@ class EventScheduler:
             if not isinstance(event, Event):
                 # INFO: Type checker may indicate that this code is unreachable, but it is.
                 raise TypeError(f"{event=} must be of type Event.")
-            if not (event.time >= 0 or not self.status == EventSchedulerStatus.ACTIVE):
+            if not (event.time >= 0 or not self.status == EnvironmentStatus.ACTIVE):
                 raise ValueError(
                     f"{event.time=} must be non-negative once simulation has become active.",
                 )
@@ -435,7 +435,7 @@ class EventScheduler:
         as the stop condition.
         """
 
-        def stop_at_max_time(scheduler: EventScheduler) -> bool:
+        def stop_at_max_time(scheduler: Environment) -> bool:
             return (
                 scheduler.current_time >= max_time
                 or not scheduler.event_queue
@@ -458,18 +458,18 @@ class EventScheduler:
         assumed as the stop condition.
         """
 
-        def stop_at_target_event(scheduler: EventScheduler) -> bool:
+        def stop_at_target_event(scheduler: Environment) -> bool:
             return event in scheduler.event_log
 
         return self.run(stop_at_target_event, logging)
 
     def _activate(self) -> None:
         """Set the simulation status to "active"."""
-        self.status: EventSchedulerStatus = EventSchedulerStatus.ACTIVE
+        self.status: EnvironmentStatus = EnvironmentStatus.ACTIVE
 
     def _deactivate(self) -> None:
         """Set the simulation status to "inactive"."""
-        self.status: EventSchedulerStatus = EventSchedulerStatus.INACTIVE
+        self.status: EnvironmentStatus = EnvironmentStatus.INACTIVE
 
 
 ######################

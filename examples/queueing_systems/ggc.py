@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 from simdist import dists
 
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 #########################
 # DEFINE CUSTOMER CLASS #
@@ -64,7 +64,7 @@ class GGcQueue:
         self.service_dist: dists.Distribution = service_dist
         self.num_servers: int = num_servers  # c (number of servers)
         self.max_time: float = max_time  # Max simulation time
-        self.scheduler: EventScheduler = EventScheduler()  # Event scheduler
+        self.scheduler: Environment = Environment()  # Event scheduler
         self.queue: list[Customer] = []  # Queue for customers
         self.servers: list[Customer | None] = [
             None,

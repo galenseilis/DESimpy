@@ -1,4 +1,4 @@
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 
 class BatteryChargingStation:
@@ -15,7 +15,7 @@ class BatteryChargingStation:
 
     """
 
-    def __init__(self, env: EventScheduler, capacity: int) -> None:
+    def __init__(self, env: Environment, capacity: int) -> None:
         """Initialize the BatteryChargingStation with a given capacity.
 
         Args:
@@ -77,7 +77,7 @@ class Car:
 
     def __init__(
         self,
-        env: EventScheduler,
+        env: Environment,
         name: str,
         bcs: BatteryChargingStation,
         driving_time: float,
@@ -142,7 +142,7 @@ class Car:
 
 
 if __name__ == "__main__":
-    scheduler = EventScheduler()
+    scheduler = Environment()
     bcs = BatteryChargingStation(scheduler, capacity=2)
     for i in range(4):
         Car(scheduler, name=f"Car {i}", bcs=bcs, driving_time=i * 2, charge_duration=5)

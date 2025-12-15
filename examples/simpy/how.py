@@ -3,10 +3,10 @@
 
 from collections.abc import Callable
 
-from desimpy import EventScheduler
+from desimpy import Environment
 
 
-def example(env: EventScheduler) -> None:
+def example(env: Environment) -> None:
     """Example function that schedules an action in a simulation environment.
 
     This function defines an action that prints the current time in the environment
@@ -27,6 +27,6 @@ def example(env: EventScheduler) -> None:
 
 
 if __name__ == "__main__":
-    env = EventScheduler()
+    env = Environment()
     example(env)
     env.run_until_max_time(float("inf"), logging=False)

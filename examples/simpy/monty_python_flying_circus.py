@@ -2,9 +2,9 @@
 """
 
 if __name__ == "__main__":
-    from desimpy import Event, EventScheduler
+    from desimpy import Event, Environment
 
-    env = EventScheduler()
+    env = Environment()
     my_proc = Event(1, lambda: "Monty Python’s Flying Circus")
     env.schedule(my_proc)
     _ = env.run_until_given_event(my_proc)

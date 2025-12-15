@@ -1,16 +1,16 @@
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 
 def test_empty_event_queue():
     """Should return None if event queue is empty."""
-    env = EventScheduler()
+    env = Environment()
     result = env.next_event()
     assert result is None
 
 
 def test_preserves_event_identity():
     """Should not change the event."""
-    env = EventScheduler()
+    env = Environment()
     event = Event(0, lambda: None, None)
     env.schedule(event)
     result = env.next_event()
@@ -19,7 +19,7 @@ def test_preserves_event_identity():
 
 def test_is_next_among_other_events():
     """Should actually be the next event even among other events."""
-    env = EventScheduler()
+    env = Environment()
 
     # Define events occuring at different time.
     last_event = Event(3)
@@ -40,7 +40,7 @@ def test_is_next_among_other_events():
 
 def test_is_next_after_elapsed_time():
     """Next event evolves with simulation."""
-    env = EventScheduler()
+    env = Environment()
 
     # Define events occuring at different time.
     last_event = Event(3)

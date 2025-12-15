@@ -1,11 +1,11 @@
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 # Test Suite for cancel_next_event
 
 
 def test_cancel_next_event_empty_queue():
     """Test `cancel_next_event` when the event queue is empty."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
     # Try to cancel the next event when no events are scheduled
     scheduler.cancel_next_event()
@@ -16,7 +16,7 @@ def test_cancel_next_event_empty_queue():
 
 def test_cancel_next_event_single_event():
     """Test `cancel_next_event` with a single event in the queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event = Event(time=5)
 
     # Schedule the event
@@ -33,7 +33,7 @@ def test_cancel_next_event_single_event():
 
 def test_cancel_next_event_multiple_events():
     """Test `cancel_next_event` with multiple events in the queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
     event3 = Event(time=15)
@@ -66,7 +66,7 @@ def test_cancel_next_event_multiple_events():
 
 def test_cancel_next_event_no_events_remaining():
     """Test `cancel_next_event` after cancelling the first event, leaving no events."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
 
@@ -88,7 +88,7 @@ def test_cancel_next_event_no_events_remaining():
 
 def test_cancel_next_event_queue_ordering():
     """Test `cancel_next_event` to ensure it cancels events in order."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
     event3 = Event(time=15)
@@ -111,7 +111,7 @@ def test_cancel_next_event_queue_ordering():
 
 def test_cancel_next_event_no_next_event():
     """Test `cancel_next_event` when no events are scheduled."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
     # Try to cancel the next event when the queue is empty
     scheduler.cancel_next_event()
@@ -122,7 +122,7 @@ def test_cancel_next_event_no_next_event():
 
 def test_cancel_next_event_already_cancelled_event():
     """Test `cancel_next_event` with an already cancelled event in the queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
 
@@ -144,7 +144,7 @@ def test_cancel_next_event_already_cancelled_event():
 
 def test_cancel_next_event_event_with_multiple_actions():
     """Test `cancel_next_event` with events having multiple actions scheduled."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5, action=lambda: print("Action 1"))
     event2 = Event(time=10, action=lambda: print("Action 2"))
 
@@ -172,7 +172,7 @@ def test_cancel_next_event_event_with_multiple_actions():
 
 def test_cancel_next_event_reschedules():
     """Test `cancel_next_event` while rescheduling events."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
 

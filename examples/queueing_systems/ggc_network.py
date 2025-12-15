@@ -3,7 +3,7 @@ from typing import Self
 
 from simdist import dists
 
-from desimpy import EventScheduler
+from desimpy import Environment
 
 
 class Customer:
@@ -28,13 +28,13 @@ class Node:
         num_servers: int,
         routing_func: Callable[[Self], Self],
         depart_dist: dists.Distribution,
-        scheduler: EventScheduler,  # FIX: Provide instance of Network instead, which will have access to scheduler.
+        scheduler: Environment,  # FIX: Provide instance of Network instead, which will have access to scheduler.
     ):
         self.queue_id: int = queue_id
         self.arrival_dist: dists.Distribution = arrival_dist
         self.service_dist: dists.Distribution = service_dist
         self.num_servers: int = num_servers
-        self.scheduler: EventScheduler = (
+        self.scheduler: Environment = (
             scheduler  # Shared event scheduler for the network
         )
         self.queue: list[Customer] = []  # Queue for customers
@@ -131,7 +131,7 @@ class Network:
     """Class representing the entire network of queues."""
 
     def __init__(self):
-        self.scheduler = EventScheduler()  # Global scheduler for the network
+        self.scheduler = Environment()  # Global scheduler for the network
         self.queues = []  # List of all queues in the network
 
     def add_queue(self, queue):

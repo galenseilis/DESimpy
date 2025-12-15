@@ -4,12 +4,12 @@ source: https://simpy.readthedocs.io/en/latest/simpy_intro/process_interaction.h
 
 from __future__ import annotations
 
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 
 class Car:
-    def __init__(self, env: EventScheduler) -> None:
-        self.env: EventScheduler = env
+    def __init__(self, env: Environment) -> None:
+        self.env: Environment = env
         # Start the run process when an instance is created
         self.schedule_run()
 
@@ -32,7 +32,7 @@ class Car:
         self.env.timeout(5, self.schedule_drive, context={"event_type": "charge"})
 
 
-def deactivate_next_charge_condition(env: EventScheduler, event: Event) -> bool:
+def deactivate_next_charge_condition(env: Environment, event: Event) -> bool:
     """Deactivate the charging event."""
     _ = env
     if event.context.get("event_type", None) == "charge":
@@ -40,7 +40,7 @@ def deactivate_next_charge_condition(env: EventScheduler, event: Event) -> bool:
     return False
 
 
-def driver(env: EventScheduler, car: Car) -> None:
+def driver(env: Environment, car: Car) -> None:
     def interrupt_action():
         print("Was interrupted. Hope, the battery is full enough ...")
         env.deactivate_next_event_by_condition(
@@ -53,7 +53,7 @@ def driver(env: EventScheduler, car: Car) -> None:
 
 
 if __name__ == "__main__":
-    scheduler = EventScheduler()
+    scheduler = Environment()
     car = Car(scheduler)
     driver(scheduler, car)
     _ = scheduler.run_until_max_time(15, logging=False)

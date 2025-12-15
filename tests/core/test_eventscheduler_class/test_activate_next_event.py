@@ -5,13 +5,13 @@ from typing import Any
 
 import pytest
 
-from desimpy.core import Event, EventScheduler, EventStatus
+from desimpy.core import Event, Environment, EventStatus
 
 
 @pytest.fixture
-def scheduler() -> EventScheduler:
+def scheduler() -> Environment:
     """Fixture to create a fresh EventScheduler instance for each test."""
-    return EventScheduler()
+    return Environment()
 
 
 @pytest.fixture
@@ -37,7 +37,7 @@ EVENT_FACTORY_TYPE = Callable[
 ]
 
 
-def test_activate_next_event_single_event(scheduler: EventScheduler):
+def test_activate_next_event_single_event(scheduler: Environment):
     """Test `activate_next_event` with a single inactive event in the queue."""
     event = Event(1)
     event.deactivate()
@@ -48,7 +48,7 @@ def test_activate_next_event_single_event(scheduler: EventScheduler):
     assert event.status == EventStatus.ACTIVE, "The single event should be activated."
 
 
-def test_activate_next_event_multiple_events(scheduler: EventScheduler):
+def test_activate_next_event_multiple_events(scheduler: Environment):
     """Test `activate_next_event` activates only the earliest event in a queue of multiple events."""
     event1 = Event(time=1)
     event2 = Event(time=2)
@@ -68,7 +68,7 @@ def test_activate_next_event_multiple_events(scheduler: EventScheduler):
     )
 
 
-def test_activate_next_event_with_active_event(scheduler: EventScheduler):
+def test_activate_next_event_with_active_event(scheduler: Environment):
     """Test `activate_next_event` does not change the status of an already active event."""
     event = Event(time=1)
     scheduler.schedule(event)
@@ -81,7 +81,7 @@ def test_activate_next_event_with_active_event(scheduler: EventScheduler):
     )
 
 
-def test_activate_next_event_empty_queue(scheduler: EventScheduler):
+def test_activate_next_event_empty_queue(scheduler: Environment):
     """Test `activate_next_event` with an empty event queue."""
     scheduler.activate_next_event()  # Should have no effect, no exception should occur
     assert scheduler.event_queue == [], (
@@ -89,7 +89,7 @@ def test_activate_next_event_empty_queue(scheduler: EventScheduler):
     )
 
 
-def test_activate_next_event_does_not_alter_later_events(scheduler: EventScheduler):
+def test_activate_next_event_does_not_alter_later_events(scheduler: Environment):
     """Ensure that `activate_next_event` activates only the next event and does not modify later events."""
     event1 = Event(time=1)
     event2 = Event(time=2)
@@ -107,7 +107,7 @@ def test_activate_next_event_does_not_alter_later_events(scheduler: EventSchedul
     )
 
 
-def test_activate_next_event_only_affects_next(scheduler: EventScheduler):
+def test_activate_next_event_only_affects_next(scheduler: Environment):
     """Ensure that calling `activate_next_event` only activates one event even if multiple are inactive."""
     event1 = Event(time=1)
     event2 = Event(time=1.5)

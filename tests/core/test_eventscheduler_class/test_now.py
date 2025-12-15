@@ -2,20 +2,20 @@ from unittest.mock import Mock
 
 import pytest
 
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 
 @pytest.fixture
 def scheduler():
-    return EventScheduler()
+    return Environment()
 
 
-def test_now_initial_time(scheduler: EventScheduler) -> None:
+def test_now_initial_time(scheduler: Environment) -> None:
     """Test that the initial time is zero."""
     assert scheduler.now == 0, "Initial time should be 0."
 
 
-def test_now_after_scheduling_events(scheduler: EventScheduler):
+def test_now_after_scheduling_events(scheduler: Environment):
     """Test that scheduling events does not alter the current time."""
     mock_event = Mock(spec=Event)
     mock_event.time = 5
@@ -23,7 +23,7 @@ def test_now_after_scheduling_events(scheduler: EventScheduler):
     assert scheduler.now == 0, "Current time should remain 0 after scheduling events."
 
 
-def test_now_progression_after_step(scheduler: EventScheduler) -> None:
+def test_now_progression_after_step(scheduler: Environment) -> None:
     """Test that current time (`now`) updates correctly as events are processed."""
     # Create and schedule two mock events with different times
     mock_event1 = Mock(spec=Event)
@@ -42,7 +42,7 @@ def test_now_progression_after_step(scheduler: EventScheduler) -> None:
     assert scheduler.now == 7, "Current time should update to 7 after the second event."
 
 
-def test_now_stops_at_max_time(scheduler: EventScheduler) -> None:
+def test_now_stops_at_max_time(scheduler: Environment) -> None:
     """Test that simulation stops at a specified max time."""
     mock_event1 = Mock(spec=Event)
     mock_event1.time = 3

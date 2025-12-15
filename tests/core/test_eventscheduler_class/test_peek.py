@@ -4,13 +4,13 @@ from collections.abc import Callable
 
 import pytest
 
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 
 @pytest.fixture
-def scheduler() -> EventScheduler:
+def scheduler() -> Environment:
     """Fixture to create a fresh EventScheduler instance for each test."""
-    return EventScheduler()
+    return Environment()
 
 
 @pytest.fixture
@@ -23,12 +23,12 @@ def event() -> Callable[[float], Event]:
     return _create_event
 
 
-def test_peek_empty_queue(scheduler: EventScheduler):
+def test_peek_empty_queue(scheduler: Environment):
     """Test that peek returns infinity when the event queue is empty."""
     assert scheduler.peek() == float("inf")
 
 
-def test_peek_single_event(scheduler: EventScheduler, event: Callable[[float], Event]):
+def test_peek_single_event(scheduler: Environment, event: Callable[[float], Event]):
     """Test that peek returns the time of the only event in the queue."""
     event1 = event(10.0)
     scheduler.schedule(event1)
@@ -36,7 +36,7 @@ def test_peek_single_event(scheduler: EventScheduler, event: Callable[[float], E
 
 
 def test_peek_multiple_events_ordered(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ):
     """Test that peek returns the earliest event time with multiple events in chronological order."""
@@ -48,7 +48,7 @@ def test_peek_multiple_events_ordered(
 
 
 def test_peek_multiple_events_unordered(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ):
     """Test that peek returns the earliest event time even if events are added out of order."""
@@ -62,7 +62,7 @@ def test_peek_multiple_events_unordered(
 
 
 def test_peek_after_event_removal(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ):
     """Test that peek correctly updates after removing the next event."""
@@ -80,7 +80,7 @@ def test_peek_after_event_removal(
 
 
 def test_peek_prescheduling_negative_time(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ):
     """Test that peek allows negative event times if prescheduled."""
@@ -90,7 +90,7 @@ def test_peek_prescheduling_negative_time(
 
 
 def test_peek_after_all_events_canceled(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ):
     """Test that peek returns infinity after all events are canceled."""
@@ -105,7 +105,7 @@ def test_peek_after_all_events_canceled(
 
 
 def test_peek_with_active_status(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ):
     """Test that peek still returns the correct time when the scheduler is active."""

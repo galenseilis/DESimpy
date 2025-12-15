@@ -7,10 +7,10 @@ time intervals.
 
 from __future__ import annotations
 
-from desimpy import EventScheduler
+from desimpy import Environment
 
 
-def car(env: EventScheduler) -> None:
+def car(env: Environment) -> None:
     """Simulates the car process that alternates between parking and driving.
 
     The car parks for 5 time units and then drives for 2 time units, after
@@ -35,6 +35,6 @@ def car(env: EventScheduler) -> None:
 
 
 if __name__ == "__main__":
-    scheduler = EventScheduler()
+    scheduler = Environment()
     scheduler.timeout(0, action=lambda: car(scheduler))
     _ = scheduler.run_until_max_time(15, logging=False)

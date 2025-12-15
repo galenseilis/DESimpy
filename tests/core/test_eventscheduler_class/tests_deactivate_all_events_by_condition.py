@@ -1,9 +1,9 @@
-from desimpy import Event, EventScheduler, EventStatus
+from desimpy import Event, Environment, EventStatus
 
 # Test Suite for deactivate_all_events_by_condition
 
 
-def condition_example(scheduler: EventScheduler, event: Event):
+def condition_example(scheduler: Environment, event: Event):
     """Example condition function for testing."""
     _ = scheduler
     return event.time < 10  # For testing, deactivate events with time < 10.
@@ -11,7 +11,7 @@ def condition_example(scheduler: EventScheduler, event: Event):
 
 def test_deactivate_all_events_by_condition_empty_queue():
     """Test `deactivate_all_events_by_condition` with an empty event queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
     # Apply condition to deactivate all events
     scheduler.deactivate_all_events_by_condition(condition_example)
@@ -22,7 +22,7 @@ def test_deactivate_all_events_by_condition_empty_queue():
 
 def test_deactivate_all_events_by_condition_no_match():
     """Test `deactivate_all_events_by_condition` with events that don't match the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=15)
     event2 = Event(time=20)
 
@@ -40,7 +40,7 @@ def test_deactivate_all_events_by_condition_no_match():
 
 def test_deactivate_all_events_by_condition_all_match():
     """Test `deactivate_all_events_by_condition` with events that all match the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=8)
     event3 = Event(time=3)
@@ -61,7 +61,7 @@ def test_deactivate_all_events_by_condition_all_match():
 
 def test_deactivate_all_events_by_condition_some_match():
     """Test `deactivate_all_events_by_condition` with some events matching the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=15)
     event3 = Event(time=8)
@@ -82,7 +82,7 @@ def test_deactivate_all_events_by_condition_some_match():
 
 def test_deactivate_all_events_by_condition_none_match():
     """Test `deactivate_all_events_by_condition` with no events matching the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=15)
     event2 = Event(time=20)
     event3 = Event(time=30)
@@ -103,7 +103,7 @@ def test_deactivate_all_events_by_condition_none_match():
 
 def test_deactivate_all_events_by_condition_already_inactive():
     """Test `deactivate_all_events_by_condition` where some events are already inactive."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=12)
     event3 = Event(time=8)
@@ -127,13 +127,13 @@ def test_deactivate_all_events_by_condition_already_inactive():
 
 def test_deactivate_all_events_by_condition_multiple_conditions():
     """Test `deactivate_all_events_by_condition` with multiple conditions."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=12)
     event3 = Event(time=8)
 
     # Define a different condition function
-    def condition_other(scheduler: EventScheduler, event: Event):
+    def condition_other(scheduler: Environment, event: Event):
         _ = scheduler
         return event.time == 8  # Only deactivate events with time == 8
 
@@ -153,7 +153,7 @@ def test_deactivate_all_events_by_condition_multiple_conditions():
 
 def test_deactivate_all_events_by_condition_deactivate_one_at_a_time():
     """Test `deactivate_all_events_by_condition` to ensure only events that match are deactivated."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=15)
     event3 = Event(time=8)
@@ -174,9 +174,9 @@ def test_deactivate_all_events_by_condition_deactivate_one_at_a_time():
 
 def test_deactivate_all_events_by_condition_condition_function():
     """Test `deactivate_all_events_by_condition` with a custom condition function."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
-    def custom_condition(scheduler: EventScheduler, event: Event):
+    def custom_condition(scheduler: Environment, event: Event):
         _ = scheduler
         return event.time > 10  # Deactivate events with time greater than 10.
 

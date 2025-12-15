@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Final
 
-from desimpy import EventScheduler
+from desimpy import Environment
 
 LOGGING: Final[bool] = False
 SIMULATION_TIME: Final[float] = 15.0
@@ -24,14 +24,14 @@ class Car:
 
     """
 
-    def __init__(self, env: EventScheduler) -> None:
+    def __init__(self, env: Environment) -> None:
         """Initialize the Car object and schedule the initial run.
 
         Args:
             env (EventScheduler): The simulation's event scheduler.
 
         """
-        self.env: EventScheduler = env
+        self.env: Environment = env
         # Start the run process when an instance is created
         self.schedule_run()
 
@@ -76,6 +76,6 @@ class Car:
 
 
 if __name__ == "__main__":
-    scheduler = EventScheduler()
+    scheduler = Environment()
     _ = Car(scheduler)
     _ = scheduler.run_until_max_time(SIMULATION_TIME, logging=LOGGING)

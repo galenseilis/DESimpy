@@ -33,13 +33,13 @@ def run_simpy():
 
 def run_desimpy():
     """DESimpy implementation."""
-    from desimpy import EventScheduler
+    from desimpy import Environment
 
     results: list[str] = []
 
     class Car:
-        def __init__(self, env: EventScheduler) -> None:
-            self.env: EventScheduler = env
+        def __init__(self, env: Environment) -> None:
+            self.env: Environment = env
             self.schedule_run()
 
         def schedule_run(self) -> None:
@@ -54,7 +54,7 @@ def run_desimpy():
 
             self.env.timeout(5, charge_action)
 
-    scheduler = EventScheduler()
+    scheduler = Environment()
     _ = Car(scheduler)
     _ = scheduler.run_until_max_time(15, logging=False)
 

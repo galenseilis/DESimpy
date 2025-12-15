@@ -1,4 +1,4 @@
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 
 def test_next_by_time():
@@ -6,7 +6,7 @@ def test_next_by_time():
     event1 = Event(0)
     event2 = Event(1)
 
-    env = EventScheduler()
+    env = Environment()
 
     env.schedule(event0)
     env.schedule(event1)
@@ -39,7 +39,7 @@ def test_next_by_if_action():
     event1 = Event(0, action=lambda: None)
     event2 = Event(0, action=lambda: 2018)
 
-    env = EventScheduler()
+    env = Environment()
 
     env.schedule(event0)
     env.schedule(event1)

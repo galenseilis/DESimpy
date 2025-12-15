@@ -3,10 +3,10 @@
 source: https://simpy.readthedocs.io/en/stable/index.html#overview
 """
 
-from desimpy import EventScheduler
+from desimpy import Environment
 
 
-def clock(env: EventScheduler, name: str, tick: float) -> None:
+def clock(env: Environment, name: str, tick: float) -> None:
     """Simulates a clock process that prints the current simulation time at regular intervals.
 
     The clock ticks at the specified interval and prints its name along with the
@@ -33,7 +33,7 @@ def clock(env: EventScheduler, name: str, tick: float) -> None:
 
 
 if __name__ == "__main__":
-    env = EventScheduler()
+    env = Environment()
     clock(env, "fast", 0.5)
     clock(env, "slow", 1)
     _ = env.run_until_max_time(2, logging=True)

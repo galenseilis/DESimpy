@@ -1,16 +1,16 @@
-from desimpy.core import Event, EventScheduler, EventStatus
+from desimpy.core import Event, Environment, EventStatus
 
 # Test Suite for deactivate_next_event_by_condition
 
 
-def condition_example(scheduler: EventScheduler, event: Event):
+def condition_example(scheduler: Environment, event: Event):
     """Example condition function for testing."""
     return event.time < 10  # For testing, deactivate events with time < 10.
 
 
 def test_deactivate_next_event_by_condition_empty_queue():
     """Test `deactivate_next_event_by_condition` with an empty event queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
     # Apply condition to deactivate events
     scheduler.deactivate_next_event_by_condition(condition_example)
@@ -21,7 +21,7 @@ def test_deactivate_next_event_by_condition_empty_queue():
 
 def test_deactivate_next_event_by_condition_single_event_no_match():
     """Test `deactivate_next_event_by_condition` with a single event that doesn't match the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=15)
 
     # Schedule event1
@@ -38,7 +38,7 @@ def test_deactivate_next_event_by_condition_single_event_no_match():
 
 def test_deactivate_next_event_by_condition_single_event_match():
     """Test `deactivate_next_event_by_condition` with a single event that matches the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
 
     # Schedule event1
@@ -55,7 +55,7 @@ def test_deactivate_next_event_by_condition_single_event_match():
 
 def test_deactivate_next_event_by_condition_multiple_events_some_match():
     """Test `deactivate_next_event_by_condition` with multiple events, some matching the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=15)
     event3 = Event(time=8)
@@ -76,7 +76,7 @@ def test_deactivate_next_event_by_condition_multiple_events_some_match():
 
 def test_deactivate_next_event_by_condition_all_events_match():
     """Test `deactivate_next_event_by_condition` with multiple events, all matching the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=8)
     event3 = Event(time=3)
@@ -97,7 +97,7 @@ def test_deactivate_next_event_by_condition_all_events_match():
 
 def test_deactivate_next_event_by_condition_none_match():
     """Test `deactivate_next_event_by_condition` with multiple events, none matching the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=15)
     event2 = Event(time=20)
     event3 = Event(time=30)
@@ -118,7 +118,7 @@ def test_deactivate_next_event_by_condition_none_match():
 
 def test_deactivate_next_event_by_condition_deactivate_one_at_a_time():
     """Test `deactivate_next_event_by_condition` to ensure only one event is deactivated at a time."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=2)
     event3 = Event(time=15)
@@ -141,7 +141,7 @@ def test_deactivate_next_event_by_condition_deactivate_one_at_a_time():
 
 def test_deactivate_next_event_by_condition_already_inactive():
     """Test `deactivate_next_event_by_condition` where the event is already inactive."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=12)
 
@@ -162,13 +162,13 @@ def test_deactivate_next_event_by_condition_already_inactive():
 
 def test_deactivate_next_event_by_condition_with_different_conditions():
     """Test `deactivate_next_event_by_condition` with different condition functions."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=12)
     event3 = Event(time=8)
 
     # Define a different condition function
-    def condition_other(scheduler: EventScheduler, event: Event):
+    def condition_other(scheduler: Environment, event: Event):
         _ = scheduler
         return event.time == 8  # Only deactivate events with time == 8
 

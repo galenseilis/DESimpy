@@ -1,9 +1,9 @@
-from desimpy.core import Event, EventScheduler, EventStatus
+from desimpy.core import Event, Environment, EventStatus
 
 
 def test_deactivate_all_events_no_events():
     """Test `deactivate_all_events` when the event queue is empty."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
     scheduler.deactivate_all_events()  # No events in the queue
 
@@ -14,7 +14,7 @@ def test_deactivate_all_events_no_events():
 
 def test_deactivate_all_events_single_inactive_event():
     """Test `deactivate_all_events` with a single inactive event."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event = Event(time=1)
     event.deactivate()  # Set event as inactive
     scheduler.schedule(event)
@@ -28,7 +28,7 @@ def test_deactivate_all_events_single_inactive_event():
 
 def test_deactivate_all_events_multiple_inactive_events():
     """Test `deactivate_all_events` with multiple inactive events."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=1)
     event2 = Event(time=2)
     event1.deactivate()
@@ -49,7 +49,7 @@ def test_deactivate_all_events_multiple_inactive_events():
 
 def test_deactivate_all_events_mixed_event_status():
     """Test `deactivate_all_events` with events of mixed statuses (some active, some inactive)."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=1)
     event2 = Event(time=2)
     event3 = Event(time=3)
@@ -71,7 +71,7 @@ def test_deactivate_all_events_mixed_event_status():
 
 def test_deactivate_all_events_all_events_already_active():
     """Test `deactivate_all_events` when all events are already active."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=1)
     event2 = Event(time=2)
 
@@ -89,7 +89,7 @@ def test_deactivate_all_events_all_events_already_active():
 
 def test_deactivate_all_events_with_context_conditions():
     """Test `deactivate_all_events` with events that have contextual conditions."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=1, context={"priority": "high"})
     event2 = Event(time=2, context={"priority": "low"})
     event3 = Event(time=3, context={"priority": "high"})
@@ -117,7 +117,7 @@ def test_deactivate_all_events_with_context_conditions():
 
 def test_deactivate_all_events_with_specific_timing():
     """Test `deactivate_all_events` when events have specific times and ensure all are activated regardless of time."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=10)
     event2 = Event(time=20)
     event3 = Event(time=30)
@@ -145,7 +145,7 @@ def test_deactivate_all_events_with_specific_timing():
 
 def test_deactivate_all_events_with_already_scheduled_and_unscheduled_events():
     """Test `deactivate_all_events` with events that are scheduled and unscheduled."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
     event1.deactivate()
@@ -166,7 +166,7 @@ def test_deactivate_all_events_with_already_scheduled_and_unscheduled_events():
 
 def test_deactivate_all_events_empty_context():
     """Test `deactivate_all_events` with an event having an empty context to ensure no interference."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event = Event(time=1, context={})
     event.deactivate()
 
@@ -181,7 +181,7 @@ def test_deactivate_all_events_empty_context():
 
 def test_deactivate_all_events_complex_mixed_events():
     """Complex test with mixed event statuses, times, and context to ensure all inactive events are activated."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5, context={"type": "A"})
     event2 = Event(time=15, context={"type": "B"})
     event3 = Event(time=25, context={"type": "A"})

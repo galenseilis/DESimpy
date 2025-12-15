@@ -1,14 +1,14 @@
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 # Test Suite for cancel_next_event_by_condition
 
 
 def test_cancel_next_event_by_condition_empty_queue():
     """Test `cancel_next_event_by_condition` when the event queue is empty."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
     # Condition to cancel events
-    def condition(scheduler: EventScheduler, event: Event):
+    def condition(scheduler: Environment, event: Event):
         _ = scheduler
         return event.time == 5
 
@@ -21,7 +21,7 @@ def test_cancel_next_event_by_condition_empty_queue():
 
 def test_cancel_next_event_by_condition_no_matching_event():
     """Test `cancel_next_event_by_condition` when no event satisfies the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
 
@@ -30,7 +30,7 @@ def test_cancel_next_event_by_condition_no_matching_event():
     scheduler.schedule(event2)
 
     # Condition to cancel event with time 15, which does not exist
-    def condition(scheduler: EventScheduler, event: Event):
+    def condition(scheduler: Environment, event: Event):
         _ = scheduler
         return event.time == 15
 
@@ -51,7 +51,7 @@ def test_cancel_next_event_by_condition_no_matching_event():
 
 def test_cancel_next_event_by_condition_single_matching_event():
     """Test `cancel_next_event_by_condition` when one event matches the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
 
@@ -60,7 +60,7 @@ def test_cancel_next_event_by_condition_single_matching_event():
     scheduler.schedule(event2)
 
     # Condition to cancel event with time 5
-    def condition(scheduler: EventScheduler, event: Event):
+    def condition(scheduler: Environment, event: Event):
         _ = scheduler
         return event.time == 5
 
@@ -83,7 +83,7 @@ def test_cancel_next_event_by_condition_single_matching_event():
 
 def test_cancel_next_event_by_condition_multiple_matching_events():
     """Test `cancel_next_event_by_condition` with multiple events matching the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=5)
     event3 = Event(time=10)
@@ -94,7 +94,7 @@ def test_cancel_next_event_by_condition_multiple_matching_events():
     scheduler.schedule(event3)
 
     # Condition to cancel event with time 5
-    def condition(scheduler: EventScheduler, event: Event):
+    def condition(scheduler: Environment, event: Event):
         _ = scheduler
         return event.time == 5
 
@@ -120,7 +120,7 @@ def test_cancel_next_event_by_condition_multiple_matching_events():
 
 def test_cancel_next_event_by_condition_multiple_events_different_times():
     """Test `cancel_next_event_by_condition` where events have different times."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
     event3 = Event(time=15)
@@ -131,7 +131,7 @@ def test_cancel_next_event_by_condition_multiple_events_different_times():
     scheduler.schedule(event3)
 
     # Condition to cancel event with time 10
-    def condition(scheduler: EventScheduler, event: Event):
+    def condition(scheduler: Environment, event: Event):
         _ = scheduler
         return event.time == 10
 
@@ -158,7 +158,7 @@ def test_cancel_next_event_by_condition_multiple_events_different_times():
 
 def test_cancel_next_event_by_condition_condition_with_multiple_parameters():
     """Test `cancel_next_event_by_condition` with a more complex condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5, context=dict(priority=1))
     event2 = Event(time=10, context=dict(priority=2))
 
@@ -167,7 +167,7 @@ def test_cancel_next_event_by_condition_condition_with_multiple_parameters():
     scheduler.schedule(event2)
 
     # Condition to cancel event with priority 2
-    def condition(scheduler: EventScheduler, event: Event):
+    def condition(scheduler: Environment, event: Event):
         _ = scheduler
         result: bool = event.context.get("priority") == 2
         return result
@@ -191,7 +191,7 @@ def test_cancel_next_event_by_condition_condition_with_multiple_parameters():
 
 def test_cancel_next_event_by_condition_no_matching_condition():
     """Test `cancel_next_event_by_condition` where no event matches the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
 
@@ -200,7 +200,7 @@ def test_cancel_next_event_by_condition_no_matching_condition():
     scheduler.schedule(event2)
 
     # Condition to cancel event with time 20, which does not exist
-    def condition(scheduler: EventScheduler, event: Event):
+    def condition(scheduler: Environment, event: Event):
         _ = scheduler
         return event.time == 20
 
@@ -221,7 +221,7 @@ def test_cancel_next_event_by_condition_no_matching_condition():
 
 def test_cancel_next_event_by_condition_with_condition_having_edge_case():
     """Test `cancel_next_event_by_condition` with an edge case (e.g., cancelling at exact time)."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
 
@@ -230,7 +230,7 @@ def test_cancel_next_event_by_condition_with_condition_having_edge_case():
     scheduler.schedule(event2)
 
     # Edge case: Condition to cancel the event at time 5
-    def condition(scheduler: EventScheduler, event: Event):
+    def condition(scheduler: Environment, event: Event):
         _ = scheduler
         return event.time == 5
 

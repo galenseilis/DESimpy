@@ -30,11 +30,11 @@ def run_desimpy():
     """DESimpy implementaton."""
     from collections.abc import Callable
 
-    from desimpy import EventScheduler
+    from desimpy import Environment
 
     results: list[str] = []
 
-    def example(env: EventScheduler) -> None:
+    def example(env: Environment) -> None:
         delay = 1
         value = 42
         action: Callable[[], None] = lambda: results.append(
@@ -42,7 +42,7 @@ def run_desimpy():
         )
         env.timeout(delay, action)
 
-    env = EventScheduler()
+    env = Environment()
     example(env)
     _ = env.run_until_max_time(float("inf"), logging=False)
 

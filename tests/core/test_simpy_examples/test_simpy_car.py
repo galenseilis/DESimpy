@@ -25,11 +25,11 @@ def run_simpy() -> list[str]:
 
 def run_desimpy():
     """DESimpy implementation."""
-    from desimpy import EventScheduler
+    from desimpy import Environment
 
     results: list[str] = []
 
-    def car(env: EventScheduler) -> None:
+    def car(env: Environment) -> None:
         results.append(f"Start parking at {env.current_time}")
 
         def end_parking_action() -> None:
@@ -38,7 +38,7 @@ def run_desimpy():
 
         env.timeout(5, end_parking_action)
 
-    scheduler = EventScheduler()
+    scheduler = Environment()
     scheduler.timeout(0, action=lambda: car(scheduler))
     _ = scheduler.run_until_max_time(15, logging=False)
 

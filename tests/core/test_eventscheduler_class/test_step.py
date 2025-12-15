@@ -2,16 +2,16 @@ from __future__ import annotations
 
 import pytest
 
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 
 @pytest.fixture
-def scheduler() -> EventScheduler:
+def scheduler() -> Environment:
     """Fixture to create a fresh EventScheduler instance for each test."""
-    return EventScheduler()
+    return Environment()
 
 
-def test_step_processes_one_event(scheduler: EventScheduler) -> None:
+def test_step_processes_one_event(scheduler: Environment) -> None:
     """Test that step processes the next event and removes it from the queue."""
     processed_events: list[int] = []
 
@@ -33,7 +33,7 @@ def test_step_processes_one_event(scheduler: EventScheduler) -> None:
     assert processed_events == [1]
 
 
-def test_step_advances_time_correctly(scheduler: EventScheduler) -> None:
+def test_step_advances_time_correctly(scheduler: Environment) -> None:
     """Test that step advances the simulation time to the next event."""
     scheduler.schedule(Event(time=15, context={"id": 1}))
     scheduler.schedule(Event(time=10, context={"id": 2}))
@@ -46,7 +46,7 @@ def test_step_advances_time_correctly(scheduler: EventScheduler) -> None:
     assert len(scheduler.event_queue) == 1
 
 
-def test_step_empty_queue(scheduler: EventScheduler) -> None:
+def test_step_empty_queue(scheduler: Environment) -> None:
     """Test that step does nothing when the queue is empty."""
     # Ensure queue is empty
     assert len(scheduler.event_queue) == 0
@@ -61,7 +61,7 @@ def test_step_empty_queue(scheduler: EventScheduler) -> None:
     assert len(scheduler.event_queue) == 0
 
 
-def test_step_executes_event_action(scheduler: EventScheduler) -> None:
+def test_step_executes_event_action(scheduler: Environment) -> None:
     """Test that step executes the action associated with the next event."""
     result: list[str] = []
 
@@ -77,7 +77,7 @@ def test_step_executes_event_action(scheduler: EventScheduler) -> None:
     assert result == ["executed"]
 
 
-def test_step_with_multiple_events(scheduler: EventScheduler) -> None:
+def test_step_with_multiple_events(scheduler: Environment) -> None:
     """Test that step processes events in the correct time order."""
     result: list[int] = []
 
@@ -105,7 +105,7 @@ def test_step_with_multiple_events(scheduler: EventScheduler) -> None:
     assert result == [2, 3, 1]
 
 
-def test_step_handles_action_exceptions(scheduler: EventScheduler) -> None:
+def test_step_handles_action_exceptions(scheduler: Environment) -> None:
     """Test that step propagates exceptions raised by event actions."""
 
     def faulty_action() -> None:
@@ -122,7 +122,7 @@ def test_step_handles_action_exceptions(scheduler: EventScheduler) -> None:
     assert len(scheduler.event_queue) == 0
 
 
-def test_step_multiple_steps(scheduler: EventScheduler):
+def test_step_multiple_steps(scheduler: Environment):
     """Test that multiple steps correctly process all events."""
     result: list[int] = []
 

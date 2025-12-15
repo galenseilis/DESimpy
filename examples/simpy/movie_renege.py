@@ -1,7 +1,7 @@
 import heapq
 import random
 
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 RANDOM_SEED = 42
 TICKETS = 50  # Number of tickets per movie
@@ -25,7 +25,7 @@ def moviegoer(movie: str, num_tickets: int, theater):
     theater.counter.request(movie, num_tickets)
 
 
-def customer_arrivals(env: EventScheduler, theater: Theater):
+def customer_arrivals(env: Environment, theater: Theater):
     delay = random.expovariate(1 / 0.5)
     movie = random.choice(theater.movies)
     num_tickets = random.randint(1, 6)
@@ -103,7 +103,7 @@ class TicketAgent:
 
 
 if __name__ == "__main__":
-    env = EventScheduler()
+    env = Environment()
     theater = Theater(env, TICKETS, MOVIES)
     env.timeout(0, customer_arrivals(env, theater))
     env.run_until_max_time(SIM_TIME, logging=False)

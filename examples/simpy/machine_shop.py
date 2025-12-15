@@ -5,7 +5,7 @@ import heapq
 import random
 from typing import Any
 
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 RANDOM_SEED = 2018
 PT_MEAN = 10.0
@@ -155,7 +155,7 @@ class Repairman:
 
     """
 
-    def __init__(self, env: EventScheduler) -> None:
+    def __init__(self, env: Environment) -> None:
         """Initializes a repairman instance.
 
         Args:
@@ -341,7 +341,7 @@ def other_jobs(repairman: Repairman):
 
 
 if __name__ == "__main__":
-    env = EventScheduler()
+    env = Environment()
     repairman = Repairman(env)
     machines = [Machine(env, i, repairman) for i in range(NUM_MACHINES)]
     env.timeout(0, lambda: other_jobs(repairman))

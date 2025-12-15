@@ -1,11 +1,11 @@
-from desimpy.core import Event, EventScheduler, EventStatus
+from desimpy.core import Event, Environment, EventStatus
 
 # Test Suite for deactivate_next_event
 
 
 def test_deactivate_next_event_empty_queue():
     """Test `deactivate_next_event` with an empty event queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
     # Deactivate the next event when the queue is empty
     scheduler.deactivate_next_event()
@@ -16,7 +16,7 @@ def test_deactivate_next_event_empty_queue():
 
 def test_deactivate_next_event_single_event():
     """Test `deactivate_next_event` with a single event in the queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event1.deactivate()
 
@@ -32,7 +32,7 @@ def test_deactivate_next_event_single_event():
 
 def test_deactivate_next_event_multiple_events():
     """Test `deactivate_next_event` with multiple events in the queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=15)
     event3 = Event(time=25)
@@ -60,7 +60,7 @@ def test_deactivate_next_event_multiple_events():
 
 def test_deactivate_next_event_with_already_inactive_event():
     """Test `deactivate_next_event` when the next event is already inactive."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
 
@@ -82,7 +82,7 @@ def test_deactivate_next_event_with_already_inactive_event():
 
 def test_deactivate_next_event_multiple_deactivations():
     """Test `deactivate_next_event` with multiple consecutive deactivations."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
     event3 = Event(time=15)
@@ -107,7 +107,7 @@ def test_deactivate_next_event_multiple_deactivations():
 
 def test_deactivate_next_event_last_event_in_queue():
     """Test `deactivate_next_event` when there is only one event in the queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
 
     # Deactivate event1 manually and schedule it
@@ -123,7 +123,7 @@ def test_deactivate_next_event_last_event_in_queue():
 
 def test_deactivate_next_event_after_event_activation():
     """Test `deactivate_next_event` after activating some events."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
     event3 = Event(time=15)
@@ -152,7 +152,7 @@ def test_deactivate_next_event_after_event_activation():
 
 def test_deactivate_next_event_with_unactivated_events():
     """Test `deactivate_next_event` with unactivated events in the queue."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=5)
     event2 = Event(time=10)
 

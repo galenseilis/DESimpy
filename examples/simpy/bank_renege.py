@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Final
 
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 RANDOM_SEED: Final[int] = 42
 NEW_CUSTOMERS: Final[int] = 5  # Total number of customers
@@ -36,8 +36,8 @@ class Counter:
 
     """
 
-    def __init__(self, env: EventScheduler, capacity: int) -> None:
-        self.env: EventScheduler = env
+    def __init__(self, env: Environment, capacity: int) -> None:
+        self.env: Environment = env
         self.capacity: int = capacity
         self.available: int = capacity
         self.queue: list[Customer] = []
@@ -77,12 +77,12 @@ class Customer:
 
     def __init__(
         self,
-        env: EventScheduler,
+        env: Environment,
         name: str,
         counter: Counter,
         time_in_bank: float,
     ) -> None:
-        self.env: EventScheduler = env
+        self.env: Environment = env
         self.name: str = name
         self.counter: Counter = counter
         self.patience: float = random.uniform(MIN_PATIENCE, MAX_PATIENCE)
@@ -125,8 +125,8 @@ class Bank:
     """Simulate the bank, generating customers at random intervals and handling their service."""
 
     # WARN: Not to be confused with `collections.Counter`.
-    def __init__(self, env: EventScheduler, counter: Counter):
-        self.env: EventScheduler = env
+    def __init__(self, env: Environment, counter: Counter):
+        self.env: Environment = env
         self.counter: Counter = counter
 
     def generate_customers(
@@ -152,7 +152,7 @@ class Bank:
 
 
 if __name__ == "__main__":
-    scheduler = EventScheduler()
+    scheduler = Environment()
     counter = Counter(scheduler, capacity=COUNTER_CAPACITY)
     bank = Bank(scheduler, counter)
     bank.generate_customers(

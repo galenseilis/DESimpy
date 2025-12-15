@@ -8,7 +8,7 @@ from __future__ import annotations
 import itertools
 import random
 
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 RANDOM_SEED = 42
 NUM_MACHINES = 2  # Number of machines in the carwash
@@ -24,8 +24,8 @@ class Carwash:
     It cleans cars in parallel, subject to availability of machines.
     """
 
-    def __init__(self, env: EventScheduler, num_machines: int, washtime: int):
-        self.env: EventScheduler = env
+    def __init__(self, env: Environment, num_machines: int, washtime: int):
+        self.env: Environment = env
         self.num_machines: int = num_machines
         self.available_machines: int = num_machines
         self.washtime: float = washtime
@@ -68,8 +68,8 @@ class Carwash:
 class Car:
     """A car that arrives at the carwash and waits to be cleaned."""
 
-    def __init__(self, env: EventScheduler, name: str, carwash: Carwash):
-        self.env: EventScheduler = env
+    def __init__(self, env: Environment, name: str, carwash: Carwash):
+        self.env: Environment = env
         self.name: str = name
         self.carwash: Carwash = carwash
         print(f"{self.env.current_time:.2f} {self.name} arrives at the carwash.")
@@ -80,7 +80,7 @@ class Car:
         self.carwash.request(self.name)
 
 
-def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
+def setup(env: Environment, num_machines: int, washtime: int, t_inter: int):
     """Set up the carwash simulation, starting with an initial set of cars and
     generating new cars at random intervals.
     """
@@ -108,6 +108,6 @@ def setup(env: EventScheduler, num_machines: int, washtime: int, t_inter: int):
 
 
 if __name__ == "__main__":
-    scheduler = EventScheduler()
+    scheduler = Environment()
     setup(scheduler, NUM_MACHINES, WASHTIME, T_INTER)
     _ = scheduler.run_until_max_time(SIM_TIME, logging=False)

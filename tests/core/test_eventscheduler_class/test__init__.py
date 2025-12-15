@@ -1,9 +1,9 @@
-from desimpy import EventScheduler
+from desimpy import Environment
 
 
 def test_default():
     """Test that an EventScheduler is correctly initialized."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
     # Test if current_time is set to 0
     assert scheduler.current_time == 0

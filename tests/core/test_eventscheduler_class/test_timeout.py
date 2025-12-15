@@ -1,11 +1,11 @@
-from desimpy import EventScheduler
+from desimpy import Environment
 
 
 def test_event_with_context():
     delay = 10
     action = lambda: 2018
     context = {"foo": "bar", 1: "baz"}
-    env = EventScheduler()
+    env = Environment()
     env.timeout(delay=delay, action=action, context=context)
     event_out = env.step()
     assert event_out.time == 10

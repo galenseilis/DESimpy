@@ -4,7 +4,7 @@
 # $ IMPORTS #
 #############
 
-from desimpy import EventScheduler
+from desimpy import Environment
 
 if __name__ == "__main__":
     ###############################
@@ -12,7 +12,7 @@ if __name__ == "__main__":
     ###############################
 
     print("INTERRUPT BY DEACTIVATION")
-    env = EventScheduler()
+    env = Environment()
 
     env.timeout(5, lambda: "foo", context={"meow": 0})
     env.timeout(0, lambda: env.deactivate_next_event(), context={"hi": "bye"})
@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     print("\nINTERRUPT BY CANCELLATION")
 
-    env = EventScheduler()
+    env = Environment()
 
     env.timeout(5, lambda: "foo", context={"meow": 0})
 

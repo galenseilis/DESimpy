@@ -1,4 +1,4 @@
-from desimpy import Event, EventScheduler
+from desimpy import Event, Environment
 
 
 def test_no_action():
@@ -24,7 +24,7 @@ def test_action_returns_literal():
 
 
 def test_event_timeout_event():
-    env = EventScheduler()
+    env = Environment()
 
     time1 = 2
     action1 = lambda: env.timeout(30)

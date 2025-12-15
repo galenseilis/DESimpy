@@ -3,13 +3,13 @@ from typing import Any
 
 import pytest
 
-from desimpy.core import Event, EventScheduler, EventStatus
+from desimpy.core import Event, Environment, EventStatus
 
 
 @pytest.fixture
-def scheduler() -> EventScheduler:
+def scheduler() -> Environment:
     """Fixture to create a fresh EventScheduler instance for each test."""
-    return EventScheduler()
+    return Environment()
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def event() -> Callable[[float], Event]:
 
 
 def test_apply_to_events_by_condition_no_matching_events(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition does nothing when no events match the condition."""
@@ -32,7 +32,7 @@ def test_apply_to_events_by_condition_no_matching_events(
     scheduler.schedule(event1)
     scheduler.schedule(event2)
 
-    def condition(s: EventScheduler, e: Event) -> bool:
+    def condition(s: Environment, e: Event) -> bool:
         _ = s
         return e.time > 20.0  # No event should match this condition
 
@@ -47,7 +47,7 @@ def test_apply_to_events_by_condition_no_matching_events(
 
 
 def test_apply_to_events_by_condition_matching_events(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition modifies only the events that match the condition."""
@@ -58,7 +58,7 @@ def test_apply_to_events_by_condition_matching_events(
     scheduler.schedule(event2)
     scheduler.schedule(event3)
 
-    def condition(s: EventScheduler, e: Event) -> bool:
+    def condition(s: Environment, e: Event) -> bool:
         _ = s
         return e.time > 10.0  # Only event2 and event3 should match
 
@@ -74,7 +74,7 @@ def test_apply_to_events_by_condition_matching_events(
 
 
 def test_apply_to_events_by_condition_toggle_attribute(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition can toggle an attribute based on a condition."""
@@ -87,7 +87,7 @@ def test_apply_to_events_by_condition_toggle_attribute(
     event1.status = EventStatus.ACTIVE
     event2.status = EventStatus.INACTIVE
 
-    def condition(s: EventScheduler, e: Event) -> bool:
+    def condition(s: Environment, e: Event) -> bool:
         _ = s
         return e.time >= 10.0  # Only event2 should match
 
@@ -106,7 +106,7 @@ def test_apply_to_events_by_condition_toggle_attribute(
 
 
 def test_apply_to_events_by_condition_reset_time(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition can reset the time of matched events."""
@@ -117,7 +117,7 @@ def test_apply_to_events_by_condition_reset_time(
     scheduler.schedule(event2)
     scheduler.schedule(event3)
 
-    def condition(s: EventScheduler, e: Event) -> bool:
+    def condition(s: Environment, e: Event) -> bool:
         _ = s
         return e.time < 7.0  # Only event1 and event2 should match
 
@@ -133,7 +133,7 @@ def test_apply_to_events_by_condition_reset_time(
 
 
 def test_apply_to_events_by_condition_no_op(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition makes no changes if the function is a no-op."""
@@ -142,7 +142,7 @@ def test_apply_to_events_by_condition_no_op(
     scheduler.schedule(event1)
     scheduler.schedule(event2)
 
-    def condition(s: EventScheduler, e: Event) -> bool:
+    def condition(s: Environment, e: Event) -> bool:
         _ = s
         return e.time > 5.0  # Both events should match
 
@@ -157,7 +157,7 @@ def test_apply_to_events_by_condition_no_op(
 
 
 def test_apply_to_events_by_condition_negative_time(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ) -> None:
     """Test that apply_to_events_by_condition allows setting negative times for matched events."""
@@ -166,7 +166,7 @@ def test_apply_to_events_by_condition_negative_time(
     scheduler.schedule(event1)
     scheduler.schedule(event2)
 
-    def condition(s: EventScheduler, e: Event) -> bool:
+    def condition(s: Environment, e: Event) -> bool:
         _ = s
         return e.time >= 5.0  # Both events should match
 

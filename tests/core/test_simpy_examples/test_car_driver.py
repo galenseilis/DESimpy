@@ -45,13 +45,13 @@ def run_simpy() -> list[str]:
 
 def run_desimpy() -> list[str]:
     """DESimpy equivalent of Simpy simulation."""
-    from desimpy import Event, EventScheduler
+    from desimpy import Event, Environment
 
     results: list[str] = []
 
     class Car:
-        def __init__(self, env: EventScheduler) -> None:
-            self.env: EventScheduler = env
+        def __init__(self, env: Environment) -> None:
+            self.env: Environment = env
             self.schedule_run()
 
         def schedule_run(self) -> None:
@@ -65,7 +65,7 @@ def run_desimpy() -> list[str]:
             results.append(f"Start parking and charging at {self.env.current_time}")
             self.env.timeout(5, self.schedule_drive)
 
-    def driver(env: EventScheduler, car: Car) -> None:
+    def driver(env: Environment, car: Car) -> None:
         def interrupt_action():
             results.append("Was interrupted. Hope, the battery is full enough ...")
             env.deactivate_next_event()
@@ -74,7 +74,7 @@ def run_desimpy() -> list[str]:
 
         env.timeout(3, interrupt_action)
 
-    scheduler = EventScheduler()
+    scheduler = Environment()
     car = Car(scheduler)
     driver(scheduler, car)
     _ = scheduler.run_until_max_time(15, logging=False)

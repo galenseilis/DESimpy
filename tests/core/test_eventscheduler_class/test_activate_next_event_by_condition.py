@@ -1,9 +1,9 @@
-from desimpy.core import Event, EventScheduler, EventStatus
+from desimpy.core import Event, Environment, EventStatus
 
 
 def test_activate_next_event_by_condition_single_event_true():
     """Test `activate_next_event_by_condition` with a single event that meets the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event = Event(time=1)
     event.deactivate()
     scheduler.schedule(event)
@@ -17,7 +17,7 @@ def test_activate_next_event_by_condition_single_event_true():
 
 def test_activate_next_event_by_condition_single_event_false():
     """Test `activate_next_event_by_condition` with a single event that does not meet the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event = Event(time=1)
     event.deactivate()
     scheduler.schedule(event)
@@ -31,7 +31,7 @@ def test_activate_next_event_by_condition_single_event_false():
 
 def test_activate_next_event_by_condition_multiple_events_first_meets_condition():
     """Test `activate_next_event_by_condition` with multiple events where only the first event meets the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=1)
     event2 = Event(time=2)
     event1.deactivate()
@@ -52,7 +52,7 @@ def test_activate_next_event_by_condition_multiple_events_first_meets_condition(
 
 def test_activate_next_event_by_condition_multiple_events_second_meets_condition():
     """Test `activate_next_event_by_condition` with multiple events where only the second event meets the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=1)
     event2 = Event(time=2)
     event1.deactivate()
@@ -73,7 +73,7 @@ def test_activate_next_event_by_condition_multiple_events_second_meets_condition
 
 def test_activate_next_event_by_condition_no_events_meet_condition():
     """Test `activate_next_event_by_condition` with multiple events where none meet the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=1)
     event2 = Event(time=2)
     event1.deactivate()
@@ -94,7 +94,7 @@ def test_activate_next_event_by_condition_no_events_meet_condition():
 
 def test_activate_next_event_by_condition_first_match_only():
     """Ensure `activate_next_event_by_condition` only activates the first event that meets the condition."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=1)
     event2 = Event(time=1)  # Same time, but only one should be activated
     event1.deactivate()
@@ -115,7 +115,7 @@ def test_activate_next_event_by_condition_first_match_only():
 
 def test_activate_next_event_by_condition_empty_queue():
     """Test `activate_next_event_by_condition` when the event queue is empty."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
 
     scheduler.activate_next_event_by_condition(
         lambda s, e: e.time == 1,
@@ -128,7 +128,7 @@ def test_activate_next_event_by_condition_empty_queue():
 
 def test_activate_next_event_by_condition_multiple_conditions():
     """Test `activate_next_event_by_condition` with multiple conditions in lambda."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=1, context={"type": "A"})
     event2 = Event(time=2, context={"type": "B"})
     event3 = Event(time=3, context={"type": "A"})
@@ -157,7 +157,7 @@ def test_activate_next_event_by_condition_multiple_conditions():
 
 def test_activate_next_event_by_condition_with_no_match_in_complex_condition():
     """Test `activate_next_event_by_condition` with a complex condition where no event matches."""
-    scheduler = EventScheduler()
+    scheduler = Environment()
     event1 = Event(time=1, context={"type": "A"})
     event2 = Event(time=2, context={"type": "B"})
     event1.deactivate()

@@ -4,13 +4,13 @@ from collections.abc import Callable
 
 import pytest
 
-from desimpy.core import Event, EventScheduler, EventStatus
+from desimpy.core import Event, Environment, EventStatus
 
 
 @pytest.fixture
 def scheduler():
     """Fixture to create a fresh EventScheduler instance for each test."""
-    return EventScheduler()
+    return Environment()
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def event() -> Callable[[float], Event]:
     return _create_event
 
 
-def test_apply_to_all_events_empty_queue(scheduler: EventScheduler):
+def test_apply_to_all_events_empty_queue(scheduler: Environment):
     """Test that apply_to_all_events does nothing when the event queue is empty."""
 
     def increment_time(event: Event) -> None:
@@ -37,7 +37,7 @@ def test_apply_to_all_events_empty_queue(scheduler: EventScheduler):
 
 
 def test_apply_to_all_events_increment_time(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ):
     """Test that apply_to_all_events correctly increments the time of each event."""
@@ -59,7 +59,7 @@ def test_apply_to_all_events_increment_time(
 
 
 def test_apply_to_all_events_double_time(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ):
     """Test that apply_to_all_events doubles the time of each event."""
@@ -79,7 +79,7 @@ def test_apply_to_all_events_double_time(
 
 
 def test_apply_to_all_events_custom_attribute_change(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ):
     """Test that apply_to_all_events can modify a custom attribute of each event."""
@@ -107,7 +107,7 @@ def test_apply_to_all_events_custom_attribute_change(
 
 
 def test_apply_to_all_events_no_change(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ):
     """Test that apply_to_all_events makes no changes if the function is a no-op."""
@@ -128,7 +128,7 @@ def test_apply_to_all_events_no_change(
 
 
 def test_apply_to_all_events_negative_time(
-    scheduler: EventScheduler,
+    scheduler: Environment,
     event: Callable[[float], Event],
 ):
     """Test that apply_to_all_events allows setting negative times for events."""
