@@ -88,9 +88,13 @@ class MMcQueueSimulation:
     def handle_departure(self, server_id: int) -> None:
         """Handle the departure of a customer from a given server."""
         customer: Customer | None = self.servers[server_id]
+        assert customer is not None, "{customer=} should not be `None`."
         customer.departure_time = self.scheduler.current_time
         self.servers[server_id] = None  # Free the server
 
+        assert customer.service_start_time is not None, (
+            "{customer.service_start_time=} should not be `None`."
+        )
         wait_time: float = customer.service_start_time - customer.arrival_time
         self.total_wait_time += wait_time
 
