@@ -28,14 +28,14 @@ class Node:
         num_servers: int,
         routing_func: Callable[[Self], Self],
         depart_dist: dists.Distribution,
-        scheduler: Environment,  # FIX: Provide instance of Network instead, which will have access to scheduler.
+        environment: Environment,  # FIX: Provide instance of Network instead, which will have access to scheduler.
     ):
         self.queue_id: int = queue_id
         self.arrival_dist: dists.Distribution = arrival_dist
         self.service_dist: dists.Distribution = service_dist
         self.num_servers: int = num_servers
         self.scheduler: Environment = (
-            scheduler  # Shared event scheduler for the network
+            environment  # Shared event scheduler for the network
         )
         self.queue: list[Customer] = []  # Queue for customers
         self.servers: list[Customer | None] = [
@@ -51,10 +51,8 @@ class Node:
 
     def schedule_arrival(self, inter_arrival_time: float | None = None) -> None:
         """Schedule the next customer arrival."""
-        if inter_arrival_time is None:
-            inter_arrival_time: float = self.arrival_dist.sample()
         self.scheduler.timeout(
-            inter_arrival_time,
+            self.arrival_dist.sample() if inter_arrival_time is None else inter_arrival_time,
             lambda: self.handle_arrival(),
             context={
                 "type": "arrival",
@@ -109,10 +107,9 @@ class Node:
     def handle_departure(self, server_id: int):
         """Handle the departure of a customer from a given server."""
         customer = self.servers[server_id]
+        assert customer is not None, "{customer=} should not be `None`."
         customer.departure_time = self.scheduler.current_time
         self.servers[server_id] = None  # Free the server
-
-        wait_time: float = customer.service_start_time - customer.arrival_time
 
         if self.queue:
             next_customer = self.queue.pop(0)
@@ -171,7 +168,7 @@ if __name__ == "__main__":
         num_servers=2,
         routing_func=round_robin_routing,
         depart_dist=depart_dist,
-        scheduler=network.scheduler,
+        environment=network.scheduler,
     )
     queue2 = Node(
         queue_id=1,
@@ -180,7 +177,7 @@ if __name__ == "__main__":
         num_servers=1,
         routing_func=round_robin_routing,
         depart_dist=depart_dist,
-        scheduler=network.scheduler,
+        environment=network.scheduler,
     )
 
     network.add_queue(queue1)
