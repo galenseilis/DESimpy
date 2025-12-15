@@ -139,7 +139,6 @@ class GGcQueue:
             "server": server_id,
             "customer_id": customer.customer_id,
         }
-        # Schedule the departure event
 
         self.scheduler.timeout(service_time, action=action, context=context)
 
