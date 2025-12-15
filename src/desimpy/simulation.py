@@ -1,6 +1,13 @@
+from __future__ import annotations
+import heapq
+
 from enum import StrEnum, auto
 
-from scheduler import EventScheduler
+from desimpy.scheduler import EventScheduler
+from desimpy.event import ActionType, ContextType, Event
+
+from typing import Self
+from collections.abc import Callable
 
 
 class SimulationStatus(StrEnum):
@@ -11,6 +18,7 @@ class SimulationStatus(StrEnum):
 
 
 class Simulation:
+    """Simulation runner."""
 
     def __init__(self, scheduler: EventScheduler | None = None):
         """Initialize a simulation.
@@ -48,7 +56,7 @@ class Simulation:
     def run(
         self,
         stop: Callable[[Self], bool],
-        logging: Callable[[Any], bool] | bool = True,
+        logging: Callable[[Event], bool] | bool = True,
     ) -> list[Event]:
         """Run the discrete event simulation.
 
@@ -116,7 +124,7 @@ class Simulation:
     def run_until_max_time(
         self,
         max_time: float,
-        logging: Callable[[Self], bool] | bool = True,
+        logging: Callable[[Event], bool] | bool = True,
     ) -> list[Event]:
         """Simulate until a maximum time is reached.
 
@@ -139,7 +147,7 @@ class Simulation:
     def run_until_given_event(
         self,
         event: Event,
-        logging: Callable[[Self], bool] | bool = True,
+        logging: Callable[[Event], bool] | bool = True,
     ) -> list[Event]:
         """Simulate until a given event has elapsed.
 
@@ -152,3 +160,22 @@ class Simulation:
             return event in simulation.scheduler.event_log
 
         return self.run(stop_at_target_event, logging)
+
+    # WARN: This function feels like it belongs to the event scheduler,
+    # but it requires the current_time... Need to think about this more.
+    def timeout(
+        self: Self,
+        delay: float,
+        action: ActionType | None = None,
+        context: ContextType | None = None,
+    ) -> None:
+        """Schedule an event some delay into the future.
+
+        This event is a convenience function around
+        `self.schedule` that assumes the scheduled event
+        occurs at some delay from the moment it is scheduled.
+        """
+        event = Event(self.current_time + delay, action=action, context=context)
+        self.scheduler.schedule(event)
+
+

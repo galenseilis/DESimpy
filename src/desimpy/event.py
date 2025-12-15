@@ -2,7 +2,8 @@ from enum import StrEnum, auto
 from collections.abc import Callable, Hashable
 from typing import Self
 
-from _typing import ActionType
+ActionType = Callable[[], object]
+ContextType = dict[Hashable, object]
 
 class EventStatus(StrEnum):
     """The status of an event."""
@@ -45,8 +46,8 @@ class Event:
     def __init__(
         self,
         time: float,
-        action: Callable[[], object] | None = None,
-        context: dict[Hashable, object] | None = None,
+        action: ActionType | None = None,
+        context: ContextType | None = None,
     ) -> None:
         """Create instance of an event."""
         # OPTIMIZE: Validation checks that are removed when run in optimized mode.
@@ -61,8 +62,17 @@ class Event:
                 raise TypeError(f"{action=} must be a callable or None.")
 
         self.time: float | int = time
-        self.action: Callable[[], object] = (lambda: None) if action is None else action
-        self.context: dict[Hashable, object] = {} if context is None else context
+
+        if action is None:
+            self.action: Callable[[], object] = (lambda: None)
+        else:
+            self.action = action
+
+        if context is None:
+            self.context: dict[Hashable, object] = {}
+        else:
+            self.context = context
+
         self.status: EventStatus = EventStatus.ACTIVE
         self.result = None
 

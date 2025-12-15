@@ -1,15 +1,20 @@
 import heapq
 from collections.abc import Callable
+from typing import Self
 
-from _typing import ActionType
+from desimpy.event import Event
+
+EventQueueType = list[tuple[float, Event]]
+EventLogType = list[Event]
 
 class EventScheduler:
-    """Runner for discrete event simulations."""
+    """Scheduler for discrete event simulations.
+    """
 
     def __init__(self) -> None:
         """Create an event scheduler."""
-        self.event_queue: list[tuple[float, Event]] = []
-        self.event_log: list[Event] = []
+        self.event_queue: EventQueueType  = []
+        self.event_log: EventLogType  = []
 
 
     def schedule(self, event: Event) -> None:
@@ -32,20 +37,6 @@ class EventScheduler:
 
         heapq.heappush(self.event_queue, (event.time, event))
 
-    def timeout(
-        self,
-        delay: float,
-        action: Callable[[], Any] | None = None,
-        context: dict[Any, Any] | None = None,
-    ) -> None:
-        """Schedule an event some delay into the future.
-
-        This event is a convenience function around
-        `self.schedule` that assumes the scheduled event
-        occurs at some delay from the moment it is scheduled.
-        """
-        event = Event(self.current_time + delay, action=action, context=context)
-        self.schedule(event)
 
     def next_event(self) -> Event | None:
         """Refer to next event without changing it."""
@@ -86,14 +77,14 @@ class EventScheduler:
         if option_next_event:
             return option_next_event.time
 
-    def apply_to_all_events(self, func: Callable[[Event], Any]) -> None:
+    def apply_to_all_events(self, func: Callable[[Event], object]) -> None:
         """Apply a function to all events in schedule."""
         for _, event in self.event_queue:
             func(event)
 
     def apply_to_events_by_condition(
         self,
-        func: Callable[[Event], Any],
+        func: Callable[[Event], object],
         condition: Callable[[Self, Event], bool],
     ) -> None:
         """Apply a function to any events in queue that satisfy condition."""

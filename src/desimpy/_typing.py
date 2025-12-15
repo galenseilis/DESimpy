@@ -1,3 +1,2 @@
-from collections.abc import Callable
+from __future__ import annotations
 
-ActionType = Callable[[], object]
