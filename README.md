@@ -21,9 +21,9 @@ pip install desimpy
 Here is a small example to show the basic logic. This example is the simple clock process presented in the [SimPy documentation](https://simpy.readthedocs.io/en/stable/index.html).
 
 ```python
-from desimpy import EventScheduler
+from desimpy import Environment
 
-def clock(env: EventScheduler, name: str, tick: int | float) -> None:
+def clock(env: Environment, name: str, tick: int | float) -> None:
     """Clock simulation process."""
 
     def action() -> None:
@@ -33,7 +33,7 @@ def clock(env: EventScheduler, name: str, tick: int | float) -> None:
 
     env.timeout(0, action=action)
 
-env = EventScheduler()
+env = Environment()
 
 clock(env, "fast", 0.5)
 clock(env, "slow", 1)
